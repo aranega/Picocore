@@ -39,5 +39,5 @@ PicoInterpreterTest >> testPoinInstantiation [
 PicoInterpreterTest >> testSimpleLookup [
 	|  method |
 	method := pointClass lookup: #x:.
-	self assert: method equals: ((pointClass at: 5) at: #x)
+	self assert: method equals: ((pointClass at: 5) at: #x:)
 ]
