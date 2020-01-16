@@ -23,10 +23,27 @@ PicoBlop class >> giveClassNamed: aSymbol ifAbsent: aBlock [
 	^ picoEnvironment at: aSymbol ifAbsent: aBlock
 ]
 
+{ #category : #lookup }
+PicoBlop >> lookup: aString [ 
+	
+	^ self picoMethodDict at: aString
+]
+
+{ #category : #'as yet unclassified' }
+PicoBlop >> offsetMethodDict [
+	^ 5
+]
+
 { #category : #'as yet unclassified' }
 PicoBlop >> picoClassId: ID [
 
 	self at: 1 put: ID
+]
+
+{ #category : #'as yet unclassified' }
+PicoBlop >> picoMethodDict [
+
+	^ self at: self offsetMethodDict
 ]
 
 { #category : #'as yet unclassified' }
@@ -49,4 +66,10 @@ PicoBlop >> primitiveAllocateAnInstance [
 	a := self class new: self picoNumberOfIVs.
 	a picoClassId: self picoName.
 	^a
+]
+
+{ #category : #'as yet unclassified' }
+PicoBlop >> primitiveLookup: aSelector [
+
+	self halt 
 ]

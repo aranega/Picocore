@@ -14,12 +14,6 @@ Class {
 	#category : #PicoCore
 }
 
-{ #category : #color }
-PicoCodeRepository >> color [ 
-	
-	^ color 
-]
-
 { #category : #points }
 PicoCodeRepository >> distanceToOrigin [
 
@@ -33,7 +27,19 @@ PicoCodeRepository >> x [
 ]
 
 { #category : #points }
+PicoCodeRepository >> x: anInteger [
+
+	x := anInteger
+]
+
+{ #category : #points }
 PicoCodeRepository >> y [
 
 	^ y
+]
+
+{ #category : #points }
+PicoCodeRepository >> y: anInteger [
+
+	y := anInteger
 ]
