@@ -71,5 +71,5 @@ PicoBlop >> primitiveAllocateAnInstance [
 { #category : #'as yet unclassified' }
 PicoBlop >> primitiveLookup: aSelector [
 
-	self halt 
+	^ self picoMethodDict at: aSelector
 ]
