@@ -9,6 +9,14 @@ Class {
 }
 
 { #category : #'global class repository management' }
+PicoBlop class >> declareClass: aPicoClass [ 
+	"Return the class defined in the class repository with the name aSymbol"
+
+	^ picoEnvironment at: aPicoClass picoClassName put: aPicoClass 
+			
+]
+
+{ #category : #'global class repository management' }
 PicoBlop class >> giveClassNamed: aSymbol [ 
 	"Return the class defined in the class repository with the name aSymbol"
 
@@ -23,42 +31,105 @@ PicoBlop class >> giveClassNamed: aSymbol ifAbsent: aBlock [
 	^ picoEnvironment at: aSymbol ifAbsent: aBlock
 ]
 
-{ #category : #lookup }
-PicoBlop >> lookup: aString [ 
+{ #category : #'global class repository management' }
+PicoBlop class >> initializePicoClassEnvironment [
+	"could be better to have it as instance level so that we can test without breaking everything but this is a toy."
 	
-	^ self picoMethodDict at: aString
+	picoEnvironment := Dictionary new
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #offsets }
+PicoBlop >> offsetForClass [
+
+	^ 1
+]
+
+{ #category : #offsets }
+PicoBlop >> offsetForIVs [
+	^ 4
+]
+
+{ #category : #offsets }
+PicoBlop >> offsetForName [
+	^ 2
+]
+
+{ #category : #'instance variables' }
+PicoBlop >> offsetFromClassOfInstanceVariable: aSymbol [ 
+	"Returns the index of the instance variable named aSymbol for an class anObjClass.
+	Returns 0 if the aSymbol is not present in the instance variable lists of anObjClass"
+
+	^ self picoIVs indexOf: aSymbol
+]
+
+{ #category : #'instance variables' }
+PicoBlop >> offsetFromObjectOfInstanceVariable: aSymbol [
+	"Returns the offset of the instance variable named aSymbol in the object anObjObject.
+	If aSymbol is not an instance variable is not an instance variable of the object raise an error"
+
+	| aClass |
+	aClass := self picoClass.
+	(aClass picoIVs includes: aSymbol) 
+		ifFalse: [self error: 'The class ' , aClass objName asString
+						, ' does not define the instance variable ' , aSymbol asString].
+	^ aClass offsetFromClassOfInstanceVariable: aSymbol
+]
+
+{ #category : #offsets }
 PicoBlop >> offsetMethodDict [
 	^ 5
 ]
 
-{ #category : #'as yet unclassified' }
-PicoBlop >> picoClassId: ID [
+{ #category : #basic }
+PicoBlop >> picoClass [
 
-	self at: 1 put: ID
+	^ self class giveClassNamed: self picoClassId
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #basic }
+PicoBlop >> picoClassId [
+
+	^ self at: self offsetForClass 
+]
+
+{ #category : #basic }
+PicoBlop >> picoClassId: ID [
+
+	self at: self offsetForClass put: ID
+]
+
+{ #category : #basic }
+PicoBlop >> picoClassName [
+
+	^ self at: self offsetForName
+]
+
+{ #category : #basic }
+PicoBlop >> picoIVs [
+	"Receiver should be: anObjClass. Returns the list of instance variables"
+	
+	^self at: self offsetForIVs
+]
+
+{ #category : #basic }
 PicoBlop >> picoMethodDict [
 
 	^ self at: self offsetMethodDict
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #basic }
 PicoBlop >> picoName [
 
 	^ 'PicoPoint'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #basic }
 PicoBlop >> picoNumberOfIVs [
 	"for now class x y"
 	^ 3
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #allocate }
 PicoBlop >> primitiveAllocateAnInstance [
 	"Returns a newly created instance of self, an ObjClass. In this implementation the identifier of the object class is the name of the class. "
 
@@ -68,8 +139,23 @@ PicoBlop >> primitiveAllocateAnInstance [
 	^a
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #lookup }
 PicoBlop >> primitiveLookup: aSelector [
 
 	^ self picoMethodDict at: aSelector
+]
+
+{ #category : #lookup }
+PicoBlop >> send: aSelector [
+
+	^ PicoInterpreter new 
+			receiver: self;
+			visitNode: (self picoClass primitiveLookup: aSelector)
+]
+
+{ #category : #'instance variables' }
+PicoBlop >> valueOfInstanceVariable: aSymbol [ 
+	"Return the value of the instance variable, aSymbol, of the receiver."
+	
+	^self at: (self offsetFromObjectOfInstanceVariable: aSymbol)
 ]
