@@ -66,6 +66,17 @@ PicoInterpreterTest >> testReturn100Execution [
 	
 ]
 
+{ #category : #interpreter }
+PicoInterpreterTest >> testSetterExecution [
+	|  inst val |
+	inst := pointClass primitiveAllocateAnInstance.
+	inst at: 2 put: 33.
+	self halt.
+	val := inst send: #x:.
+	self assert: val equals: 33
+	
+]
+
 { #category : #tests }
 PicoInterpreterTest >> testSimpleLookup [
 	|  method |

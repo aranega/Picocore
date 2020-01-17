@@ -1,11 +1,31 @@
 Class {
 	#name : #PicoInterpreter,
-	#superclass : #RBProgramNodeVisitor,
+	#superclass : #RBBetterProgramNodeVisitor,
 	#instVars : [
-		'receiver'
+		'receiver',
+		'stack'
 	],
 	#category : #PicoCore
 }
+
+{ #category : #initialization }
+PicoInterpreter >> initialize [ 
+	super initialize.
+	stack := Stack new. 
+	self pushNewScope
+]
+
+{ #category : #initialization }
+PicoInterpreter >> newScope [
+	^ Dictionary new
+]
+
+{ #category : #visiting }
+PicoInterpreter >> pushNewScope [
+
+	stack push: self newScope
+	
+]
 
 { #category : #accessing }
 PicoInterpreter >> receiver [
@@ -19,8 +39,9 @@ PicoInterpreter >> receiver: anObject [
 
 { #category : #visiting }
 PicoInterpreter >> visitAssignmentNode: anAssignmentNode [
-
-	self halt.
+	" for a naive version without temp."
+	
+	"self at: (self offsetFromObjectOfInstanceVariable: anAssignmentNode name) put: "
 ]
 
 { #category : #visiting }
@@ -37,10 +58,10 @@ PicoInterpreter >> visitLiteralNode: aLiteralNode [
 
 { #category : #visiting }
 PicoInterpreter >> visitMessageNode: aMessageNode [
-	self halt. 
-	(aMessageNode isCascaded not or: [ aMessageNode isFirstCascaded ])
-		ifTrue: [ self visitNode: aMessageNode receiver ].
-	aMessageNode arguments do: [ :each | self visitNode: each ]
+
+	self pushNewScope.
+	super visitMessageNode: aMessageNode
+
 ]
 
 { #category : #visiting }
@@ -49,6 +70,12 @@ PicoInterpreter >> visitMethodNode: aMethodNode [
 	aMethodNode pragmas do: [ :each | self visitNode: each ].
 		"to be revisited when visitMethodNode: gets better design"
 	^ self visitNode: aMethodNode body
+]
+
+{ #category : #visiting }
+PicoInterpreter >> visitReturnNode: aMethodNode [
+	super visitReturnNode: aMethodNode.
+	stack pop
 ]
 
 { #category : #visiting }
