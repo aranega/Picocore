@@ -14,7 +14,7 @@ PicoBlopTest >> setUp [
 	{ #PicoClass . #PicoPoint . #PicoObject . { #class . #x . #y } . 5 }
 		withIndexDo: [ :each :i | pointClass at: i put: each ].
 	
-	pointClass initializeMethodDictionaryFrom: PicoCodeRepositoryForPoint.
+	pointClass initializeMethodDictionaryFrom: PicoPoint.
 	PicoBlop initializePicoClassEnvironment.
 	PicoBlop declareClass: pointClass.
 	
@@ -25,9 +25,9 @@ PicoBlopTest >> setUp [
 PicoBlopTest >> testMethodDictionaryFrom [
 
 	| dict |
-	dict := PicoBlop new methodDictionaryFrom: PicoCodeRepositoryForPoint.
-	self assert: dict keys asSet equals: PicoCodeRepositoryForPoint selectors asSet.
-	self assert: (dict at: #x) equals: (PicoCodeRepositoryForPoint >> #x) ast
+	dict := PicoBlop new methodDictionaryFrom: PicoPoint.
+	self assert: dict keys asSet equals: PicoPoint selectors asSet.
+	self assert: (dict at: #x) equals: (PicoPoint >> #x) ast
 
 ]
 

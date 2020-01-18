@@ -1,24 +1,26 @@
 Class {
-	#name : #PicoCodeRepositoryForPoint,
+	#name : #PicoPoint,
 	#superclass : #PicoCodeRepository,
 	#type : #variable,
 	#category : #PicoCore
 }
 
-{ #category : #message }
-PicoCodeRepositoryForPoint >> distanceToOrigin [
+{ #category : #messages }
+PicoPoint >> dotProduct: aPicoPoint [ 
+	"Answer a number that is the dot product of the receiver and the argument, aPoint. 
+	That is, the two points are multipled and the coordinates of the result summed."
 
-	^ self x * self x + (self y * self y)
+	^ (x * (aPicoPoint send: #x)) + (y * (aPicoPoint send: #y))
 ]
 
 { #category : #'return and access' }
-PicoCodeRepositoryForPoint >> return100 [
+PicoPoint >> return100 [
 
 	^ 100
 ]
 
 { #category : #'simple temp manipulation' }
-PicoCodeRepositoryForPoint >> settingAValueFromTempToTemp2 [
+PicoPoint >> settingAValueFromTempToTemp2 [
 
 	| temp temp2 | 
 	temp := 10.
@@ -27,7 +29,7 @@ PicoCodeRepositoryForPoint >> settingAValueFromTempToTemp2 [
 ]
 
 { #category : #'simple temp manipulation' }
-PicoCodeRepositoryForPoint >> settingAValueToTemp [
+PicoPoint >> settingAValueToTemp [
 
 	| temp | 
 	temp := 10.
@@ -35,7 +37,7 @@ PicoCodeRepositoryForPoint >> settingAValueToTemp [
 ]
 
 { #category : #'simple temp manipulation' }
-PicoCodeRepositoryForPoint >> settingAValueToTemp2 [
+PicoPoint >> settingAValueToTemp2 [
 
 	| temp | 
 	temp := 10.
@@ -43,14 +45,14 @@ PicoCodeRepositoryForPoint >> settingAValueToTemp2 [
 	^ temp
 ]
 
-{ #category : #message }
-PicoCodeRepositoryForPoint >> simpleMessage [
+{ #category : #'internal messages' }
+PicoPoint >> simpleMessage [
 
 	^ 10 * 10
 ]
 
-{ #category : #message }
-PicoCodeRepositoryForPoint >> usingTempValue [
+{ #category : #'internal messages' }
+PicoPoint >> usingTempValue [
 
 	| temp | 
 	temp := 10.
@@ -59,25 +61,25 @@ PicoCodeRepositoryForPoint >> usingTempValue [
 ]
 
 { #category : #'return and access' }
-PicoCodeRepositoryForPoint >> x [ 
+PicoPoint >> x [ 
 
 	^ x
 ]
 
 { #category : #'return and access' }
-PicoCodeRepositoryForPoint >> x: anInteger [
+PicoPoint >> x: anInteger [
 
 	x := anInteger
 ]
 
 { #category : #'return and access' }
-PicoCodeRepositoryForPoint >> y [
+PicoPoint >> y [
 
 	^ y
 ]
 
 { #category : #'return and access' }
-PicoCodeRepositoryForPoint >> y: anInteger [
+PicoPoint >> y: anInteger [
 
 	y := anInteger
 ]

@@ -13,3 +13,9 @@ Class {
 	],
 	#category : #PicoCore
 }
+
+{ #category : #'as yet unclassified' }
+PicoCodeRepository >> picoClassNamed: aName [ 
+	
+	^ PicoBlop giveClassNamed: aName
+]

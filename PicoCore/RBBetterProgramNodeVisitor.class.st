@@ -39,7 +39,7 @@ RBBetterProgramNodeVisitor >> visitMessageArgumentNodes: aCol [
 RBBetterProgramNodeVisitor >> visitMessageNode: aMessageNode [
 	(aMessageNode isCascaded not or: [ aMessageNode isFirstCascaded ])
 		ifTrue: [ self visitMessageReceiver: aMessageNode receiver ].
-	self visitMessageArgumentNodes: aMessageNode
+	self visitMessageArgumentNodes: aMessageNode arguments
 ]
 
 { #category : #visiting }

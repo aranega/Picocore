@@ -1,3 +1,20 @@
+"
+Random notes for me. 
+
+Since I only have a point in pico. I should do two messages in a row to the same object.
+Later I can think about creating anew point from pico itself. 
+
+I have to make a distinction between a pico Send and a pharo send. 
+
+dotProduct: aPicoPoint 
+	""Answer a number that is the dot product of the receiver and the argument, aPoint. 
+	That is, the two points are multipled and the coordinates of the result summed.""
+
+	^ (x * (aPicoPoint send: #x)) + (y * (aPicoPoint send: #y))
+	
+so during message interpretation I will have to mkae the distinction between pharo code and picocode. 
+
+"
 Class {
 	#name : #PicoInterpreter,
 	#superclass : #RBBetterProgramNodeVisitor,
@@ -92,7 +109,16 @@ PicoInterpreter >> visitLiteralNode: aLiteralNode [
 PicoInterpreter >> visitMessageNode: aMessageNode [
 
 	self pushNewScope.
-	super visitMessageNode: aMessageNode
+	"newscope should also contains receiver and arguments. 
+	else we cannot have a different kind of receiver 
+	"
+	^ ((aMessageNode selector = #send:) or: [ aMessageNode selector = #send:withArguments:  ])
+		ifTrue: [ self halt. "This is a pico message. " ]
+		ifFalse: [  
+			(self visitMessageReceiver: aMessageNode receiver) 
+				perform: aMessageNode selector 	
+				withArguments: (self visitMessageArgumentNodes: aMessageNode arguments)
+			 ]
 
 ]
 

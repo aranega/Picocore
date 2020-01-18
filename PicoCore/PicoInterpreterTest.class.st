@@ -14,20 +14,20 @@ PicoInterpreterTest >> setUp [
 	{ #PicoClass . #PicoPoint . #PicoObject . { #class . #x . #y } . 5 }
 		withIndexDo: [ :each :i | pointClass at: i put: each ].
 	
-	pointClass initializeMethodDictionaryFrom: PicoCodeRepositoryForPoint.
+	pointClass initializeMethodDictionaryFrom: PicoPoint.
 	PicoBlop initializePicoClassEnvironment.
 	PicoBlop declareClass: pointClass.
 	
 	
 ]
 
-{ #category : #interpreter }
+{ #category : #'test primitive message' }
 PicoInterpreterTest >> testGetterExecution [
 	|  inst val |
 	inst := pointClass primitiveAllocateAnInstance.
 	inst at: 2 put: 33.
-	val := inst send: #x.
-	self assert: val equals: 33
+	val := inst send: #simpleMessage.
+	self assert: val equals: 100
 	
 ]
 
