@@ -10,19 +10,11 @@ Class {
 { #category : #tests }
 PicoInterpreterTest >> setUp [
 
-	| dict |
 	pointClass := PicoBlop new: 5.
 	{ #PicoClass . #PicoPoint . #PicoObject . { #class . #x . #y } . 5 }
 		withIndexDo: [ :each :i | pointClass at: i put: each ].
-		
-	dict := IdentityDictionary new. 
-	dict at: #x put: (PicoCodeRepositoryForPoint >> #x) ast.
-	dict at: #x: put: (PicoCodeRepositoryForPoint >> #x:) ast.
-	dict at: #y put: (PicoCodeRepositoryForPoint >> #y) ast.
-	dict at: #return100 put: (PicoCodeRepositoryForPoint >> #return100) ast.
-	dict at: #distanceToOrigin  put: (PicoCodeRepositoryForPoint >> #distanceToOrigin) ast.
 	
-	pointClass at: 5 put: dict.
+	pointClass initializeMethodDictionaryFrom: PicoCodeRepositoryForPoint.
 	PicoBlop initializePicoClassEnvironment.
 	PicoBlop declareClass: pointClass.
 	
@@ -37,15 +29,6 @@ PicoInterpreterTest >> testGetterExecution [
 	val := inst send: #x.
 	self assert: val equals: 33
 	
-]
-
-{ #category : #tests }
-PicoInterpreterTest >> testPoinInstantiation [
-	|  inst |
-	inst := pointClass primitiveAllocateAnInstance.
-	self assert: (inst at: 1) equals: 'PicoPoint'.
-	self assert: (inst at: 2) equals: nil.
-	self assert: (inst at: 3) equals: nil.
 ]
 
 { #category : #tests }
@@ -75,9 +58,20 @@ PicoInterpreterTest >> testSetterExecution [
 	
 ]
 
-{ #category : #tests }
-PicoInterpreterTest >> testSimpleLookup [
-	|  method |
-	method := pointClass primitiveLookup: #x:.
-	self assert: method equals: ((pointClass at: 5) at: #x:)
+{ #category : #interpreter }
+PicoInterpreterTest >> testUsingTemp [
+	|  inst value |
+	inst := pointClass primitiveAllocateAnInstance.
+	value := inst send: #settingAValueToTemp.
+	self assert: value equals: 10.
+	
+]
+
+{ #category : #interpreter }
+PicoInterpreterTest >> testUsingTempValue [
+	|  inst value |
+	inst := pointClass primitiveAllocateAnInstance.
+	value := inst send: #usingTemp2.
+	self assert: value equals: 20.
+	
 ]

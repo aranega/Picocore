@@ -38,6 +38,22 @@ PicoBlop class >> initializePicoClassEnvironment [
 	picoEnvironment := Dictionary new
 ]
 
+{ #category : #methods }
+PicoBlop >> initializeMethodDictionaryFrom: aPharoClass [
+
+	self picoMethodDict: (self methodDictionaryFrom: aPharoClass)
+
+	
+]
+
+{ #category : #methods }
+PicoBlop >> methodDictionaryFrom: aPharoClass [
+	| dict | 
+	dict := IdentityDictionary new. 
+	aPharoClass selectors do: [ :each | dict at: each put: (aPharoClass compiledMethodAt: each) ast ].
+	^ dict
+]
+
 { #category : #offsets }
 PicoBlop >> offsetForClass [
 
@@ -115,6 +131,12 @@ PicoBlop >> picoIVs [
 PicoBlop >> picoMethodDict [
 
 	^ self at: self offsetMethodDict
+]
+
+{ #category : #basic }
+PicoBlop >> picoMethodDict: aDict [
+
+	self at: self offsetMethodDict put: aDict
 ]
 
 { #category : #basic }

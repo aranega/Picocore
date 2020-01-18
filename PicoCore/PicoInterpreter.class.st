@@ -73,7 +73,7 @@ PicoInterpreter >> visitInstanceVariableNode: aVariableNode [
 
 { #category : #visiting }
 PicoInterpreter >> visitLiteralNode: aLiteralNode [
-
+	
 	^ aLiteralNode value
 ]
 
@@ -127,7 +127,7 @@ PicoInterpreter >> visitSuperNode: aSuperNode [
 ]
 
 { #category : #'visiting variable' }
-PicoInterpreter >> visitTemporaryNode: aNode [
+PicoInterpreter >> visitTemporaryNode2: aNode [
 	"is it a temp definition temp node or a temp usage?"
 	^ self valueOfTempVariable: aNode name
 ]

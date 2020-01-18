@@ -12,6 +12,13 @@ RBBetterProgramNodeVisitor >> visitAllButLastStatementNodes: aCol [
 ]
 
 { #category : #visiting }
+RBBetterProgramNodeVisitor >> visitArgumentNode: anArgumentNode [
+	"Sent *each time* an argument node is found"
+	"does nothing!"
+	^ self
+]
+
+{ #category : #visiting }
 RBBetterProgramNodeVisitor >> visitLastStatementNode: aNode [
 	"Visit the last statement of a sequence node (method body or block body)."
 	^ self visitNode: aNode

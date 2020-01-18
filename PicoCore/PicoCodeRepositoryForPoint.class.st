@@ -18,6 +18,23 @@ PicoCodeRepositoryForPoint >> return100 [
 ]
 
 { #category : #points }
+PicoCodeRepositoryForPoint >> settingAValueToTemp [
+
+	| temp | 
+	temp := 10.
+	^ temp
+]
+
+{ #category : #points }
+PicoCodeRepositoryForPoint >> usingTempValue [
+
+	| temp | 
+	temp := 10.
+	temp := temp + temp.
+	^ temp
+]
+
+{ #category : #points }
 PicoCodeRepositoryForPoint >> x [ 
 
 	^ x
