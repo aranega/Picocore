@@ -106,6 +106,12 @@ PicoInterpreter >> visitLiteralNode: aLiteralNode [
 ]
 
 { #category : #visiting }
+PicoInterpreter >> visitMessageArgumentNodes: aCol [
+
+	^ aCol collect: [ :each | self visitMessageArgumentNode: each ]
+]
+
+{ #category : #visiting }
 PicoInterpreter >> visitMessageNode: aMessageNode [
 
 	self pushNewScope.
@@ -115,6 +121,7 @@ PicoInterpreter >> visitMessageNode: aMessageNode [
 	^ ((aMessageNode selector = #send:) or: [ aMessageNode selector = #send:withArguments:  ])
 		ifTrue: [ self halt. "This is a pico message. " ]
 		ifFalse: [  
+			self halt.
 			(self visitMessageReceiver: aMessageNode receiver) 
 				perform: aMessageNode selector 	
 				withArguments: (self visitMessageArgumentNodes: aMessageNode arguments)
