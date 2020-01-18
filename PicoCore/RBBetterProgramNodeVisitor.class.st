@@ -55,7 +55,7 @@ RBBetterProgramNodeVisitor >> visitMethodBodyNode: aMethodBodyNode [
 { #category : #visiting }
 RBBetterProgramNodeVisitor >> visitMethodNode: aMethodNode [
 	self visitParameterNodes: aMethodNode arguments.
-	aMethodNode pragmas do: [ :each | self visitNode: each ].
+	self visitPragmaNodes: aMethodNode pragmas.
 	^ self visitMethodBodyNode: aMethodNode body
 ]
 

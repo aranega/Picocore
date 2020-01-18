@@ -18,9 +18,10 @@ PicoInterpreter >> arguments: anArray [
 { #category : #initialization }
 PicoInterpreter >> initialize [ 
 	super initialize.
-	stack := Stack new. 
 	arguments := #().
-	self pushNewScope
+	stack := Stack new.
+	"We create the first empty environment." 
+	stack push: self newScope.
 ]
 
 { #category : #'stack management' }
@@ -55,6 +56,11 @@ PicoInterpreter >> setValueOfTempVariable: name to: aValue [
 	^ stack top at: name put: aValue 
 ]
 
+{ #category : #accessing }
+PicoInterpreter >> stack [
+	^ stack
+]
+
 { #category : #'stack management' }
 PicoInterpreter >> valueOfTempVariable: name [
 	^ stack top at: name
@@ -80,12 +86,6 @@ PicoInterpreter >> visitInstanceVariableNode: aVariableNode [
 PicoInterpreter >> visitLiteralNode: aLiteralNode [
 	
 	^ aLiteralNode value
-]
-
-{ #category : #visiting }
-PicoInterpreter >> visitMessageArgumentNode: aNode [
-
-	self halt.
 ]
 
 { #category : #visiting }
@@ -129,12 +129,6 @@ PicoInterpreter >> visitSelfNode: aSelfNode [
 PicoInterpreter >> visitSuperNode: aSuperNode [
 
 	^ receiver
-]
-
-{ #category : #'visiting variable' }
-PicoInterpreter >> visitTemporaryNode2: aNode [
-	"is it a temp definition temp node or a temp usage?"
-	^ self valueOfTempVariable: aNode name
 ]
 
 { #category : #'visiting variable' }
