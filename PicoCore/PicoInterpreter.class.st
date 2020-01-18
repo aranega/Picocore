@@ -3,24 +3,32 @@ Class {
 	#superclass : #RBBetterProgramNodeVisitor,
 	#instVars : [
 		'receiver',
-		'stack'
+		'stack',
+		'arguments',
+		'argumentIndex'
 	],
 	#category : #PicoCore
 }
+
+{ #category : #accessing }
+PicoInterpreter >> arguments: anArray [
+	arguments := anArray
+]
 
 { #category : #initialization }
 PicoInterpreter >> initialize [ 
 	super initialize.
 	stack := Stack new. 
+	arguments := #().
 	self pushNewScope
 ]
 
-{ #category : #initialization }
+{ #category : #'stack management' }
 PicoInterpreter >> newScope [
 	^ Dictionary new
 ]
 
-{ #category : #visiting }
+{ #category : #'stack management' }
 PicoInterpreter >> pushNewScope [
 
 	stack push: self newScope
@@ -37,11 +45,24 @@ PicoInterpreter >> receiver: anObject [
 	receiver := anObject
 ]
 
+{ #category : #'stack management' }
+PicoInterpreter >> setValueOfTempVariable: name to: aValue [
+	^ stack top at: name put: aValue 
+]
+
+{ #category : #'stack management' }
+PicoInterpreter >> valueOfTempVariable: name [
+	^ stack top at: name
+]
+
 { #category : #visiting }
 PicoInterpreter >> visitAssignmentNode: anAssignmentNode [
-	" for a naive version without temp."
-	
-	"self at: (self offsetFromObjectOfInstanceVariable: anAssignmentNode name) put: "
+	"for a naive version without temp."
+	| value |
+	value := self visitNode: anAssignmentNode value. 
+	anAssignmentNode variable isInstance
+		ifTrue: [ receiver setValueOfInstanceVariable: anAssignmentNode variable name to: value ]
+		ifFalse: [ self setValueOfTempVariable: anAssignmentNode variable name to: value ]
 ]
 
 { #category : #visiting }
@@ -57,6 +78,12 @@ PicoInterpreter >> visitLiteralNode: aLiteralNode [
 ]
 
 { #category : #visiting }
+PicoInterpreter >> visitMessageArgumentNode: aNode [
+
+	self halt.
+]
+
+{ #category : #visiting }
 PicoInterpreter >> visitMessageNode: aMessageNode [
 
 	self pushNewScope.
@@ -64,24 +91,49 @@ PicoInterpreter >> visitMessageNode: aMessageNode [
 
 ]
 
+{ #category : #'visiting variable' }
+PicoInterpreter >> visitParameterNode: aNode [
+	
+	stack top at: aNode name put: (arguments at: argumentIndex).
+	argumentIndex := argumentIndex + 1. 
+]
+
 { #category : #visiting }
-PicoInterpreter >> visitMethodNode: aMethodNode [
-	self visitArgumentNodes: aMethodNode arguments.
-	aMethodNode pragmas do: [ :each | self visitNode: each ].
-		"to be revisited when visitMethodNode: gets better design"
-	^ self visitNode: aMethodNode body
+PicoInterpreter >> visitParameterNodes: aCol [
+	"We visit the parameter list of a method. Basically a list of variable"
+	
+	argumentIndex := 1.
+	super visitParameterNodes: aCol
 ]
 
 { #category : #visiting }
 PicoInterpreter >> visitReturnNode: aMethodNode [
-	super visitReturnNode: aMethodNode.
-	stack pop
+	| val | 
+	val := super visitReturnNode: aMethodNode.
+	stack pop.
+	^ val
 ]
 
-{ #category : #visiting }
-PicoInterpreter >> visitSequenceNode: aSequenceNode [
-	self visitTemporaryNodes: aSequenceNode temporaries.
-	aSequenceNode statements allButLast do: [ :each | self visitNode: each ].
-	"why am I forced to write such code? "
-	^  self visitNode: aSequenceNode statements last
+{ #category : #'visiting variable' }
+PicoInterpreter >> visitSelfNode: aSelfNode [
+
+	^ receiver
+]
+
+{ #category : #'visiting variable' }
+PicoInterpreter >> visitSuperNode: aSuperNode [
+
+	^ receiver
+]
+
+{ #category : #'visiting variable' }
+PicoInterpreter >> visitTemporaryNode: aNode [
+	"is it a temp definition temp node or a temp usage?"
+	^ self valueOfTempVariable: aNode name
+]
+
+{ #category : #'visiting variable' }
+PicoInterpreter >> visitVariableNode: aNode [
+
+	^ self valueOfTempVariable: aNode name
 ]

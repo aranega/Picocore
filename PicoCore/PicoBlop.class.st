@@ -148,9 +148,23 @@ PicoBlop >> primitiveLookup: aSelector [
 { #category : #lookup }
 PicoBlop >> send: aSelector [
 
+	^ self send: aSelector withArguments: #()
+]
+
+{ #category : #lookup }
+PicoBlop >> send: aSelector withArguments: anArray [
+
 	^ PicoInterpreter new 
 			receiver: self;
+			arguments: anArray; 
 			visitNode: (self picoClass primitiveLookup: aSelector)
+]
+
+{ #category : #'instance variables' }
+PicoBlop >> setValueOfInstanceVariable: aSymbol to: value [
+	"Return the value of the instance variable, aSymbol, of the receiver."
+	
+	self at: (self offsetFromObjectOfInstanceVariable: aSymbol) put: value 
 ]
 
 { #category : #'instance variables' }
