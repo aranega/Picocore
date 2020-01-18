@@ -25,13 +25,18 @@ PicoInterpreter >> initialize [
 
 { #category : #'stack management' }
 PicoInterpreter >> newScope [
-	^ Dictionary new
+	^ CTEnvironment new
 ]
 
 { #category : #'stack management' }
 PicoInterpreter >> pushNewScope [
+	"Pushing a new scope consists in creating a new dictionary whose parent is the top of the stack
+	and pushing it as a new top. This way variable not found in current scope will be looked up in previous scope."
 
-	stack push: self newScope
+	| newTop |
+	newTop := self newScope.
+	newTop parent: stack top.
+	stack push: newTop 
 	
 ]
 
