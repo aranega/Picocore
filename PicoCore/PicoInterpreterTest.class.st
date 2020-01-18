@@ -71,7 +71,7 @@ PicoInterpreterTest >> testUsingTemp [
 PicoInterpreterTest >> testUsingTempValue [
 	|  inst value |
 	inst := pointClass primitiveAllocateAnInstance.
-	value := inst send: #usingTemp2.
+	value := inst send: #usingTempValue.
 	self assert: value equals: 20.
 	
 ]
