@@ -5,19 +5,28 @@ Class {
 	#category : #PicoCore
 }
 
-{ #category : #points }
+{ #category : #message }
 PicoCodeRepositoryForPoint >> distanceToOrigin [
 
 	^ self x * self x + (self y * self y)
 ]
 
-{ #category : #points }
+{ #category : #'return and access' }
 PicoCodeRepositoryForPoint >> return100 [
 
 	^ 100
 ]
 
-{ #category : #points }
+{ #category : #'simple temp manipulation' }
+PicoCodeRepositoryForPoint >> settingAValueFromTempToTemp2 [
+
+	| temp temp2 | 
+	temp := 10.
+	temp2 := temp.
+	^ temp2
+]
+
+{ #category : #'simple temp manipulation' }
 PicoCodeRepositoryForPoint >> settingAValueToTemp [
 
 	| temp | 
@@ -25,7 +34,22 @@ PicoCodeRepositoryForPoint >> settingAValueToTemp [
 	^ temp
 ]
 
-{ #category : #points }
+{ #category : #'simple temp manipulation' }
+PicoCodeRepositoryForPoint >> settingAValueToTemp2 [
+
+	| temp | 
+	temp := 10.
+	temp := 20.
+	^ temp
+]
+
+{ #category : #message }
+PicoCodeRepositoryForPoint >> simpleMessage [
+
+	^ 10 * 10
+]
+
+{ #category : #message }
 PicoCodeRepositoryForPoint >> usingTempValue [
 
 	| temp | 
@@ -34,25 +58,25 @@ PicoCodeRepositoryForPoint >> usingTempValue [
 	^ temp
 ]
 
-{ #category : #points }
+{ #category : #'return and access' }
 PicoCodeRepositoryForPoint >> x [ 
 
 	^ x
 ]
 
-{ #category : #points }
+{ #category : #'return and access' }
 PicoCodeRepositoryForPoint >> x: anInteger [
 
 	x := anInteger
 ]
 
-{ #category : #points }
+{ #category : #'return and access' }
 PicoCodeRepositoryForPoint >> y [
 
 	^ y
 ]
 
-{ #category : #points }
+{ #category : #'return and access' }
 PicoCodeRepositoryForPoint >> y: anInteger [
 
 	y := anInteger

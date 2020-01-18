@@ -7,7 +7,7 @@ Class {
 { #category : #visiting }
 RBBetterProgramNodeVisitor >> visitAllButLastStatementNodes: aCol [
 	"Visit all the statements of a block body except the last one. See visitLastStatementNode:"
-	
+
 	^ aCol do: [ :each | self visitNode: each ]
 ]
 
