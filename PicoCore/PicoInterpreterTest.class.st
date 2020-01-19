@@ -74,11 +74,11 @@ PicoInterpreterTest >> testSendingMessageToArgumentWithArg [
 	inst2 := pointClass primitiveAllocateAnInstance.
 	inst at: 2 put: 42.
 	inst2 at: 2 put: 666.
-	"sendingMessageToArgument: aPicoPoint withArg: arg
+	"sendingMessageToArgument: anEvilPoint withArg: arg
 	
-	^ (aPicoPoint send: #x) + arg"
+	^ (anEvilPoint send: #x) + arg"
 
-	value := inst send: #sendingMessageToArgument: withArguments: {inst2 . 72}.
+	value := inst send: #sendingMessageToArgument:withArg: withArguments: {inst2 . 72}.
 	self assert: value equals: 666 + 72.
 	
 ]
@@ -95,7 +95,7 @@ PicoInterpreterTest >> testSendingMessageToArgumentwithDifferentArgument [
 	
 	^ aPicoPoint send: #x: withArguments: {33}"
 
-	value := inst send: #sendingMessageToArgument: withArguments: {inst2 . 72}.
+	value := inst send: #sendingMessageToArgument:withDifferentArgument: withArguments: {inst2 . 72}.
 	self assert: value equals: 33.
 	
 ]

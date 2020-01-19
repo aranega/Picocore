@@ -40,6 +40,12 @@ PicoPoint >> sendingMessageToArgument: aPicoPoint [
 ]
 
 { #category : #messages }
+PicoPoint >> sendingMessageToArgument: anEvilPoint withArg: arg [
+	
+	^ (anEvilPoint send: #x) + arg
+]
+
+{ #category : #messages }
 PicoPoint >> sendingMessageToArgument: aPicoPoint withDifferentArgument: anArg [
 	
 	^ aPicoPoint send: #x: withArguments: {33}

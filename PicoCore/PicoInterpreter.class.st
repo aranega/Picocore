@@ -125,10 +125,8 @@ PicoInterpreter >> visitMessageNode: aMessageNode [
 			self pushNewScope.
 			rec := (self visitMessageReceiver: aMessageNode receiver).
 			self setValueOfTempVariable: #self to: rec. 
-			
-			"We should get the values of the arguments and place them in arguments"
-			
-			
+			arguments := aMessageNode arguments allButFirst collect: [ :each | self visitNode: each ].
+			"collect is naive because the semantics could mean that previous arg can influence subsequent ones"
 			^ self visitMethodNode: (rec picoClass primitiveLookup: aMessageNode arguments first value)
 
 			]
