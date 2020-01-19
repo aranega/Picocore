@@ -121,7 +121,9 @@ PicoInterpreter >> visitMessageNode: aMessageNode [
 	
 	^ ((aMessageNode selector = #send:) or: [ aMessageNode selector = #send:withArguments:  ])
 		ifTrue: [ 
+			
 			| rec |
+			self halt: aMessageNode selector.
 			self pushNewScope.
 			rec := (self visitMessageReceiver: aMessageNode receiver).
 			self setValueOfTempVariable: #self to: rec. 

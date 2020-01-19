@@ -86,14 +86,15 @@ PicoInterpreterTest >> testSendingMessageToArgumentWithArg [
 { #category : #'interpreter tests' }
 PicoInterpreterTest >> testSendingMessageToArgumentwithDifferentArgument [
 
-	|  inst inst2 value |
+	| inst inst2 value |
 	inst := pointClass primitiveAllocateAnInstance.
 	inst2 := pointClass primitiveAllocateAnInstance.
 	inst at: 2 put: 42.
 	inst2 at: 2 put: 666.
 	"sendingMessageToArgument: aPicoPoint withDifferentArgument: anArg
 	
-	^ aPicoPoint send: #x: withArguments: {33}"
+	aPicoPoint send: #x: withArguments: {33}.
+	^ aPicoPoint send: #x"
 
 	value := inst send: #sendingMessageToArgument:withDifferentArgument: withArguments: {inst2 . 72}.
 	self assert: value equals: 33.
@@ -185,5 +186,19 @@ PicoInterpreterTest >> testUsingTempValue [
 	temp := temp + temp.
 	^ temp"
 	self assert: val equals: 20
+	
+]
+
+{ #category : #'interpreter tests' }
+PicoInterpreterTest >> testsummingArgArg2 [
+
+	| inst value |
+	inst := pointClass primitiveAllocateAnInstance.
+	inst at: 2 put: 42.
+	"summingArg: arg1 arg2: arg2
+		^ arg1 + arg2"
+
+	value := inst send: #summingArg:arg2: withArguments: {33 . 72}.
+	self assert: value equals: 33 + 72
 	
 ]

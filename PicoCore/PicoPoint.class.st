@@ -48,7 +48,8 @@ PicoPoint >> sendingMessageToArgument: anEvilPoint withArg: arg [
 { #category : #messages }
 PicoPoint >> sendingMessageToArgument: aPicoPoint withDifferentArgument: anArg [
 	
-	^ aPicoPoint send: #x: withArguments: {33}
+	aPicoPoint send: #x: withArguments: {33}.
+	^ aPicoPoint send: #x
 ]
 
 { #category : #'simple temp manipulation' }
@@ -81,6 +82,12 @@ PicoPoint >> settingAValueToTemp2 [
 PicoPoint >> simpleMessage [
 
 	^ 10 * 10
+]
+
+{ #category : #messages }
+PicoPoint >> summingArg: arg1 arg2: arg2 [
+	
+	^ arg1 + arg2
 ]
 
 { #category : #'internal messages' }
