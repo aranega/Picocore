@@ -60,12 +60,12 @@ PicoInterpreter >> pushNewScope [
 
 { #category : #accessing }
 PicoInterpreter >> receiver [
-	^ receiver
+	^ self valueOfTempVariable: #self
 ]
 
 { #category : #accessing }
 PicoInterpreter >> receiver: anObject [
-	receiver := anObject
+	self setValueOfTempVariable: #self to: anObject 
 ]
 
 { #category : #'stack management' }
@@ -89,14 +89,14 @@ PicoInterpreter >> visitAssignmentNode: anAssignmentNode [
 	| value |
 	value := self visitNode: anAssignmentNode value. 
 	anAssignmentNode variable isInstance
-		ifTrue: [ receiver setValueOfInstanceVariable: anAssignmentNode variable name to: value ]
+		ifTrue: [ self receiver setValueOfInstanceVariable: anAssignmentNode variable name to: value ]
 		ifFalse: [ self setValueOfTempVariable: anAssignmentNode variable name to: value ]
 ]
 
 { #category : #visiting }
 PicoInterpreter >> visitInstanceVariableNode: aVariableNode [
 
-	^ receiver valueOfInstanceVariable: aVariableNode name
+	^ self receiver valueOfInstanceVariable: aVariableNode name
 ]
 
 { #category : #visiting }
@@ -113,12 +113,19 @@ PicoInterpreter >> visitMessageArgumentNodes: aCol [
 
 { #category : #visiting }
 PicoInterpreter >> visitMessageNode: aMessageNode [
-
-	self pushNewScope.
-	"newscope should also contains receiver and arguments. 
-	else we cannot have a different kind of receiver."
+	
 	^ ((aMessageNode selector = #send:) or: [ aMessageNode selector = #send:withArguments:  ])
-		ifTrue: [ self halt. "This is a pico message. " ]
+		ifTrue: [ 
+			| rec |
+			self halt. "This is a pico message. " 
+			
+			self pushNewScope.
+			rec := (self visitMessageReceiver: aMessageNode receiver).
+			self setValueOfTempVariable: #self to: rec. 
+			"it sucks with the arguments since they should also be managed in a aStack per message."
+			^ self visitMethodNode: (rec picoClass primitiveLookup: aMessageNode arguments first value)
+
+			]
 		ifFalse: [  
 			"we evaluate the receiver and the arguments and execute the selector using them."
 			(self visitMessageReceiver: aMessageNode receiver) 
@@ -154,7 +161,7 @@ PicoInterpreter >> visitReturnNode: aMethodNode [
 { #category : #'visiting variable' }
 PicoInterpreter >> visitSelfNode: aSelfNode [
 
-	^ receiver
+	^ self receiver
 ]
 
 { #category : #'visiting variable' }

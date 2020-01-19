@@ -52,6 +52,21 @@ PicoInterpreterTest >> testReturn100Execution [
 ]
 
 { #category : #'interpreter tests' }
+PicoInterpreterTest >> testSendingMessageToArgument [
+	|  inst inst2 value |
+	inst := pointClass primitiveAllocateAnInstance.
+	inst2 := pointClass primitiveAllocateAnInstance.
+	inst at: 2 put: 42.
+	inst2 at: 2 put: 666.
+	"sendingMessageToArgument: aPicoPoint 
+	
+	^ (aPicoPoint send: #x) "
+	value := inst send: #sendingMessageToArgument: withArguments: {inst2}.
+	self assert: value equals: 666.
+	
+]
+
+{ #category : #'interpreter tests' }
 PicoInterpreterTest >> testSetterExecution [
 	| inst |
 	inst := pointClass primitiveAllocateAnInstance.
@@ -91,7 +106,6 @@ PicoInterpreterTest >> testSettingAValueToTemp2 [
 	inst := pointClass primitiveAllocateAnInstance.
 	value := inst send: #settingAValueToTemp2.
 	self assert: value equals: 20.
-	
 ]
 
 { #category : #'primitive message tests' }
@@ -130,6 +144,12 @@ PicoInterpreterTest >> testUsingTempValue [
 	|  inst val |
 	inst := pointClass primitiveAllocateAnInstance.
 	val := inst send: #usingTempValue.
+	"usingTempValue
+
+	| temp | 
+	temp := 10.
+	temp := temp + temp.
+	^ temp"
 	self assert: val equals: 20
 	
 ]
