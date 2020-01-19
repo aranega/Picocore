@@ -39,6 +39,12 @@ PicoPoint >> sendingMessageToArgument: aPicoPoint [
 	^ (aPicoPoint send: #x) 
 ]
 
+{ #category : #messages }
+PicoPoint >> sendingMessageToArgument: aPicoPoint withDifferentArgument: anArg [
+	
+	^ aPicoPoint send: #x: withArguments: {33}
+]
+
 { #category : #'simple temp manipulation' }
 PicoPoint >> settingAValueFromTempToTemp2 [
 

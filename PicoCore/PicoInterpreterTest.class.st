@@ -67,6 +67,40 @@ PicoInterpreterTest >> testSendingMessageToArgument [
 ]
 
 { #category : #'interpreter tests' }
+PicoInterpreterTest >> testSendingMessageToArgumentWithArg [
+
+	|  inst inst2 value |
+	inst := pointClass primitiveAllocateAnInstance.
+	inst2 := pointClass primitiveAllocateAnInstance.
+	inst at: 2 put: 42.
+	inst2 at: 2 put: 666.
+	"sendingMessageToArgument: aPicoPoint withArg: arg
+	
+	^ (aPicoPoint send: #x) + arg"
+
+	value := inst send: #sendingMessageToArgument: withArguments: {inst2 . 72}.
+	self assert: value equals: 666 + 72.
+	
+]
+
+{ #category : #'interpreter tests' }
+PicoInterpreterTest >> testSendingMessageToArgumentwithDifferentArgument [
+
+	|  inst inst2 value |
+	inst := pointClass primitiveAllocateAnInstance.
+	inst2 := pointClass primitiveAllocateAnInstance.
+	inst at: 2 put: 42.
+	inst2 at: 2 put: 666.
+	"sendingMessageToArgument: aPicoPoint withDifferentArgument: anArg
+	
+	^ aPicoPoint send: #x: withArguments: {33}"
+
+	value := inst send: #sendingMessageToArgument: withArguments: {inst2 . 72}.
+	self assert: value equals: 33.
+	
+]
+
+{ #category : #'interpreter tests' }
 PicoInterpreterTest >> testSetterExecution [
 	| inst |
 	inst := pointClass primitiveAllocateAnInstance.

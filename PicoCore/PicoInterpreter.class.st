@@ -14,12 +14,17 @@ dotProduct: aPicoPoint
 	That is, the two points are multipled and the coordinates of the result summed.""
 
 	^ (x * (aPicoPoint send: #x)) + (y * (aPicoPoint send: #y))
+	
+
+Implementation
+	arguments is an array to be able to pass arguments from a picoBlop expression to the interpreter.
+	Internally the arguments are pushed in the current scope via this variable. 
+	
 "
 Class {
 	#name : #PicoInterpreter,
 	#superclass : #RBBetterProgramNodeVisitor,
 	#instVars : [
-		'receiver',
 		'stack',
 		'arguments',
 		'argumentIndex'
@@ -117,12 +122,13 @@ PicoInterpreter >> visitMessageNode: aMessageNode [
 	^ ((aMessageNode selector = #send:) or: [ aMessageNode selector = #send:withArguments:  ])
 		ifTrue: [ 
 			| rec |
-			self halt. "This is a pico message. " 
-			
 			self pushNewScope.
 			rec := (self visitMessageReceiver: aMessageNode receiver).
 			self setValueOfTempVariable: #self to: rec. 
-			"it sucks with the arguments since they should also be managed in a aStack per message."
+			
+			"We should get the values of the arguments and place them in arguments"
+			
+			
 			^ self visitMethodNode: (rec picoClass primitiveLookup: aMessageNode arguments first value)
 
 			]
@@ -138,14 +144,13 @@ PicoInterpreter >> visitMessageNode: aMessageNode [
 { #category : #'visiting variable' }
 PicoInterpreter >> visitParameterNode: aNode [
 	
-	stack top at: aNode name put: (arguments at: argumentIndex).
+	self setValueOfTempVariable: aNode name to: (arguments at: argumentIndex).
 	argumentIndex := argumentIndex + 1. 
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting variable' }
 PicoInterpreter >> visitParameterNodes: aCol [
-	"We visit the parameter list of a method. Basically a list of variable"
-	
+
 	argumentIndex := 1.
 	super visitParameterNodes: aCol
 ]
@@ -167,7 +172,7 @@ PicoInterpreter >> visitSelfNode: aSelfNode [
 { #category : #'visiting variable' }
 PicoInterpreter >> visitSuperNode: aSuperNode [
 
-	^ receiver
+	^ self receiver
 ]
 
 { #category : #'visiting variable' }
