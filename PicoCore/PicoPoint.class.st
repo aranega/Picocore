@@ -13,6 +13,12 @@ PicoPoint >> dotProduct: aPicoPoint [
 	^ (x * (aPicoPoint send: #x)) + (y * (aPicoPoint send: #y))
 ]
 
+{ #category : #'internal messages' }
+PicoPoint >> playingWithString [
+
+	^ 'pico core is cool' size
+]
+
 { #category : #'return and access' }
 PicoPoint >> return100 [
 

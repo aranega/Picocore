@@ -7,7 +7,7 @@ Class {
 	#category : #PicoCore
 }
 
-{ #category : #tests }
+{ #category : #running }
 PicoInterpreterTest >> setUp [
 
 	pointClass := PicoBlop new: 5.
@@ -21,7 +21,7 @@ PicoInterpreterTest >> setUp [
 	
 ]
 
-{ #category : #'test primitive message' }
+{ #category : #interpreter }
 PicoInterpreterTest >> testGetterExecution [
 	|  inst val |
 	inst := pointClass primitiveAllocateAnInstance.
@@ -31,13 +31,15 @@ PicoInterpreterTest >> testGetterExecution [
 	
 ]
 
-{ #category : #tests }
-PicoInterpreterTest >> testPoinInstantiationClass [
-	|  inst |
+{ #category : #'test primitive message' }
+PicoInterpreterTest >> testPlayingWithString [
+	| inst val |
 	inst := pointClass primitiveAllocateAnInstance.
-	self assert: (inst at: 1) equals: 'PicoPoint'.
-	self assert: inst picoClass equals: pointClass.
+	val := inst send: #playingWithString.
+	"playingWithString
 
+	^ 'pico core is cool' size"
+	self assert: val equals: 17
 ]
 
 { #category : #interpreter }
@@ -97,6 +99,10 @@ PicoInterpreterTest >> testSimpleMessage [
 	|  inst val |
 	inst := pointClass primitiveAllocateAnInstance.
 	val := inst send: #simpleMessage.
+	"
+	simpleMessage
+		^ 10 * 10
+	"
 	self assert: val equals: 100
 	
 ]
