@@ -176,6 +176,8 @@ PicoBlop >> send: aSelector [
 { #category : #lookup }
 PicoBlop >> send: aSelector withArguments: anArray [
 
+	aSelector numArgs = anArray size 
+		ifFalse: [ self error: aSelector, ' does not expect ', anArray printString  ].
 	^ PicoInterpreter new 
 			receiver: self;
 			arguments: anArray; 

@@ -6,6 +6,20 @@ Class {
 }
 
 { #category : #messages }
+PicoPoint >> directAccessToX [
+
+	^ x
+]
+
+{ #category : #messages }
+PicoPoint >> dotProduct2: aPicoPoint [ 
+	"Answer a number that is the dot product of the receiver and the argument, aPoint. 
+	That is, the two points are multipled and the coordinates of the result summed."
+
+	^ ((self send: #x) * (aPicoPoint send: #x)) + ((self send: #y) * (aPicoPoint send: #y))
+]
+
+{ #category : #messages }
 PicoPoint >> dotProduct: aPicoPoint [ 
 	"Answer a number that is the dot product of the receiver and the argument, aPoint. 
 	That is, the two points are multipled and the coordinates of the result summed."
@@ -15,10 +29,8 @@ PicoPoint >> dotProduct: aPicoPoint [
 
 { #category : #messages }
 PicoPoint >> halfDotProduct: aPicoPoint [ 
-	"this example illustrates that the receiver should change over the execution.
-	Here in the first expression it is the receiver then its argument."
 
-	^ (self send: #x) * (aPicoPoint send: #x) 
+	^ x * (aPicoPoint send: #x) 
 ]
 
 { #category : #'internal messages' }
@@ -88,6 +100,12 @@ PicoPoint >> simpleMessage [
 PicoPoint >> summingArg: arg1 arg2: arg2 [
 	
 	^ arg1 + arg2
+]
+
+{ #category : #messages }
+PicoPoint >> swappingArg: arg1 arg2: arg2 [
+	
+	^ self send: #summingArg:arg2: withArguments: { arg1 . arg2}
 ]
 
 { #category : #'internal messages' }

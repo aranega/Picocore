@@ -89,6 +89,12 @@ PicoInterpreter >> valueOfTempVariable: name [
 ]
 
 { #category : #visiting }
+PicoInterpreter >> visitArrayNode: anArrayNode [
+
+	^ anArrayNode children collect: [ :each | self visitNode: each ]
+]
+
+{ #category : #visiting }
 PicoInterpreter >> visitAssignmentNode: anAssignmentNode [
 	"for a naive version without temp."
 	| value |
@@ -121,17 +127,15 @@ PicoInterpreter >> visitMessageNode: aMessageNode [
 	
 	^ ((aMessageNode selector = #send:) or: [ aMessageNode selector = #send:withArguments:  ])
 		ifTrue: [ 
-			
 			| rec |
-			self halt: aMessageNode selector.
 			self pushNewScope.
 			rec := (self visitMessageReceiver: aMessageNode receiver).
 			self setValueOfTempVariable: #self to: rec. 
-			arguments := aMessageNode arguments allButFirst collect: [ :each | self visitNode: each ].
-			"collect is naive because the semantics could mean that previous arg can influence subsequent ones"
+			arguments := aMessageNode arguments allButFirst flatCollect: [ :each | self visitNode: each ].
+				"here the arguments are passed in a { } so we should dewrap."
 			^ self visitMethodNode: (rec picoClass primitiveLookup: aMessageNode arguments first value)
-
 			]
+		
 		ifFalse: [  
 			"we evaluate the receiver and the arguments and execute the selector using them."
 			(self visitMessageReceiver: aMessageNode receiver) 

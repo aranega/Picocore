@@ -55,3 +55,23 @@ PicoBlopTest >> testSimpleLookup [
 	method := pointClass primitiveLookup: #x:.
 	self assert: method equals: ((pointClass at: 5) at: #x:)
 ]
+
+{ #category : #'message tests' }
+PicoBlopTest >> testValidSend [
+
+	self should: [ pointClass primitiveAllocateAnInstance 
+							send: #dotProduct: withArguments: {1 . 2} ] 
+							raise: Error.
+							
+	self should: [ pointClass primitiveAllocateAnInstance 
+							send: #dotProduct withArguments: {1} ] 
+							raise: Error.
+	
+	self should: [ pointClass primitiveAllocateAnInstance 
+							send: #dotProduct:and: withArguments: {1} ] 
+							raise: Error.
+							
+	self should: [ pointClass primitiveAllocateAnInstance 
+							send: #dotProduct:and: withArguments: {1 . 2 .3 } ] 
+							raise: Error
+]

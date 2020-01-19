@@ -22,12 +22,86 @@ PicoInterpreterTest >> setUp [
 ]
 
 { #category : #'interpreter tests' }
+PicoInterpreterTest >> testDirectAccessToInstanceVariable [
+
+	| inst value |
+	inst := pointClass primitiveAllocateAnInstance.
+	inst at: 2 put: 2.
+	inst at: 3 put: 3.
+
+	"directAccessToX
+
+	^ x"
+
+	value := inst send: #directAccessToX.
+	self assert: value equals: 2
+	
+]
+
+{ #category : #'interpreter tests' }
+PicoInterpreterTest >> testDotProduct [
+
+	| inst inst2 value |
+	inst := pointClass primitiveAllocateAnInstance.
+	inst2 := pointClass primitiveAllocateAnInstance.
+	inst at: 2 put: 2.
+	inst at: 3 put: 3.
+	inst2 at: 2 put: 20.
+	inst2 at: 3 put: 30.
+	"dotProduct: aPicoPoint 
+
+	^ (x * (aPicoPoint send: #x)) + (y * (aPicoPoint send: #y))"
+
+	value := inst send: #dotProduct: withArguments: {inst2}.
+	self assert: value equals: (2@3 dotProduct: (20@30)).
+	
+]
+
+{ #category : #'interpreter tests' }
+PicoInterpreterTest >> testDotProduct2 [
+
+	| inst inst2 value |
+	inst := pointClass primitiveAllocateAnInstance.
+	inst2 := pointClass primitiveAllocateAnInstance.
+	inst at: 2 put: 2.
+	inst at: 3 put: 3.
+	inst2 at: 2 put: 20.
+	inst2 at: 3 put: 30.
+	"dotProduct: aPicoPoint 
+
+	^ ((self send: #x) * (aPicoPoint send: #x)) + ((self send: #y) * (aPicoPoint send: #y))"
+
+	value := inst send: #dotProduct2: withArguments: {inst2}.
+	self assert: value equals: (2@3 dotProduct: (20@30)).
+	
+]
+
+{ #category : #'interpreter tests' }
 PicoInterpreterTest >> testGetterExecution [
 	|  inst val |
 	inst := pointClass primitiveAllocateAnInstance.
 	inst at: 2 put: 33.
 	val := inst send: #x.
 	self assert: val equals: 33
+	
+]
+
+{ #category : #'interpreter tests' }
+PicoInterpreterTest >> testHalfDotProduct [
+
+	| inst inst2 value |
+	inst := pointClass primitiveAllocateAnInstance.
+	inst2 := pointClass primitiveAllocateAnInstance.
+	inst at: 2 put: 200.
+	inst at: 3 put: 300.
+	inst2 at: 2 put: 20.
+	inst2 at: 3 put: 30.
+	"halfDotProduct: aPicoPoint 
+
+	^ x * (aPicoPoint send: #x) "
+
+	value := inst send: #halfDotProduct: withArguments: {inst2}.
+	self assert: value equals: 4000.
 	
 ]
 
@@ -175,6 +249,35 @@ PicoInterpreterTest >> testStackPushNewScope [
 ]
 
 { #category : #'primitive message tests' }
+PicoInterpreterTest >> testSummingArgArg2 [
+
+	| inst value |
+	inst := pointClass primitiveAllocateAnInstance.
+	inst at: 2 put: 42.
+	"summingArg: arg1 arg2: arg2
+		^ arg1 + arg2"
+
+	value := inst send: #summingArg:arg2: withArguments: {33 . 72}.
+	self assert: value equals: 33 + 72
+	
+]
+
+{ #category : #'interpreter tests' }
+PicoInterpreterTest >> testSwappingArgArg2 [
+
+	| inst value |
+	inst := pointClass primitiveAllocateAnInstance.
+	inst at: 2 put: 42.
+	"swappingArg: arg1 arg2: arg2
+	
+	^ self send: #summingArg:arg2: withArguments: { arg1 . arg2}"
+
+	value := inst send: #swappingArg:arg2: withArguments: {33 . 72}.
+	self assert: value equals: 33 + 72
+	
+]
+
+{ #category : #'primitive message tests' }
 PicoInterpreterTest >> testUsingTempValue [
 	|  inst val |
 	inst := pointClass primitiveAllocateAnInstance.
@@ -186,19 +289,5 @@ PicoInterpreterTest >> testUsingTempValue [
 	temp := temp + temp.
 	^ temp"
 	self assert: val equals: 20
-	
-]
-
-{ #category : #'interpreter tests' }
-PicoInterpreterTest >> testsummingArgArg2 [
-
-	| inst value |
-	inst := pointClass primitiveAllocateAnInstance.
-	inst at: 2 put: 42.
-	"summingArg: arg1 arg2: arg2
-		^ arg1 + arg2"
-
-	value := inst send: #summingArg:arg2: withArguments: {33 . 72}.
-	self assert: value equals: 33 + 72
 	
 ]
