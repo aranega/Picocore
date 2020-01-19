@@ -13,6 +13,14 @@ PicoPoint >> dotProduct: aPicoPoint [
 	^ (x * (aPicoPoint send: #x)) + (y * (aPicoPoint send: #y))
 ]
 
+{ #category : #messages }
+PicoPoint >> halfDotProduct: aPicoPoint [ 
+	"this example illustrates that the receiver should change over the execution.
+	Here in the first expression it is the receiver then its argument."
+
+	^ (self send: #x) * (aPicoPoint send: #x) 
+]
+
 { #category : #'internal messages' }
 PicoPoint >> playingWithString [
 
@@ -23,6 +31,12 @@ PicoPoint >> playingWithString [
 PicoPoint >> return100 [
 
 	^ 100
+]
+
+{ #category : #messages }
+PicoPoint >> sendingMessageToArgument: aPicoPoint [ 
+	
+	^ (aPicoPoint send: #x) 
 ]
 
 { #category : #'simple temp manipulation' }

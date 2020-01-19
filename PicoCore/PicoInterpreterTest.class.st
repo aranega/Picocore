@@ -21,7 +21,7 @@ PicoInterpreterTest >> setUp [
 	
 ]
 
-{ #category : #interpreter }
+{ #category : #'interpreter tests' }
 PicoInterpreterTest >> testGetterExecution [
 	|  inst val |
 	inst := pointClass primitiveAllocateAnInstance.
@@ -31,7 +31,7 @@ PicoInterpreterTest >> testGetterExecution [
 	
 ]
 
-{ #category : #'test primitive message' }
+{ #category : #'primitive message tests' }
 PicoInterpreterTest >> testPlayingWithString [
 	| inst val |
 	inst := pointClass primitiveAllocateAnInstance.
@@ -42,7 +42,7 @@ PicoInterpreterTest >> testPlayingWithString [
 	self assert: val equals: 17
 ]
 
-{ #category : #interpreter }
+{ #category : #'interpreter tests' }
 PicoInterpreterTest >> testReturn100Execution [
 	|  inst val |
 	inst := pointClass primitiveAllocateAnInstance.
@@ -51,7 +51,7 @@ PicoInterpreterTest >> testReturn100Execution [
 	
 ]
 
-{ #category : #interpreter }
+{ #category : #'interpreter tests' }
 PicoInterpreterTest >> testSetterExecution [
 	| inst |
 	inst := pointClass primitiveAllocateAnInstance.
@@ -60,7 +60,7 @@ PicoInterpreterTest >> testSetterExecution [
 	
 ]
 
-{ #category : #interpreter }
+{ #category : #'interpreter tests' }
 PicoInterpreterTest >> testSettingAValueFromTempToTemp2 [
 	|  inst value |
 	inst := pointClass primitiveAllocateAnInstance.
@@ -69,7 +69,7 @@ PicoInterpreterTest >> testSettingAValueFromTempToTemp2 [
 	
 ]
 
-{ #category : #interpreter }
+{ #category : #'interpreter tests' }
 PicoInterpreterTest >> testSettingAValueToTemp [
 	|  inst value |
 	inst := pointClass primitiveAllocateAnInstance.
@@ -85,7 +85,7 @@ PicoInterpreterTest >> testSettingAValueToTemp [
 	
 ]
 
-{ #category : #interpreter }
+{ #category : #'interpreter tests' }
 PicoInterpreterTest >> testSettingAValueToTemp2 [
 	|  inst value |
 	inst := pointClass primitiveAllocateAnInstance.
@@ -94,7 +94,7 @@ PicoInterpreterTest >> testSettingAValueToTemp2 [
 	
 ]
 
-{ #category : #'test primitive message' }
+{ #category : #'primitive message tests' }
 PicoInterpreterTest >> testSimpleMessage [
 	|  inst val |
 	inst := pointClass primitiveAllocateAnInstance.
@@ -125,7 +125,7 @@ PicoInterpreterTest >> testStackPushNewScope [
 	self deny: int stack top parent isNil.
 ]
 
-{ #category : #'test primitive message' }
+{ #category : #'primitive message tests' }
 PicoInterpreterTest >> testUsingTempValue [
 	|  inst val |
 	inst := pointClass primitiveAllocateAnInstance.
