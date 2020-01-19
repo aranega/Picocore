@@ -1,19 +1,19 @@
 "
-Random notes for me. 
-
-Since I only have a point in pico. I should do two messages in a row to the same object.
-Later I can think about creating anew point from pico itself. 
-
-I have to make a distinction between a pico Send and a pharo send. 
+I'm an hybrid interpreter for the pico language. 
+Pico language is nearly the same as Pharo except that it does not return in block, not blocks.
+Pico only supports: 
+	- message sends using send: and send:withArgument:
+	- primitive compution using any pharo messages`
+	- assignemt
+	- direct access to variables stored in picoBlop objects.
+	
+For example 
 
 dotProduct: aPicoPoint 
 	""Answer a number that is the dot product of the receiver and the argument, aPoint. 
 	That is, the two points are multipled and the coordinates of the result summed.""
 
 	^ (x * (aPicoPoint send: #x)) + (y * (aPicoPoint send: #y))
-	
-so during message interpretation I will have to mkae the distinction between pharo code and picocode. 
-
 "
 Class {
 	#name : #PicoInterpreter,
@@ -116,12 +116,11 @@ PicoInterpreter >> visitMessageNode: aMessageNode [
 
 	self pushNewScope.
 	"newscope should also contains receiver and arguments. 
-	else we cannot have a different kind of receiver 
-	"
+	else we cannot have a different kind of receiver."
 	^ ((aMessageNode selector = #send:) or: [ aMessageNode selector = #send:withArguments:  ])
 		ifTrue: [ self halt. "This is a pico message. " ]
 		ifFalse: [  
-			self halt.
+			"we evaluate the receiver and the arguments and execute the selector using them."
 			(self visitMessageReceiver: aMessageNode receiver) 
 				perform: aMessageNode selector 	
 				withArguments: (self visitMessageArgumentNodes: aMessageNode arguments)
@@ -162,6 +161,13 @@ PicoInterpreter >> visitSelfNode: aSelfNode [
 PicoInterpreter >> visitSuperNode: aSuperNode [
 
 	^ receiver
+]
+
+{ #category : #'visiting variable' }
+PicoInterpreter >> visitTemporaryDeclarationNode: aTemporaryDeclarationNode [
+	"We do nothing for declaration of temps since there is no initial value in the temps definition"
+
+	^ self
 ]
 
 { #category : #'visiting variable' }

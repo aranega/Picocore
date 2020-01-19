@@ -51,7 +51,7 @@ PicoInterpreterTest >> testReturn100Execution [
 
 { #category : #interpreter }
 PicoInterpreterTest >> testSetterExecution [
-	|  inst |
+	| inst |
 	inst := pointClass primitiveAllocateAnInstance.
 	inst send: #x: withArguments: #(20).
 	self assert: (inst at: 2) equals: 20.
@@ -72,6 +72,13 @@ PicoInterpreterTest >> testSettingAValueToTemp [
 	|  inst value |
 	inst := pointClass primitiveAllocateAnInstance.
 	value := inst send: #settingAValueToTemp.
+	
+	"settingAValueToTemp
+
+	| temp | 
+	temp := 10.
+	^ temp"
+	
 	self assert: value equals: 10.
 	
 ]
@@ -110,4 +117,13 @@ PicoInterpreterTest >> testStackPushNewScope [
 	int pushNewScope.
 	"the parent of the top scope is the previous one."
 	self deny: int stack top parent isNil.
+]
+
+{ #category : #'test primitive message' }
+PicoInterpreterTest >> testUsingTempValue [
+	|  inst val |
+	inst := pointClass primitiveAllocateAnInstance.
+	val := inst send: #usingTempValue.
+	self assert: val equals: 20
+	
 ]
