@@ -11,13 +11,14 @@ Class {
 { #category : #running }
 PicoBlopTest1 >> assemblePointClass [
 	
+	"This is not the way to create classes. Here we are testing primitives before the bootstrap of the kernel so we do everything by hand. In future tests we will retest these functionalities using a full kernel version."
+	
 	pointClass := PicoBlop new: 5.
 	pointClass at: pointClass offsetForName put: #PicoPoint.
 	pointClass at: pointClass offsetForClass put: #PicoClass.
 	pointClass at: pointClass offsetForIVs put: #(#class #x #y).
 	pointClass at: pointClass offsetForSuperclass put: #PicoObject.
-	pointClass at: pointClass offsetForMethodDict
-		put: (IdentityDictionary new).
+	pointClass at: pointClass offsetForMethodDict put: (IdentityDictionary new).
 	PicoBlop declareClass: pointClass.
 
 ]
@@ -34,6 +35,36 @@ PicoBlopTest1 >> assemblePointInstance [
 PicoBlopTest1 >> setUp [ 
 	self assemblePointClass.
 	self assemblePointInstance. 
+]
+
+{ #category : #'step3-tests-class access' }
+PicoBlopTest1 >> testClassAccess [
+	"(self  selector: #testClassAccess) run"
+	
+	self assert: (aPoint picoClass = pointClass)
+]
+
+{ #category : #'step4-tests-iv management' }
+PicoBlopTest1 >> testIVOffsetAskingTheClass [
+	"(self  selector: #testIVOffsetAskingTheClass) run"
+
+	self assert: (pointClass offsetFromClassOfInstanceVariable: #x ) equals: 2.
+	self assert: (pointClass offsetFromClassOfInstanceVariable: #lulu ) equals:  0
+]
+
+{ #category : #'step4-tests-iv management' }
+PicoBlopTest1 >> testIVOffsetAskingTheInstance [
+	"(self  selector: #testIVOffsetAskingTheInstance) run"
+
+	self assert: (pointClass offsetFromClassOfInstanceVariable: #x) equals: 2.
+	self assert: (pointClass offsetFromClassOfInstanceVariable: #lulu) equals: 0
+]
+
+{ #category : #'step4-tests-iv management' }
+PicoBlopTest1 >> testIVValue [
+	"(self  selector: #testIVOffsetAndValue) run"
+
+	self assert: (aPoint valueOfInstanceVariable: #x) equals: 10
 ]
 
 { #category : #'step1-tests-structure of objects' }
