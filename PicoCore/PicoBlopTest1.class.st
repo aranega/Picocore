@@ -37,6 +37,18 @@ PicoBlopTest1 >> setUp [
 	self assemblePointInstance. 
 ]
 
+{ #category : #'step5-tests-allocate' }
+PicoBlopTest1 >> testAllocate [
+  "(self  selector: #testAllocate) run"
+  | newInstance |
+  newInstance := pointClass allocateAnInstance.
+  self assert: (newInstance at: 1) equals: #PicoPoint.
+  self assert: newInstance size equals: 3.
+  self assert: (newInstance at: 2) isNil.
+  self assert: (newInstance at: 3) isNil.
+  self assert: newInstance picoClass equals: pointClass
+]
+
 { #category : #'step3-tests-class access' }
 PicoBlopTest1 >> testClassAccess [
 	"(self  selector: #testClassAccess) run"

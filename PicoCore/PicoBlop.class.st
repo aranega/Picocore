@@ -38,6 +38,16 @@ PicoBlop class >> initializePicoClassEnvironment [
 	picoEnvironment := Dictionary new
 ]
 
+{ #category : #allocate }
+PicoBlop >> allocateAnInstance [
+	"Returns a newly created instance of self, an ObjClass. In this implementation the identifier of the object class is the name of the class. "
+
+	| a |
+	a := self class new: self picoNumberOfIVs.
+	a picoClassId: self picoName.
+	^a
+]
+
 { #category : #methods }
 PicoBlop >> initializeMethodDictionaryFrom: aPharoClass [
 
@@ -182,16 +192,6 @@ PicoBlop >> picoSuperclassId: anObjClassId [
 	"Receiver should be: anObjClass. Set the superclass id of the receiver (anObjClass)"
 
 	self at: self offsetForSuperclass put: anObjClassId
-]
-
-{ #category : #allocate }
-PicoBlop >> primitiveAllocateAnInstance [
-	"Returns a newly created instance of self, an ObjClass. In this implementation the identifier of the object class is the name of the class. "
-
-	| a |
-	a := self class new: self picoNumberOfIVs.
-	a picoClassId: self picoName.
-	^a
 ]
 
 { #category : #lookup }

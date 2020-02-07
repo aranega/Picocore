@@ -25,7 +25,7 @@ PicoInterpreterTest >> setUp [
 PicoInterpreterTest >> testDirectAccessToInstanceVariable [
 
 	| inst value |
-	inst := pointClass primitiveAllocateAnInstance.
+	inst := pointClass allocateAnInstance.
 	inst at: 2 put: 2.
 	inst at: 3 put: 3.
 
@@ -42,8 +42,8 @@ PicoInterpreterTest >> testDirectAccessToInstanceVariable [
 PicoInterpreterTest >> testDotProduct [
 
 	| inst inst2 value |
-	inst := pointClass primitiveAllocateAnInstance.
-	inst2 := pointClass primitiveAllocateAnInstance.
+	inst := pointClass allocateAnInstance.
+	inst2 := pointClass allocateAnInstance.
 	inst at: 2 put: 2.
 	inst at: 3 put: 3.
 	inst2 at: 2 put: 20.
@@ -61,8 +61,8 @@ PicoInterpreterTest >> testDotProduct [
 PicoInterpreterTest >> testDotProduct2 [
 
 	| inst inst2 value |
-	inst := pointClass primitiveAllocateAnInstance.
-	inst2 := pointClass primitiveAllocateAnInstance.
+	inst := pointClass allocateAnInstance.
+	inst2 := pointClass allocateAnInstance.
 	inst at: 2 put: 2.
 	inst at: 3 put: 3.
 	inst2 at: 2 put: 20.
@@ -79,7 +79,7 @@ PicoInterpreterTest >> testDotProduct2 [
 { #category : #'interpreter tests' }
 PicoInterpreterTest >> testGetterExecution [
 	|  inst val |
-	inst := pointClass primitiveAllocateAnInstance.
+	inst := pointClass allocateAnInstance.
 	inst at: 2 put: 33.
 	val := inst send: #x.
 	self assert: val equals: 33
@@ -90,8 +90,8 @@ PicoInterpreterTest >> testGetterExecution [
 PicoInterpreterTest >> testHalfDotProduct [
 
 	| inst inst2 value |
-	inst := pointClass primitiveAllocateAnInstance.
-	inst2 := pointClass primitiveAllocateAnInstance.
+	inst := pointClass allocateAnInstance.
+	inst2 := pointClass allocateAnInstance.
 	inst at: 2 put: 200.
 	inst at: 3 put: 300.
 	inst2 at: 2 put: 20.
@@ -108,7 +108,7 @@ PicoInterpreterTest >> testHalfDotProduct [
 { #category : #'primitive message tests' }
 PicoInterpreterTest >> testPlayingWithString [
 	| inst val |
-	inst := pointClass primitiveAllocateAnInstance.
+	inst := pointClass allocateAnInstance.
 	val := inst send: #playingWithString.
 	"playingWithString
 
@@ -119,7 +119,7 @@ PicoInterpreterTest >> testPlayingWithString [
 { #category : #'interpreter tests' }
 PicoInterpreterTest >> testReturn100Execution [
 	|  inst val |
-	inst := pointClass primitiveAllocateAnInstance.
+	inst := pointClass allocateAnInstance.
 	val := inst send: #return100.
 	self assert: val equals: 100
 	
@@ -128,8 +128,8 @@ PicoInterpreterTest >> testReturn100Execution [
 { #category : #'interpreter tests' }
 PicoInterpreterTest >> testSendingMessageToArgument [
 	|  inst inst2 value |
-	inst := pointClass primitiveAllocateAnInstance.
-	inst2 := pointClass primitiveAllocateAnInstance.
+	inst := pointClass allocateAnInstance.
+	inst2 := pointClass allocateAnInstance.
 	inst at: 2 put: 42.
 	inst2 at: 2 put: 666.
 	"sendingMessageToArgument: aPicoPoint 
@@ -144,8 +144,8 @@ PicoInterpreterTest >> testSendingMessageToArgument [
 PicoInterpreterTest >> testSendingMessageToArgumentWithArg [
 
 	|  inst inst2 value |
-	inst := pointClass primitiveAllocateAnInstance.
-	inst2 := pointClass primitiveAllocateAnInstance.
+	inst := pointClass allocateAnInstance.
+	inst2 := pointClass allocateAnInstance.
 	inst at: 2 put: 42.
 	inst2 at: 2 put: 666.
 	"sendingMessageToArgument: anEvilPoint withArg: arg
@@ -161,8 +161,8 @@ PicoInterpreterTest >> testSendingMessageToArgumentWithArg [
 PicoInterpreterTest >> testSendingMessageToArgumentwithDifferentArgument [
 
 	| inst inst2 value |
-	inst := pointClass primitiveAllocateAnInstance.
-	inst2 := pointClass primitiveAllocateAnInstance.
+	inst := pointClass allocateAnInstance.
+	inst2 := pointClass allocateAnInstance.
 	inst at: 2 put: 42.
 	inst2 at: 2 put: 666.
 	"sendingMessageToArgument: aPicoPoint withDifferentArgument: anArg
@@ -178,7 +178,7 @@ PicoInterpreterTest >> testSendingMessageToArgumentwithDifferentArgument [
 { #category : #'interpreter tests' }
 PicoInterpreterTest >> testSetterExecution [
 	| inst |
-	inst := pointClass primitiveAllocateAnInstance.
+	inst := pointClass allocateAnInstance.
 	inst send: #x: withArguments: #(20).
 	self assert: (inst at: 2) equals: 20.
 	
@@ -187,7 +187,7 @@ PicoInterpreterTest >> testSetterExecution [
 { #category : #'interpreter tests' }
 PicoInterpreterTest >> testSettingAValueFromTempToTemp2 [
 	|  inst value |
-	inst := pointClass primitiveAllocateAnInstance.
+	inst := pointClass allocateAnInstance.
 	value := inst send: #settingAValueFromTempToTemp2.
 	self assert: value equals: 10.
 	
@@ -196,7 +196,7 @@ PicoInterpreterTest >> testSettingAValueFromTempToTemp2 [
 { #category : #'interpreter tests' }
 PicoInterpreterTest >> testSettingAValueToTemp [
 	|  inst value |
-	inst := pointClass primitiveAllocateAnInstance.
+	inst := pointClass allocateAnInstance.
 	value := inst send: #settingAValueToTemp.
 	
 	"settingAValueToTemp
@@ -212,7 +212,7 @@ PicoInterpreterTest >> testSettingAValueToTemp [
 { #category : #'interpreter tests' }
 PicoInterpreterTest >> testSettingAValueToTemp2 [
 	|  inst value |
-	inst := pointClass primitiveAllocateAnInstance.
+	inst := pointClass allocateAnInstance.
 	value := inst send: #settingAValueToTemp2.
 	self assert: value equals: 20.
 ]
@@ -220,7 +220,7 @@ PicoInterpreterTest >> testSettingAValueToTemp2 [
 { #category : #'primitive message tests' }
 PicoInterpreterTest >> testSimpleMessage [
 	|  inst val |
-	inst := pointClass primitiveAllocateAnInstance.
+	inst := pointClass allocateAnInstance.
 	val := inst send: #simpleMessage.
 	"
 	simpleMessage
@@ -252,7 +252,7 @@ PicoInterpreterTest >> testStackPushNewScope [
 PicoInterpreterTest >> testSummingArgArg2 [
 
 	| inst value |
-	inst := pointClass primitiveAllocateAnInstance.
+	inst := pointClass allocateAnInstance.
 	inst at: 2 put: 42.
 	"summingArg: arg1 arg2: arg2
 		^ arg1 + arg2"
@@ -266,7 +266,7 @@ PicoInterpreterTest >> testSummingArgArg2 [
 PicoInterpreterTest >> testSwappingArgArg2 [
 
 	| inst value |
-	inst := pointClass primitiveAllocateAnInstance.
+	inst := pointClass allocateAnInstance.
 	inst at: 2 put: 42.
 	"swappingArg: arg1 arg2: arg2
 	
@@ -280,7 +280,7 @@ PicoInterpreterTest >> testSwappingArgArg2 [
 { #category : #'primitive message tests' }
 PicoInterpreterTest >> testUsingTempValue [
 	|  inst val |
-	inst := pointClass primitiveAllocateAnInstance.
+	inst := pointClass allocateAnInstance.
 	val := inst send: #usingTempValue.
 	"usingTempValue
 

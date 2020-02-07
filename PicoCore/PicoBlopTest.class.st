@@ -34,7 +34,7 @@ PicoBlopTest >> testMethodDictionaryFrom [
 { #category : #tests }
 PicoBlopTest >> testPoinInstantiation [
 	|  inst |
-	inst := pointClass primitiveAllocateAnInstance.
+	inst := pointClass allocateAnInstance.
 	self assert: (inst at: 1) equals: 'PicoPoint'.
 	self assert: (inst at: 2) equals: nil.
 	self assert: (inst at: 3) equals: nil.
@@ -43,7 +43,7 @@ PicoBlopTest >> testPoinInstantiation [
 { #category : #tests }
 PicoBlopTest >> testPoinInstantiationClass [
 	| inst |
-	inst := pointClass primitiveAllocateAnInstance.
+	inst := pointClass allocateAnInstance.
 	self assert: (inst at: 1) equals: 'PicoPoint'.
 	self assert: inst picoClass equals: pointClass.
 
@@ -59,19 +59,19 @@ PicoBlopTest >> testSimpleLookup [
 { #category : #'message tests' }
 PicoBlopTest >> testValidSend [
 
-	self should: [ pointClass primitiveAllocateAnInstance 
+	self should: [ pointClass allocateAnInstance 
 							send: #dotProduct: withArguments: {1 . 2} ] 
 							raise: Error.
 							
-	self should: [ pointClass primitiveAllocateAnInstance 
+	self should: [ pointClass allocateAnInstance 
 							send: #dotProduct withArguments: {1} ] 
 							raise: Error.
 	
-	self should: [ pointClass primitiveAllocateAnInstance 
+	self should: [ pointClass allocateAnInstance 
 							send: #dotProduct:and: withArguments: {1} ] 
 							raise: Error.
 							
-	self should: [ pointClass primitiveAllocateAnInstance 
+	self should: [ pointClass allocateAnInstance 
 							send: #dotProduct:and: withArguments: {1 . 2 .3 } ] 
 							raise: Error
 ]
