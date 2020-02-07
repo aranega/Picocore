@@ -1,5 +1,5 @@
 Class {
-	#name : #PicoBlopTest2,
+	#name : #PicoBlopTest1,
 	#superclass : #TestCase,
 	#instVars : [
 		'pointClass',
@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #running }
-PicoBlopTest2 >> assemblePointClass [
+PicoBlopTest1 >> assemblePointClass [
 	
 	pointClass := PicoBlop new: 5.
 	pointClass at: pointClass offsetForName put: #PicoPoint.
@@ -23,7 +23,7 @@ PicoBlopTest2 >> assemblePointClass [
 ]
 
 { #category : #running }
-PicoBlopTest2 >> assemblePointInstance [
+PicoBlopTest1 >> assemblePointInstance [
 	aPoint := PicoBlop new: 3.
 	aPoint at: 1 put: #PicoPoint.
 	aPoint at: 2 put: 10.
@@ -31,21 +31,45 @@ PicoBlopTest2 >> assemblePointInstance [
 ]
 
 { #category : #running }
-PicoBlopTest2 >> setUp [ 
+PicoBlopTest1 >> setUp [ 
 	self assemblePointClass.
 	self assemblePointInstance. 
 ]
 
 { #category : #'step1-tests-structure of objects' }
-PicoBlopTest2 >> testPrimitiveStructureObjClassIdForSimpleObject [
+PicoBlopTest1 >> testPrimitiveStructureObjClassIdForSimpleObject [
 	"self run: #testPrimitiveStructureObjClassIdForSimpleObject"
 
 	self assert: aPoint picoClassId equals: #PicoPoint
 
 ]
 
+{ #category : #'step2-tests-structure of classes' }
+PicoBlopTest1 >> testPrimitiveStructureObjIVs [
+	"(self selector: #testPrimitiveStructureObjIVs) run"
+
+	self assert: (pointClass picoIVs) equals: #(#class #x #y)
+
+]
+
+{ #category : #'step2-tests-structure of classes' }
+PicoBlopTest1 >> testPrimitiveStructureObjName [
+	"(self selector: #testPrimitiveStructureObjName) run"
+
+	self assert: pointClass picoName equals: #PicoPoint
+	
+]
+
+{ #category : #'step2-tests-structure of classes' }
+PicoBlopTest1 >> testPrimitiveStructureObjSuperclassId [
+	"(self selector: #testPrimitiveStructureObjSuperclassId) run"
+
+	self assert: pointClass picoSuperclassId equals: #PicoObject.
+
+]
+
 { #category : #'step1-tests-structure of objects' }
-PicoBlopTest2 >> testPrimitiveStructurePicoClassId [
+PicoBlopTest1 >> testPrimitiveStructurePicoClassId [
 	"(self selector: #testPrimitiveStructureObjClassId) run"
 
 	self assert: pointClass picoClassId equals: #PicoClass
