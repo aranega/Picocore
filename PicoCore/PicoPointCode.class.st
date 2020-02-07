@@ -1,18 +1,18 @@
 Class {
-	#name : #PicoPoint,
+	#name : #PicoPointCode,
 	#superclass : #PicoCodeRepository,
 	#type : #variable,
 	#category : #PicoCore
 }
 
 { #category : #messages }
-PicoPoint >> directAccessToX [
+PicoPointCode >> directAccessToX [
 
 	^ x
 ]
 
 { #category : #messages }
-PicoPoint >> dotProduct2: aPicoPoint [ 
+PicoPointCode >> dotProduct2: aPicoPoint [ 
 	"Answer a number that is the dot product of the receiver and the argument, aPoint. 
 	That is, the two points are multipled and the coordinates of the result summed."
 
@@ -20,7 +20,7 @@ PicoPoint >> dotProduct2: aPicoPoint [
 ]
 
 { #category : #messages }
-PicoPoint >> dotProduct: aPicoPoint [ 
+PicoPointCode >> dotProduct: aPicoPoint [ 
 	"Answer a number that is the dot product of the receiver and the argument, aPoint. 
 	That is, the two points are multipled and the coordinates of the result summed."
 
@@ -28,44 +28,44 @@ PicoPoint >> dotProduct: aPicoPoint [
 ]
 
 { #category : #messages }
-PicoPoint >> halfDotProduct: aPicoPoint [ 
+PicoPointCode >> halfDotProduct: aPicoPoint [ 
 
 	^ x * (aPicoPoint send: #x) 
 ]
 
 { #category : #'internal messages' }
-PicoPoint >> playingWithString [
+PicoPointCode >> playingWithString [
 
 	^ 'pico core is cool' size
 ]
 
 { #category : #'return and access' }
-PicoPoint >> return100 [
+PicoPointCode >> return100 [
 
 	^ 100
 ]
 
 { #category : #messages }
-PicoPoint >> sendingMessageToArgument: aPicoPoint [ 
+PicoPointCode >> sendingMessageToArgument: aPicoPoint [ 
 	
 	^ (aPicoPoint send: #x) 
 ]
 
 { #category : #messages }
-PicoPoint >> sendingMessageToArgument: anEvilPoint withArg: arg [
+PicoPointCode >> sendingMessageToArgument: anEvilPoint withArg: arg [
 	
 	^ (anEvilPoint send: #x) + arg
 ]
 
 { #category : #messages }
-PicoPoint >> sendingMessageToArgument: aPicoPoint withDifferentArgument: anArg [
+PicoPointCode >> sendingMessageToArgument: aPicoPoint withDifferentArgument: anArg [
 	
 	aPicoPoint send: #x: withArguments: {33}.
 	^ aPicoPoint send: #x
 ]
 
 { #category : #'simple temp manipulation' }
-PicoPoint >> settingAValueFromTempToTemp2 [
+PicoPointCode >> settingAValueFromTempToTemp2 [
 
 	| temp temp2 | 
 	temp := 10.
@@ -74,7 +74,7 @@ PicoPoint >> settingAValueFromTempToTemp2 [
 ]
 
 { #category : #'simple temp manipulation' }
-PicoPoint >> settingAValueToTemp [
+PicoPointCode >> settingAValueToTemp [
 
 	| temp | 
 	temp := 10.
@@ -82,7 +82,7 @@ PicoPoint >> settingAValueToTemp [
 ]
 
 { #category : #'simple temp manipulation' }
-PicoPoint >> settingAValueToTemp2 [
+PicoPointCode >> settingAValueToTemp2 [
 
 	| temp | 
 	temp := 10.
@@ -91,25 +91,25 @@ PicoPoint >> settingAValueToTemp2 [
 ]
 
 { #category : #'internal messages' }
-PicoPoint >> simpleMessage [
+PicoPointCode >> simpleMessage [
 
 	^ 10 * 10
 ]
 
 { #category : #messages }
-PicoPoint >> summingArg: arg1 arg2: arg2 [
+PicoPointCode >> summingArg: arg1 arg2: arg2 [
 	
 	^ arg1 + arg2
 ]
 
 { #category : #messages }
-PicoPoint >> swappingArg: arg1 arg2: arg2 [
+PicoPointCode >> swappingArg: arg1 arg2: arg2 [
 	
 	^ self send: #summingArg:arg2: withArguments: { arg1 . arg2}
 ]
 
 { #category : #'internal messages' }
-PicoPoint >> usingTempValue [
+PicoPointCode >> usingTempValue [
 
 	| temp | 
 	temp := 10.
@@ -118,25 +118,25 @@ PicoPoint >> usingTempValue [
 ]
 
 { #category : #'return and access' }
-PicoPoint >> x [ 
+PicoPointCode >> x [ 
 
 	^ x
 ]
 
 { #category : #'return and access' }
-PicoPoint >> x: anInteger [
+PicoPointCode >> x: anInteger [
 
 	x := anInteger
 ]
 
 { #category : #'return and access' }
-PicoPoint >> y [
+PicoPointCode >> y [
 
 	^ y
 ]
 
 { #category : #'return and access' }
-PicoPoint >> y: anInteger [
+PicoPointCode >> y: anInteger [
 
 	y := anInteger
 ]

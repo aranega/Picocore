@@ -14,7 +14,7 @@ PicoInterpreterTest >> setUp [
 	{ #PicoClass . #PicoPoint . #PicoObject . { #class . #x . #y } . 5 }
 		withIndexDo: [ :each :i | pointClass at: i put: each ].
 	
-	pointClass initializeMethodDictionaryFrom: PicoPoint.
+	pointClass initializeMethodDictionaryFrom: PicoPointCode.
 	PicoBlop initializePicoClassEnvironment.
 	PicoBlop declareClass: pointClass.
 	

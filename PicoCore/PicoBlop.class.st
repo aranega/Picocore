@@ -66,8 +66,19 @@ PicoBlop >> offsetForIVs [
 ]
 
 { #category : #offsets }
+PicoBlop >> offsetForMethodDict [
+	^ 5
+]
+
+{ #category : #offsets }
 PicoBlop >> offsetForName [
 	^ 2
+]
+
+{ #category : #offsets }
+PicoBlop >> offsetForSuperclass [
+
+	^3
 ]
 
 { #category : #'instance variables' }
@@ -91,52 +102,60 @@ PicoBlop >> offsetFromObjectOfInstanceVariable: aSymbol [
 	^ aClass offsetFromClassOfInstanceVariable: aSymbol
 ]
 
-{ #category : #offsets }
-PicoBlop >> offsetMethodDict [
-	^ 5
-]
-
 { #category : #basic }
 PicoBlop >> picoClass [
 
 	^ self class giveClassNamed: self picoClassId
 ]
 
-{ #category : #basic }
+{ #category : #'class structure' }
 PicoBlop >> picoClassId [
 
 	^ self at: self offsetForClass 
 ]
 
-{ #category : #basic }
+{ #category : #'class structure' }
 PicoBlop >> picoClassId: ID [
 
 	self at: self offsetForClass put: ID
 ]
 
-{ #category : #basic }
+{ #category : #'class structure' }
 PicoBlop >> picoClassName [
 
 	^ self at: self offsetForName
 ]
 
-{ #category : #basic }
+{ #category : #'class structure' }
+PicoBlop >> picoClassName: aString [
+
+	self at: self offsetForName put: aString
+]
+
+{ #category : #'class structure' }
 PicoBlop >> picoIVs [
 	"Receiver should be: anObjClass. Returns the list of instance variables"
 	
 	^self at: self offsetForIVs
 ]
 
-{ #category : #basic }
-PicoBlop >> picoMethodDict [
+{ #category : #'class structure' }
+PicoBlop >> picoIVs: anOrderedCollection [ 
+	"Receiver should be: anObjClass. Set the list of instance variable names of the receiver (anObjClass)"
 
-	^ self at: self offsetMethodDict
+	self at: self offsetForIVs put: anOrderedCollection
 ]
 
-{ #category : #basic }
+{ #category : #'class structure' }
+PicoBlop >> picoMethodDict [
+
+	^ self at: self offsetForMethodDict
+]
+
+{ #category : #'class structure' }
 PicoBlop >> picoMethodDict: aDict [
 
-	self at: self offsetMethodDict put: aDict
+	self at: self offsetForMethodDict put: aDict
 ]
 
 { #category : #basic }
@@ -149,6 +168,20 @@ PicoBlop >> picoName [
 PicoBlop >> picoNumberOfIVs [
 	"for now class x y"
 	^ 3
+]
+
+{ #category : #'class structure' }
+PicoBlop >> picoSuperclassId [
+	"Receiver should be: anObjClass. Returns the superclass id of the receiver (anObjClass)"
+
+	^self at: self offsetForSuperclass
+]
+
+{ #category : #'class structure' }
+PicoBlop >> picoSuperclassId: anObjClassId [
+	"Receiver should be: anObjClass. Set the superclass id of the receiver (anObjClass)"
+
+	self at: self offsetForSuperclass put: anObjClassId
 ]
 
 { #category : #allocate }
