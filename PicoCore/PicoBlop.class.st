@@ -245,12 +245,10 @@ PicoBlop >> send: aSelector [
 { #category : #'message passing' }
 PicoBlop >> send: aSelector withArguments: anArray [
 
-	self halt.
 	aSelector numArgs = anArray size 
 		ifFalse: [ self error: aSelector, ' does not expect ', anArray printString  ].
 	^ (self picoClass lookup: aSelector)
 			ifNotNil: [ :method |  
-						self halt.
 						PicoInterpreter new 
 								receiver: self;
 								arguments: anArray; 

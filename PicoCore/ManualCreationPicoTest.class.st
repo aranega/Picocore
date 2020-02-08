@@ -33,7 +33,7 @@ ManualCreationPicoTest >> assembleColoredPointClass [
 
 { #category : #running }
 ManualCreationPicoTest >> assembleColoredPointInstance [
-	aColoredPoint := PicoBlop new: 3.
+	aColoredPoint := PicoBlop new: 4.
 	aColoredPoint at: 1 put: #PicoColoredPoint.
 	aColoredPoint at: 2 put: 10.
 	aColoredPoint at: 3 put: 15.
@@ -85,6 +85,7 @@ ManualCreationPicoTest >> setUp [
 	self assemblePointClass.
 	self assemblePointInstance. 
 	self assembleColoredPointClass.
+	self assembleColoredPointInstance.
 	self assembleObjectClass
 ]
 
