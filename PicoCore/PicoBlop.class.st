@@ -154,7 +154,7 @@ PicoBlop >> offsetFromObjectOfInstanceVariable: aSymbol [
 	^ aClass offsetFromClassOfInstanceVariable: aSymbol
 ]
 
-{ #category : #basic }
+{ #category : #'basic access' }
 PicoBlop >> picoClass [
 
 	^ self class giveClassNamed: self picoClassId
@@ -210,7 +210,7 @@ PicoBlop >> picoMethodDict: aDict [
 	self at: self offsetForMethodDict put: aDict
 ]
 
-{ #category : #basic }
+{ #category : #'basic access' }
 PicoBlop >> picoNumberOfIVs [
 	"for now class x y"
 	^ self picoIVs size
@@ -277,4 +277,5 @@ PicoBlop >> valueOfInstanceVariable: aSymbol [
 	"Return the value of the instance variable, aSymbol, of the receiver."
 	
 	^self at: (self offsetFromObjectOfInstanceVariable: aSymbol)
+	
 ]

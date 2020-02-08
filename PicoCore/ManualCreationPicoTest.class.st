@@ -181,6 +181,21 @@ ManualCreationPicoTest >> testInstanceVariableInheritance [
 ]
 
 { #category : #'step7-tests-instanceVariableInheritance' }
+ManualCreationPicoTest >> testInstanceVariableInheritanceFromAObject [
+	"(self  selector: #testInstanceVariableInheritanceFromAObject) run"
+	
+	coloredPointClass picoIVs: (coloredPointClass 	
+												computeNewIVFrom: #(class x y)
+												with: #(color)).
+	
+	self assert: (aPoint offsetFromObjectOfInstanceVariable: #x) equals: 2.
+	self assert: (aColoredPoint offsetFromObjectOfInstanceVariable: #x) equals: 2
+	
+	
+	
+]
+
+{ #category : #'step7-tests-instanceVariableInheritance' }
 ManualCreationPicoTest >> testInstanceVariableInheritanceNotFind [
 	"(self  selector: #testInstanceVariableInheritanceNotFind) run"
 	
@@ -196,6 +211,26 @@ ManualCreationPicoTest >> testInstanceVariableInheritanceNumberOfInstanceVar [
 	self assert: coloredPointClass picoNumberOfIVs equals: 4.
 	
 
+]
+
+{ #category : #'step9-tests-message' }
+ManualCreationPicoTest >> testIntrospectiveReadVariable [
+	"(self  selector: #testIntrospectiveReadVariable) run"
+
+	"method found in the class PointClass"
+	self assert: (aPoint send: #x) equals: 10.
+
+	"method found in ObjClass"
+	self assert: (aPoint send: #introspectReadVariable: withArguments: #(#x)) equals: 10.
+]
+
+{ #category : #'step9-tests-message' }
+ManualCreationPicoTest >> testIntrospectiveWriteVariable [
+	"(self  selector: #testIntrospectiveMethod) run"
+
+	"method found in ObjClass"
+	aPoint send: #introspectWriteVariable:value: withArguments: #(y 22).
+	self assert: (aPoint send: #introspectReadVariable: withArguments: #(#y)) equals: 22
 ]
 
 { #category : #'step8-tests-lookup' }

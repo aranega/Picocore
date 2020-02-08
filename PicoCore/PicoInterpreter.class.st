@@ -140,7 +140,7 @@ PicoInterpreter >> visitMessageNode: aMessageNode [
 			"we evaluate the receiver and the arguments and execute the selector using them."
 			(self visitMessageReceiver: aMessageNode receiver) 
 				perform: aMessageNode selector 	
-				withArguments: (self visitMessageArgumentNodes: aMessageNode arguments)
+				withArguments: (self visitMessageArgumentNodes: aMessageNode arguments) asArray
 			 ]
 
 ]
