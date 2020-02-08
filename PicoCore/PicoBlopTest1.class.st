@@ -19,6 +19,7 @@ PicoBlopTest1 >> assemblePointClass [
 	pointClass at: pointClass offsetForIVs put: #(#class #x #y).
 	pointClass at: pointClass offsetForSuperclass put: #PicoObject.
 	pointClass at: pointClass offsetForMethodDict put: (IdentityDictionary new).
+	pointClass initializeMethodDictionaryFrom: PicoPointCode.
 	PicoBlop declareClass: pointClass.
 
 ]
@@ -92,6 +93,14 @@ PicoBlopTest1 >> testInstanceVariableInheritance [
 			(Obj new computeNewIVFrom: #() asOrderedCollection
 				with: #(#a #z #b #t) asOrderedCollection)
 					equals: #(#a #z #b #t) asOrderedCollection
+]
+
+{ #category : #'step6-method-API' }
+PicoBlopTest1 >> testMethodManagmentUnderstandGoodMethod [
+	"(self  selector: #testMethodManagmentUnderstandGoodMethod) run"
+
+	self assert: (pointClass doesUnderstand: #x).
+
 ]
 
 { #category : #'step1-tests-structure of objects' }

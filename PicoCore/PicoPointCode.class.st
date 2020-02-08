@@ -27,10 +27,24 @@ PicoPointCode >> dotProduct: aPicoPoint [
 	^ (x * (aPicoPoint send: #x)) + (y * (aPicoPoint send: #y))
 ]
 
+{ #category : #'for lookup tests' }
+PicoPointCode >> foo [ 
+	
+	'PicoPoint>>foo' traceCr.
+	^ 5
+]
+
 { #category : #messages }
 PicoPointCode >> halfDotProduct: aPicoPoint [ 
 
 	^ x * (aPicoPoint send: #x) 
+]
+
+{ #category : #'for lookup tests' }
+PicoPointCode >> notOverridenFoo [ 
+	
+	'PicoPoint>>notOverridenFoo' traceCr.
+	^ 55
 ]
 
 { #category : #'internal messages' }

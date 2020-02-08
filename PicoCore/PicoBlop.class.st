@@ -48,6 +48,12 @@ PicoBlop >> allocateAnInstance [
 	^a
 ]
 
+{ #category : #lookup }
+PicoBlop >> doesUnderstand: aSelector [
+
+	^ self picoMethodDict keys includes: aSelector
+]
+
 { #category : #methods }
 PicoBlop >> initializeMethodDictionaryFrom: aPharoClass [
 

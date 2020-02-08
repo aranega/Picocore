@@ -2,7 +2,8 @@ Class {
 	#name : #PicoInterpreterTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'pointClass'
+		'pointClass',
+		'coloredPointClass'
 	],
 	#category : #PicoCore
 }
@@ -13,10 +14,16 @@ PicoInterpreterTest >> setUp [
 	pointClass := PicoBlop new: 5.
 	{ #PicoClass . #PicoPoint . #PicoObject . { #class . #x . #y } . 5 }
 		withIndexDo: [ :each :i | pointClass at: i put: each ].
-	
 	pointClass initializeMethodDictionaryFrom: PicoPointCode.
 	PicoBlop initializePicoClassEnvironment.
 	PicoBlop declareClass: pointClass.
+	
+	coloredPointClass := PicoBlop new: 5.
+	{ #PicoClass . #PicoColoredPoint . #PicoPoint . { #class . #x . #y . #color} . 5 }
+		withIndexDo: [ :each :i | coloredPointClass at: i put: each ].
+	coloredPointClass initializeMethodDictionaryFrom: PicoColoredPointCode.
+	PicoBlop declareClass: coloredPointClass.
+	
 	
 	
 ]
