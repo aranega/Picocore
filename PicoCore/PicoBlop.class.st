@@ -44,7 +44,7 @@ PicoBlop >> allocateAnInstance [
 
 	| a |
 	a := self class new: self picoNumberOfIVs.
-	a picoClassId: self picoName.
+	a picoClassId: self picoClassName.
 	^a
 ]
 
@@ -92,7 +92,7 @@ PicoBlop >> lookup: selector [
 	^(self doesUnderstand: selector)
 		ifTrue: [ self bodyOfMethod: selector]
 		ifFalse: 
-			[self picoName = #PicoObject
+			[self picoClassName = #PicoObject
 				ifFalse: 
 					[ (self class giveClassNamed: self picoSuperclassId) lookup: selector.]
 				ifTrue: [ nil ]]
@@ -211,15 +211,9 @@ PicoBlop >> picoMethodDict: aDict [
 ]
 
 { #category : #basic }
-PicoBlop >> picoName [
-
-	^ 'PicoPoint'
-]
-
-{ #category : #basic }
 PicoBlop >> picoNumberOfIVs [
 	"for now class x y"
-	^ 3
+	^ self picoIVs size
 ]
 
 { #category : #'class structure' }
@@ -253,10 +247,21 @@ PicoBlop >> send: aSelector withArguments: anArray [
 
 	aSelector numArgs = anArray size 
 		ifFalse: [ self error: aSelector, ' does not expect ', anArray printString  ].
-	^ PicoInterpreter new 
-			receiver: self;
-			arguments: anArray; 
-			visitNode: (self picoClass lookup: aSelector)
+	^ (self picoClass lookup: aSelector)
+			ifNotNil: [ :method |  PicoInterpreter new 
+								receiver: self;
+								arguments: anArray; 
+								visitNode: method ]
+			ifNil: [  self sendError: aSelector withArgs: anArray  ]
+]
+
+{ #category : #'message passing' }
+PicoBlop >> sendError: selector withArguments: arguments [
+	"send error wrapping arguments into an array with the selector as first argument. Instead of an array we should create a message object."
+	
+	^ self send: #error withArguments:  {(arguments copyWithFirst: selector)}
+	
+
 ]
 
 { #category : #'instance variables' }
