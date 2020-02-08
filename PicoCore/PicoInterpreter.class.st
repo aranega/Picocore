@@ -133,7 +133,7 @@ PicoInterpreter >> visitMessageNode: aMessageNode [
 			self setValueOfTempVariable: #self to: rec. 
 			arguments := aMessageNode arguments allButFirst flatCollect: [ :each | self visitNode: each ].
 				"here the arguments are passed in a { } so we should dewrap."
-			^ self visitMethodNode: (rec picoClass primitiveLookup: aMessageNode arguments first value)
+			^ self visitMethodNode: (rec picoClass lookup: aMessageNode arguments first value)
 			]
 		
 		ifFalse: [  

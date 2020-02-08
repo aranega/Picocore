@@ -289,6 +289,17 @@ ManualCreationPicoTest >> testMethodManagmentUnderstandGoodMethod [
 
 ]
 
+{ #category : #'step9-tests-message' }
+ManualCreationPicoTest >> testMethodSuperCall [
+	"(self  selector: #testMethodSuperCall) run"
+
+	"foo in point return 5"
+	self assert: (aPoint send: #foo) equals: 5.
+
+	"foo in colored point is doing super foo + super foo"
+	self assert: (aColoredPoint send: #foo) equals: 10
+]
+
 { #category : #'step2-tests-structure of classes' }
 ManualCreationPicoTest >> testPrimitiveStructureIVs [
 	"(self selector: #testPrimitiveStructureIVs) run"

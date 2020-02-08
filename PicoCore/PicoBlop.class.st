@@ -272,6 +272,12 @@ PicoBlop >> setValueOfInstanceVariable: aSymbol to: value [
 	self at: (self offsetFromObjectOfInstanceVariable: aSymbol) put: value 
 ]
 
+{ #category : #'message passing' }
+PicoBlop >> superSend: aSelector [
+	self halt.
+	^ self send: aSelector withArguments: #()
+]
+
 { #category : #'instance variables' }
 PicoBlop >> valueOfInstanceVariable: aSymbol [ 
 	"Return the value of the instance variable, aSymbol, of the receiver."
