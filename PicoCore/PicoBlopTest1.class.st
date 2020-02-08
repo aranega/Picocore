@@ -79,6 +79,21 @@ PicoBlopTest1 >> testIVValue [
 	self assert: (aPoint valueOfInstanceVariable: #x) equals: 10
 ]
 
+{ #category : #'step7-tests-initialize' }
+PicoBlopTest1 >> testInstanceVariableInheritance [
+	"(self  selector: #testInstanceVariableInheritance) run"
+
+	"a better choice would be to throw an exception if there are duplicates"
+	self assert: 
+			(Obj new computeNewIVFrom: #(#a #b #c #d) asOrderedCollection
+				with: #(#a #z #b #t) asOrderedCollection)
+					equals: #(#a #b #c #d #z #t) asOrderedCollection.
+	self assert: 
+			(Obj new computeNewIVFrom: #() asOrderedCollection
+				with: #(#a #z #b #t) asOrderedCollection)
+					equals: #(#a #z #b #t) asOrderedCollection
+]
+
 { #category : #'step1-tests-structure of objects' }
 PicoBlopTest1 >> testPrimitiveStructureObjClassIdForSimpleObject [
 	"self run: #testPrimitiveStructureObjClassIdForSimpleObject"
