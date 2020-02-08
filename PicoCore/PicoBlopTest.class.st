@@ -52,8 +52,8 @@ PicoBlopTest >> testPoinInstantiationClass [
 { #category : #tests }
 PicoBlopTest >> testSimpleLookup [
 	| method |
-	method := pointClass primitiveLookup: #x:.
-	self assert: method equals: ((pointClass at: 5) at: #x:)
+	method := pointClass lookup: #x:.
+	self assert: method equals: (pointClass bodyOfMethod: #x:)
 ]
 
 { #category : #'message tests' }

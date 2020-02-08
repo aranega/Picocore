@@ -14,7 +14,7 @@ Class {
 	#category : #PicoCore
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'environment access' }
 PicoCodeRepository >> picoClassNamed: aName [ 
 	
 	^ PicoBlop giveClassNamed: aName

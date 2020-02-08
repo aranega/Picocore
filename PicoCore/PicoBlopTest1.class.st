@@ -3,10 +3,37 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'pointClass',
-		'aPoint'
+		'aPoint',
+		'coloredPointClass',
+		'aColoredPoint'
 	],
 	#category : #PicoCore
 }
+
+{ #category : #running }
+PicoBlopTest1 >> assembleColoredPointClass [
+	
+	"This is not the way to create classes. Here we are testing primitives before the bootstrap of the kernel so we do everything by hand. In future tests we will retest these functionalities using a full kernel version."
+	
+	coloredPointClass := PicoBlop new: 5.
+	coloredPointClass at: coloredPointClass offsetForName put: #PicoColoredPoint.
+	coloredPointClass at: coloredPointClass offsetForClass put: #PicoClass.
+	coloredPointClass at: coloredPointClass offsetForIVs put: #(#class #x #y #color).
+	coloredPointClass at: coloredPointClass offsetForSuperclass put: #PicoPoint.
+	coloredPointClass at: coloredPointClass offsetForMethodDict put: (IdentityDictionary new).
+	coloredPointClass initializeMethodDictionaryFrom: PicoColoredPointCode.
+	PicoBlop declareClass: coloredPointClass.
+
+]
+
+{ #category : #running }
+PicoBlopTest1 >> assembleColoredPointInstance [
+	aColoredPoint := PicoBlop new: 3.
+	aColoredPoint at: 1 put: #PicoColoredPoint.
+	aColoredPoint at: 2 put: 10.
+	aColoredPoint at: 3 put: 15.
+	aColoredPoint at: 4 put: Color red
+]
 
 { #category : #running }
 PicoBlopTest1 >> assemblePointClass [
@@ -36,6 +63,7 @@ PicoBlopTest1 >> assemblePointInstance [
 PicoBlopTest1 >> setUp [ 
 	self assemblePointClass.
 	self assemblePointInstance. 
+	self assembleColoredPointClass.
 ]
 
 { #category : #'step5-tests-allocate' }
@@ -86,13 +114,28 @@ PicoBlopTest1 >> testInstanceVariableInheritance [
 
 	"a better choice would be to throw an exception if there are duplicates"
 	self assert: 
-			(Obj new computeNewIVFrom: #(#a #b #c #d) asOrderedCollection
+			(PicoBlop new computeNewIVFrom: #(#a #b #c #d) asOrderedCollection
 				with: #(#a #z #b #t) asOrderedCollection)
 					equals: #(#a #b #c #d #z #t) asOrderedCollection.
 	self assert: 
-			(Obj new computeNewIVFrom: #() asOrderedCollection
+			(PicoBlop new computeNewIVFrom: #() asOrderedCollection
 				with: #(#a #z #b #t) asOrderedCollection)
 					equals: #(#a #z #b #t) asOrderedCollection
+]
+
+{ #category : #'step8-lookup' }
+PicoBlopTest1 >> testLookupMethodInSuperclass [
+	| method |
+	method := coloredPointClass lookup: #x.
+	self assert: method equals: (pointClass bodyOfMethod: #x)
+]
+
+{ #category : #'step6-method-API' }
+PicoBlopTest1 >> testMethodManagmentBodyOfMethod [
+	"(self  selector: #testMethodManagmentBodyOfMethod) run"
+	
+	self assert: ((pointClass bodyOfMethod: #x) isKindOf: RBProgramNode )
+
 ]
 
 { #category : #'step6-method-API' }
@@ -141,4 +184,11 @@ PicoBlopTest1 >> testPrimitiveStructurePicoClassId [
 
 	self assert: pointClass picoClassId equals: #PicoClass
 
+]
+
+{ #category : #'step8-lookup' }
+PicoBlopTest1 >> testSimpleLookup [
+	| method |
+	method := pointClass lookup: #x:.
+	self assert: method equals: (pointClass bodyOfMethod: #x:)
 ]

@@ -48,6 +48,28 @@ PicoBlop >> allocateAnInstance [
 	^a
 ]
 
+{ #category : #methods }
+PicoBlop >> bodyOfMethod: aSelector [ 
+	"Return the method associated with the selector <aSelector> in the receiver.
+	Return nil if the selector is not defined.  self is an objClass"
+
+	^ self picoMethodDict at: aSelector ifAbsent: [nil]
+]
+
+{ #category : #'variable inheritance' }
+PicoBlop >> computeNewIVFrom: superIVOrdCol with: localIVOrdCol [
+	"Returns an ordered collection that is the union without duplicate of ivOfSuper and ivOrderedCollection.
+	Important the order of the instance variable is conserved"
+
+	| ivs |
+	^superIVOrdCol isNil 
+		ifTrue: [localIVOrdCol]
+		ifFalse: 
+			[ivs := superIVOrdCol asOrderedCollection copy.
+			localIVOrdCol do: [:e | (ivs includes: e) ifFalse: [ivs add: e]].
+			ivs]
+]
+
 { #category : #lookup }
 PicoBlop >> doesUnderstand: aSelector [
 
@@ -60,6 +82,20 @@ PicoBlop >> initializeMethodDictionaryFrom: aPharoClass [
 	self picoMethodDict: (self methodDictionaryFrom: aPharoClass)
 
 	
+]
+
+{ #category : #lookup }
+PicoBlop >> lookup: selector [
+	"look for the method named <selector> starting in the receiver. 
+	The lookup is done for a message sent to <anObjObject>. self is an objClass"
+	
+	^(self doesUnderstand: selector)
+		ifTrue: [ self bodyOfMethod: selector]
+		ifFalse: 
+			[self picoName = #PicoObject
+				ifFalse: 
+					[ (self class giveClassNamed: self picoSuperclassId) lookup: selector.]
+				ifTrue: [ nil ]]
 ]
 
 { #category : #methods }
@@ -206,13 +242,13 @@ PicoBlop >> primitiveLookup: aSelector [
 	^ self picoMethodDict at: aSelector
 ]
 
-{ #category : #lookup }
+{ #category : #'message passing' }
 PicoBlop >> send: aSelector [
 
 	^ self send: aSelector withArguments: #()
 ]
 
-{ #category : #lookup }
+{ #category : #'message passing' }
 PicoBlop >> send: aSelector withArguments: anArray [
 
 	aSelector numArgs = anArray size 
@@ -220,7 +256,7 @@ PicoBlop >> send: aSelector withArguments: anArray [
 	^ PicoInterpreter new 
 			receiver: self;
 			arguments: anArray; 
-			visitNode: (self picoClass primitiveLookup: aSelector)
+			visitNode: (self picoClass lookup: aSelector)
 ]
 
 { #category : #'instance variables' }
