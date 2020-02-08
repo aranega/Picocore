@@ -108,7 +108,7 @@ ManualCreationPicoTest >> testClassAccess [
 	self assert: aPoint picoClass equals: pointClass
 ]
 
-{ #category : #'step8-lookup' }
+{ #category : #'step8-tests-lookup' }
 ManualCreationPicoTest >> testErrorRaisedSendWhenErrorInLookup [
 	"(self  selector: #testErrorRaisedSendWhenErrorInLookup) run"
 	
@@ -116,7 +116,7 @@ ManualCreationPicoTest >> testErrorRaisedSendWhenErrorInLookup [
 	"Open a Transcript to see the message trace"
 ]
 
-{ #category : #'step9-message' }
+{ #category : #'step9-tests-message' }
 ManualCreationPicoTest >> testExecuteMethodInDefiningClass [
 	"(self  selector: #testExecuteMethodInDefiningClass) run"
 
@@ -125,7 +125,7 @@ ManualCreationPicoTest >> testExecuteMethodInDefiningClass [
 	
 ]
 
-{ #category : #'step9-message' }
+{ #category : #'step9-tests-message' }
 ManualCreationPicoTest >> testExecuteMethodOfSuperclass [
 	"(self  selector: #testMethodSelfSendUnarySend) run"
 
@@ -137,8 +137,8 @@ ManualCreationPicoTest >> testExecuteMethodOfSuperclass [
 ManualCreationPicoTest >> testIVOffsetAskingTheClass [
 	"(self  selector: #testIVOffsetAskingTheClass) run"
 
-	self assert: (pointClass offsetFromClassOfInstanceVariable: #x ) equals: 2.
-	self assert: (pointClass offsetFromClassOfInstanceVariable: #lulu ) equals:  0
+	self assert: (pointClass offsetFromClassOfInstanceVariable: #x) equals: 2.
+	self assert: (pointClass offsetFromClassOfInstanceVariable: #lulu) equals:  0
 ]
 
 { #category : #'step4-tests-iv management' }
@@ -165,7 +165,7 @@ ManualCreationPicoTest >> testIVsSize [
 
 ]
 
-{ #category : #'step7-tests-initialize' }
+{ #category : #'step7-tests-instanceVariableInheritance' }
 ManualCreationPicoTest >> testInstanceVariableInheritance [
 	"(self  selector: #testInstanceVariableInheritance) run"
 
@@ -180,14 +180,32 @@ ManualCreationPicoTest >> testInstanceVariableInheritance [
 					equals: #(#a #z #b #t) asOrderedCollection
 ]
 
-{ #category : #'step8-lookup' }
+{ #category : #'step7-tests-instanceVariableInheritance' }
+ManualCreationPicoTest >> testInstanceVariableInheritanceNotFind [
+	"(self  selector: #testInstanceVariableInheritanceNotFind) run"
+	
+	self should: [aPoint offsetFromObjectOfInstanceVariable: #zork ] raise: Error.
+	
+]
+
+{ #category : #'step7-tests-instanceVariableInheritance' }
+ManualCreationPicoTest >> testInstanceVariableInheritanceNumberOfInstanceVar [
+	"(self  selector: #testInstanceVariableInheritanceNumberOfInstanceVar) run"
+	
+	self assert: pointClass picoNumberOfIVs equals: 3.
+	self assert: coloredPointClass picoNumberOfIVs equals: 4.
+	
+
+]
+
+{ #category : #'step8-tests-lookup' }
 ManualCreationPicoTest >> testLookupMethodInSuperclass [
 	| method |
 	method := coloredPointClass lookup: #x.
 	self assert: method equals: (pointClass bodyOfMethod: #x)
 ]
 
-{ #category : #'step8-lookup' }
+{ #category : #'step8-tests-lookup' }
 ManualCreationPicoTest >> testLookupUndefinedMethodReturnsNil [
 	"(self  selector: #testLookupUndefinedMethodReturnsNil) run"
 	
@@ -198,7 +216,7 @@ ManualCreationPicoTest >> testLookupUndefinedMethodReturnsNil [
 	
 ]
 
-{ #category : #'step8-lookup' }
+{ #category : #'step8-tests-lookup' }
 ManualCreationPicoTest >> testMethodLookupStop [
 	"(self  selector: #testMethodLookupStop) run"
 	
@@ -212,7 +230,7 @@ ManualCreationPicoTest >> testMethodLookupStop [
 	self should:  [((pointClass lookup: #zork) value: 'r' value: #e)] raise: Error
 ]
 
-{ #category : #'step6-method-API' }
+{ #category : #'step6-tests-method-API' }
 ManualCreationPicoTest >> testMethodManagmentBodyOfMethod [
 	"(self  selector: #testMethodManagmentBodyOfMethod) run"
 	
@@ -220,7 +238,7 @@ ManualCreationPicoTest >> testMethodManagmentBodyOfMethod [
 
 ]
 
-{ #category : #'step6-method-API' }
+{ #category : #'step6-tests-method-API' }
 ManualCreationPicoTest >> testMethodManagmentNotUnderstandBadMethod [
 	"(self  selector: #testMethodManagmentNotUnderstandBadMethod) run"
 
@@ -228,7 +246,7 @@ ManualCreationPicoTest >> testMethodManagmentNotUnderstandBadMethod [
 	
 ]
 
-{ #category : #'step6-method-API' }
+{ #category : #'step6-tests-method-API' }
 ManualCreationPicoTest >> testMethodManagmentUnderstandGoodMethod [
 	"(self  selector: #testMethodManagmentUnderstandGoodMethod) run"
 
@@ -277,7 +295,7 @@ ManualCreationPicoTest >> testPrimitiveStructureSuperclassId [
 
 ]
 
-{ #category : #'step8-lookup' }
+{ #category : #'step8-tests-lookup' }
 ManualCreationPicoTest >> testSimpleLookup [
 	| method |
 	method := pointClass lookup: #x:.
