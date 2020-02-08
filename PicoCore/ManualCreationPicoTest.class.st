@@ -107,6 +107,31 @@ ManualCreationPicoTest >> testClassAccess [
 	self assert: aPoint picoClass equals: pointClass
 ]
 
+{ #category : #'step8-lookup' }
+ManualCreationPicoTest >> testErrorRaisedSendWhenErrorInLookup [
+	"(self  selector: #testErrorRaisedSendWhenErrorInLookup) run"
+	
+	self should: [ pointClass sendError: #zork withArgs: { aPoint } ] raise: Error.
+	"Open a Transcript to see the message trace"
+]
+
+{ #category : #'step9-message' }
+ManualCreationPicoTest >> testExecuteMethodInDefiningClass [
+	"(self  selector: #testExecuteMethodInDefiningClass) run"
+
+	"method found in the class PointClass"
+	self assert: (aPoint send: #x) equals: 10.
+	
+]
+
+{ #category : #'step9-message' }
+ManualCreationPicoTest >> testExecuteMethodOfSuperclass [
+	"(self  selector: #testMethodSelfSendUnarySend) run"
+
+	self assert: (aColoredPoint send: #x) equals: 10.
+
+]
+
 { #category : #'step4-tests-iv management' }
 ManualCreationPicoTest >> testIVOffsetAskingTheClass [
 	"(self  selector: #testIVOffsetAskingTheClass) run"
@@ -162,14 +187,28 @@ ManualCreationPicoTest >> testLookupMethodInSuperclass [
 ]
 
 { #category : #'step8-lookup' }
-ManualCreationPicoTest >> testLookupUndefinedMethod [
-	"(self  selector: #testMethodLookupStop) run"
+ManualCreationPicoTest >> testLookupUndefinedMethodReturnsNil [
+	"(self  selector: #testLookupUndefinedMethodReturnsNil) run"
 	
 	| foundMethod|
 	foundMethod := (pointClass lookup: #zork).
 	self assert: foundMethod isNil. 
-	"The method zork is NOT implement on pointClass, so nil is returned."
+	"The method zork is NOT implemented on pointClass, so nil is returned."
 	
+]
+
+{ #category : #'step8-lookup' }
+ManualCreationPicoTest >> testMethodLookupStop [
+	"(self  selector: #testMethodLookupStop) run"
+	
+	| foundMethod|
+	
+	foundMethod := (pointClass lookup: #error:).
+	self assert: (foundMethod isKindOf: RBProgramNode).
+	self assert: ('*Error*' match: foundMethod printString).
+	
+	"the message error defined on PicoObject requires two arguments: an object and a selector and it raises an error when executed. Open a Transcript to see the message trace"
+	self should:  [((pointClass lookup: #zork) value: 'r' value: #e)] raise: Error
 ]
 
 { #category : #'step6-method-API' }
@@ -178,6 +217,14 @@ ManualCreationPicoTest >> testMethodManagmentBodyOfMethod [
 	
 	self assert: ((pointClass bodyOfMethod: #x) isKindOf: RBProgramNode )
 
+]
+
+{ #category : #'step6-method-API' }
+ManualCreationPicoTest >> testMethodManagmentNotUnderstandBadMethod [
+	"(self  selector: #testMethodManagmentNotUnderstandBadMethod) run"
+
+	self assert: (pointClass doesUnderstand: #xx) not
+	
 ]
 
 { #category : #'step6-method-API' }

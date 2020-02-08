@@ -245,10 +245,13 @@ PicoBlop >> send: aSelector [
 { #category : #'message passing' }
 PicoBlop >> send: aSelector withArguments: anArray [
 
+	self halt.
 	aSelector numArgs = anArray size 
 		ifFalse: [ self error: aSelector, ' does not expect ', anArray printString  ].
 	^ (self picoClass lookup: aSelector)
-			ifNotNil: [ :method |  PicoInterpreter new 
+			ifNotNil: [ :method |  
+						self halt.
+						PicoInterpreter new 
 								receiver: self;
 								arguments: anArray; 
 								visitNode: method ]
@@ -259,7 +262,7 @@ PicoBlop >> send: aSelector withArguments: anArray [
 PicoBlop >> sendError: selector withArguments: arguments [
 	"send error wrapping arguments into an array with the selector as first argument. Instead of an array we should create a message object."
 	
-	^ self send: #error withArguments:  {(arguments copyWithFirst: selector)}
+	^ self send: #error: withArguments:  {(arguments copyWithFirst: selector)}
 	
 
 ]
