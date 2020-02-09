@@ -89,6 +89,13 @@ PicoInterpreter >> valueOfTempVariable: name [
 ]
 
 { #category : #visiting }
+PicoInterpreter >> visitArgumentNode: anArgumentNode [
+	"Sent *each time* an argument node is found"
+
+	^ self valueOfTempVariable: anArgumentNode name
+]
+
+{ #category : #visiting }
 PicoInterpreter >> visitArrayNode: anArrayNode [
 
 	^ anArrayNode children collect: [ :each | self visitNode: each ]

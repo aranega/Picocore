@@ -15,7 +15,8 @@ RBBetterProgramNodeVisitor >> visitAllButLastStatementNodes: aCol [
 RBBetterProgramNodeVisitor >> visitArgumentNode: anArgumentNode [
 	"Sent *each time* an argument node is found"
 	"does nothing!"
-	^ self valueOfTempVariable: anArgumentNode name
+	
+
 ]
 
 { #category : #visiting }

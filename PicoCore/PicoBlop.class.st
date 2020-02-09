@@ -100,9 +100,18 @@ PicoBlop >> lookup: selector [
 
 { #category : #methods }
 PicoBlop >> methodDictionaryFrom: aPharoClass [
+	"Add AST of Pharo method of the arg to the method dictionary of the receiver.
+	In addition annotate super with the definitionClass."
+
 	| dict | 
 	dict := IdentityDictionary new. 
-	aPharoClass selectors do: [ :each | dict at: each put: (aPharoClass compiledMethodAt: each) ast ].
+	aPharoClass selectors do: [ :each | 
+		| ast |
+		ast := (aPharoClass compiledMethodAt: each) ast.
+		dict at: each put: ast.
+		(RBPicoSuperAnnotator annotateSuperWithClass: aPharoClass)
+			visitNode: ast.
+		].
 	^ dict
 ]
 
@@ -270,12 +279,6 @@ PicoBlop >> setValueOfInstanceVariable: aSymbol to: value [
 	"Return the value of the instance variable, aSymbol, of the receiver."
 	
 	self at: (self offsetFromObjectOfInstanceVariable: aSymbol) put: value 
-]
-
-{ #category : #'message passing' }
-PicoBlop >> superSend: aSelector [
-	self halt.
-	^ self send: aSelector withArguments: #()
 ]
 
 { #category : #'instance variables' }
