@@ -12,7 +12,7 @@ Class {
 PicoBlop class >> declareClass: aPicoClass [ 
 	"Return the class defined in the class repository with the name aSymbol"
 
-	^ picoEnvironment at: aPicoClass picoClassName put: aPicoClass 
+	^ self picoEnvironment at: aPicoClass picoClassName put: aPicoClass 
 			
 ]
 
@@ -28,7 +28,7 @@ PicoBlop class >> giveClassNamed: aSymbol [
 { #category : #'global class repository management' }
 PicoBlop class >> giveClassNamed: aSymbol ifAbsent: aBlock [
 
-	^ picoEnvironment at: aSymbol ifAbsent: aBlock
+	^ self picoEnvironment at: aSymbol ifAbsent: aBlock
 ]
 
 { #category : #'global class repository management' }
@@ -36,6 +36,12 @@ PicoBlop class >> initializePicoClassEnvironment [
 	"could be better to have it as instance level so that we can test without breaking everything but this is a toy."
 	
 	picoEnvironment := Dictionary new
+]
+
+{ #category : #'global class repository management' }
+PicoBlop class >> picoEnvironment [
+
+	^ picoEnvironment ifNil: [ self initializePicoClassEnvironment. picoEnvironment ]
 ]
 
 { #category : #allocate }

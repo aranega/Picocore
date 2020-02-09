@@ -108,6 +108,10 @@ ManualCreationPicoTest >> testClassAccess [
 	self assert: aPoint picoClass equals: pointClass
 ]
 
+{ #category : #'step5-tests-allocate' }
+ManualCreationPicoTest >> testEmpty [
+]
+
 { #category : #'step8-tests-lookup' }
 ManualCreationPicoTest >> testErrorRaisedSendWhenErrorInLookup [
 	"(self  selector: #testErrorRaisedSendWhenErrorInLookup) run"
