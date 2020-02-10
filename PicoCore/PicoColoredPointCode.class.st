@@ -9,7 +9,7 @@ Class {
 PicoColoredPointCode >> foo [ 
 	
 	'PicoColoredPoint>>foo' traceCr.
-	^ (super send: #foo) + super send: #foo
+	^ (super send: #foo) + (super send: #foo)
 ]
 
 { #category : #'for lookup tests' }
