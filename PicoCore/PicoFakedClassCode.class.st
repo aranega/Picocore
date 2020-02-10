@@ -5,5 +5,5 @@ Class {
 	#name : #PicoFakedClassCode,
 	#superclass : #PicoCodeRepository,
 	#type : #variable,
-	#category : #PicoCore
+	#category : #'PicoCore-CoreCodeRepository'
 }

@@ -12,7 +12,7 @@ Class {
 		'aColoredPoint',
 		'objectClass'
 	],
-	#category : #PicoCore
+	#category : #'PicoCore-Tests'
 }
 
 { #category : #running }

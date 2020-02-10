@@ -1,5 +1,5 @@
 Class {
 	#name : #PicoTest,
 	#superclass : #TestCase,
-	#category : #PicoCore
+	#category : #'PicoCore-Tests'
 }

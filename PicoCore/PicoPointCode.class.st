@@ -2,7 +2,7 @@ Class {
 	#name : #PicoPointCode,
 	#superclass : #PicoCodeRepository,
 	#type : #variable,
-	#category : #PicoCore
+	#category : #'PicoCore-CodeRepository'
 }
 
 { #category : #messages }

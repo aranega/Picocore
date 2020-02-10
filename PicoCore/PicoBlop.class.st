@@ -115,8 +115,6 @@ PicoBlop >> methodDictionaryFrom: aPharoClass [
 		| ast |
 		ast := (aPharoClass compiledMethodAt: each) ast.
 		dict at: each put: ast.
-		(RBPicoSuperAnnotator annotateSuperWithClass: aPharoClass)
-			visitNode: ast.
 		].
 	^ dict
 ]

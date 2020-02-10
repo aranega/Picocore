@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'pointClass'
 	],
-	#category : #PicoCore
+	#category : #'PicoCore-Tests'
 }
 
 { #category : #running }

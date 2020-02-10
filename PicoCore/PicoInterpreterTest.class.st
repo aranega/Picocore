@@ -5,7 +5,7 @@ Class {
 		'pointClass',
 		'coloredPointClass'
 	],
-	#category : #PicoCore
+	#category : #'PicoCore-Tests'
 }
 
 { #category : #running }
