@@ -133,6 +133,14 @@ PicoInterpreterTest >> testReturn100Execution [
 ]
 
 { #category : #'interpreter tests' }
+PicoInterpreterTest >> testReturnSuper [
+	| inst |
+	inst := coloredPointClass allocateAnInstance.
+	self assert: (inst send: #returnSuper) equals: inst
+	
+]
+
+{ #category : #'interpreter tests' }
 PicoInterpreterTest >> testSendingMessageToArgument [
 	|  inst inst2 value |
 	inst := pointClass allocateAnInstance.
@@ -266,6 +274,14 @@ PicoInterpreterTest >> testSummingArgArg2 [
 
 	value := inst send: #summingArg:arg2: withArguments: {33 . 72}.
 	self assert: value equals: 33 + 72
+	
+]
+
+{ #category : #'interpreter tests' }
+PicoInterpreterTest >> testSuperCall [
+	| inst |
+	inst := coloredPointClass allocateAnInstance.
+	self assert: (inst send: #foo) equals: 10
 	
 ]
 
