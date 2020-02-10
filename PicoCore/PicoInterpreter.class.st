@@ -140,9 +140,10 @@ PicoInterpreter >> visitMessageNode: aMessageNode [
 			self setValueOfTempVariable: #self to: rec. 
 			arguments := aMessageNode arguments allButFirst flatCollect: [ :each | self visitNode: each ].
 				"here the arguments are passed in a { } so we should dewrap."
-			^ self visitMethodNode: (rec picoClass lookup: aMessageNode arguments first value)
-			]
-		
+			^ aMessageNode receiver isSuper
+				ifTrue: [ self visitMethodNode: (rec picoClass picoSuperclass lookup: aMessageNode arguments first value) ]
+				ifFalse: [ self visitMethodNode: (rec picoClass lookup: aMessageNode arguments first value) ]
+			]		
 		ifFalse: [  
 			"we evaluate the receiver and the arguments and execute the selector using them."
 			(self visitMessageReceiver: aMessageNode receiver) 
@@ -182,7 +183,7 @@ PicoInterpreter >> visitSelfNode: aSelfNode [
 
 { #category : #'visiting variable' }
 PicoInterpreter >> visitSuperNode: aSuperNode [
-
+	
 	^ self receiver
 ]
 

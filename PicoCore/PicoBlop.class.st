@@ -231,6 +231,12 @@ PicoBlop >> picoNumberOfIVs [
 	^ self picoIVs size
 ]
 
+{ #category : #'basic access' }
+PicoBlop >> picoSuperclass [
+
+	^ self class giveClassNamed: self picoSuperclassId
+]
+
 { #category : #'class structure' }
 PicoBlop >> picoSuperclassId [
 	"Receiver should be: anObjClass. Returns the superclass id of the receiver (anObjClass)"
