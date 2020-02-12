@@ -1,3 +1,9 @@
+"
+I'm a class which should not be instantiated and I'm just a container of methods to be associated to an instance of the PicoBlop class when such instance represents the class PicoColoredPoint.
+
+So direct references to instance variables are in fact interpreted as references to instance variable 
+represented in a blop instance. 
+"
 Class {
 	#name : #PicoColoredPointCode,
 	#superclass : #PicoCodeRepository,

@@ -5,7 +5,7 @@ Class {
 	#classInstVars : [
 		'picoEnvironment'
 	],
-	#category : #PicoCore
+	#category : #'PicoCore-Core'
 }
 
 { #category : #'global class repository management' }
@@ -173,13 +173,13 @@ PicoBlop >> picoClass [
 	^ self class giveClassNamed: self picoClassId
 ]
 
-{ #category : #'class structure' }
+{ #category : #'object structure' }
 PicoBlop >> picoClassId [
 
 	^ self at: self offsetForClass 
 ]
 
-{ #category : #'class structure' }
+{ #category : #'object structure' }
 PicoBlop >> picoClassId: ID [
 
 	self at: self offsetForClass put: ID

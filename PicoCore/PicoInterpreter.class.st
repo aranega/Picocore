@@ -23,17 +23,19 @@ Implementation
 "
 Class {
 	#name : #PicoInterpreter,
-	#superclass : #RBBetterProgramNodeVisitor,
+	#superclass : #RBCollectingProgramNodeVisitor,
 	#instVars : [
 		'stack',
 		'arguments',
 		'argumentIndex'
 	],
-	#category : #PicoCore
+	#category : #'PicoCore-Core'
 }
 
 { #category : #accessing }
 PicoInterpreter >> arguments: anArray [
+	"Represent the original arguments of a message.
+	Look at PicoBlop >> send: aSelector withArguments: anArray"
 	arguments := anArray
 ]
 
@@ -42,12 +44,16 @@ PicoInterpreter >> initialize [
 	super initialize.
 	arguments := #().
 	stack := Stack new.
-	"We create the first empty environment." 
+	"We create the first empty environment and push it on top of the 
+	stack of enviroment corresponding to message send." 
 	stack push: self newScope.
 ]
 
 { #category : #'stack management' }
 PicoInterpreter >> newScope [
+	"a new scope is an environment, i.e., a dictionary which support lookup in its parent.
+	This is important to manage variable shadowing. A local temp can hide another temp of a parent
+	scope in a local scope."
 	^ CTEnvironment new
 ]
 
@@ -65,11 +71,14 @@ PicoInterpreter >> pushNewScope [
 
 { #category : #accessing }
 PicoInterpreter >> receiver [
+	"Return the value of the binding to #self in the current scope."
+	
 	^ self valueOfTempVariable: #self
 ]
 
 { #category : #accessing }
 PicoInterpreter >> receiver: anObject [
+	"We add a new binding #self and the argument in the current scope."
 	self setValueOfTempVariable: #self to: anObject 
 ]
 
@@ -78,13 +87,15 @@ PicoInterpreter >> setValueOfTempVariable: name to: aValue [
 	^ stack top at: name put: aValue 
 ]
 
-{ #category : #accessing }
+{ #category : #'stack management' }
 PicoInterpreter >> stack [
 	^ stack
 ]
 
 { #category : #'stack management' }
 PicoInterpreter >> valueOfTempVariable: name [
+	"Return the value of the temporary named name in the current scope."
+	
 	^ stack top at: name
 ]
 
@@ -96,14 +107,8 @@ PicoInterpreter >> visitArgumentNode: anArgumentNode [
 ]
 
 { #category : #visiting }
-PicoInterpreter >> visitArrayNode: anArrayNode [
-
-	^ anArrayNode children collect: [ :each | self visitNode: each ]
-]
-
-{ #category : #visiting }
 PicoInterpreter >> visitAssignmentNode: anAssignmentNode [
-	"for a naive version without temp."
+	
 	| value |
 	value := self visitNode: anAssignmentNode value. 
 	anAssignmentNode variable isInstance
@@ -177,13 +182,14 @@ PicoInterpreter >> visitReturnNode: aMethodNode [
 
 { #category : #'visiting variable' }
 PicoInterpreter >> visitSelfNode: aSelfNode [
-
+	"The value of self is the message receiver"
 	^ self receiver
 ]
 
 { #category : #'visiting variable' }
 PicoInterpreter >> visitSuperNode: aSuperNode [
-	
+	"The value of super is the receiver. Yes madam!"
+
 	^ self receiver
 ]
 
@@ -196,6 +202,8 @@ PicoInterpreter >> visitTemporaryDeclarationNode: aTemporaryDeclarationNode [
 
 { #category : #'visiting variable' }
 PicoInterpreter >> visitVariableNode: aNode [
-
+	"The value of a variable is to look for in the current environment"
+	self flag: #duh. 
+	"what if this is an instance variable of the receiver?"
 	^ self valueOfTempVariable: aNode name
 ]

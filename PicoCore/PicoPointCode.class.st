@@ -1,3 +1,9 @@
+"
+I'm a class which should not be instantiated and I'm just a container of methods to be associated to an instance of the PicoBlop class when such instance represents the class PicoPoint.
+
+So direct references to instance variables are in fact interpreted as references to instance variable 
+represented in a blop instance. 
+"
 Class {
 	#name : #PicoPointCode,
 	#superclass : #PicoCodeRepository,
@@ -133,7 +139,8 @@ PicoPointCode >> usingTempValue [
 
 { #category : #'return and access' }
 PicoPointCode >> x [ 
-
+	"Pay attention that this x refers to the state stored in a blop instance and not an instance of this class."
+	
 	^ x
 ]
 
