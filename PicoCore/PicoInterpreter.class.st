@@ -7,7 +7,7 @@ Pico only supports:
 	- assignemt
 	- direct access to variables stored in picoBlop objects.
 	
-For example 
+For example in the following method x refers to x stored in an instance (an instance of the class PicoBlop) of the picoClass (an instance of the picoBlop class PicoColoredPoint).
 
 dotProduct: aPicoPoint 
 	""Answer a number that is the dot product of the receiver and the argument, aPoint. 
@@ -18,8 +18,7 @@ dotProduct: aPicoPoint
 
 Implementation
 	arguments is an array to be able to pass arguments from a picoBlop expression to the interpreter.
-	Internally the arguments are pushed in the current scope via this variable. 
-	
+	Internally the arguments are pushed in the current scope via this variable.	
 "
 Class {
 	#name : #PicoInterpreter,
@@ -203,7 +202,8 @@ PicoInterpreter >> visitTemporaryDeclarationNode: aTemporaryDeclarationNode [
 { #category : #'visiting variable' }
 PicoInterpreter >> visitVariableNode: aNode [
 	"The value of a variable is to look for in the current environment"
-	self flag: #duh. 
-	"what if this is an instance variable of the receiver?"
+	"Note that visitVariableNode: is not invoked for instance variable.
+	It is visitInstanceVariableNode: that deals with instance variable."
+	
 	^ self valueOfTempVariable: aNode name
 ]
