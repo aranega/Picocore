@@ -11,7 +11,7 @@ Class {
 BootstrapPicoTest >> testManualClassStructureCreation [
 	| picoClass |
 	PicoBlop 
-		initializePicoClassEnvironment;
+		initialize;
 		manuallyDefineClassStructure.
 		
 	picoClass := PicoBlop giveClassNamed: #PicoClass.
@@ -23,4 +23,23 @@ BootstrapPicoTest >> testManualClassStructureCreation [
 	because there is no super calls"
 	self assert: picoClass picoIVs equals: #(#class #name #superclass #iv #methodDict).
 	
+]
+
+{ #category : #tests }
+BootstrapPicoTest >> testManuallyCreateClassAllocate [
+	"(self selector: #testManuallyCreateClassAllocate) run"
+
+	| picoClass emptyClass |
+
+	PicoBlop 
+		initialize;
+		manuallyDefineClassStructure.
+		
+	picoClass := PicoBlop giveClassNamed: #PicoClass.
+	emptyClass := picoClass send: #allocate.
+	self assert: emptyClass picoClassId equals: #PicoClass.
+	self assert:  emptyClass picoSuperclassId isNil.
+	self assert:  emptyClass picoIVs isNil.
+	self assert:  emptyClass picoMethodDict isNil.
+	self assert:  emptyClass picoClassName isNil
 ]

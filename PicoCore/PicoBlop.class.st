@@ -44,6 +44,13 @@ PicoBlop class >> giveClassNamed: aSymbol ifAbsent: aBlock [
 ]
 
 { #category : #'global class repository management' }
+PicoBlop class >> initialize [
+
+	self initializePicoClassEnvironment
+
+]
+
+{ #category : #'global class repository management' }
 PicoBlop class >> initializePicoClassEnvironment [
 	"could be better to have it as instance level so that we can test without breaking everything but this is a toy."
 	
@@ -64,7 +71,10 @@ PicoBlop class >> manualClassStructure [
 
 { #category : #bootstrap }
 PicoBlop class >> manuallyDefineClassStructure [
-	self declareClass: self manualClassStructure 
+	| picoClass |
+	picoClass := self manualClassStructure.
+	self declareClass: picoClass.
+	picoClass initializeMethodDictionaryFrom: PicoFakedClassCode
 ]
 
 { #category : #'global class repository management' }
