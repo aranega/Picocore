@@ -12,6 +12,7 @@ Class {
 PicoBlop class >> bootstrap [
 
 	self initializePicoClassEnvironment.
+	self declareClass: self manuallyDefineClassStructure.
 ]
 
 { #category : #bootstrap }
@@ -50,15 +51,20 @@ PicoBlop class >> initializePicoClassEnvironment [
 ]
 
 { #category : #bootstrap }
-PicoBlop class >> manuallySetClassStructure [
+PicoBlop class >> manualClassStructure [
 	| class |
 	class := self new: 5.
 	class picoClassId: #PicoClass.
 	class picoClassName: #PicoClass.
 	class picoIVs: self classInstanceVariables.
-	class picoSuperclassId: #ObjObject.
+	class picoSuperclassId: #PicoObject.
 	class picoMethodDict: (IdentityDictionary new: 3).
 	^ class
+]
+
+{ #category : #bootstrap }
+PicoBlop class >> manuallyDefineClassStructure [
+	self declareClass: self manualClassStructure 
 ]
 
 { #category : #'global class repository management' }
