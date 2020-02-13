@@ -8,6 +8,17 @@ Class {
 	#category : #'PicoCore-Core'
 }
 
+{ #category : #bootstrap }
+PicoBlop class >> bootstrap [
+
+	self initializePicoClassEnvironment.
+]
+
+{ #category : #bootstrap }
+PicoBlop class >> classInstanceVariables [
+	^ #(#class #name #superclass #iv #methodDict)
+]
+
 { #category : #'global class repository management' }
 PicoBlop class >> declareClass: aPicoClass [ 
 	"Return the class defined in the class repository with the name aSymbol"
@@ -36,6 +47,18 @@ PicoBlop class >> initializePicoClassEnvironment [
 	"could be better to have it as instance level so that we can test without breaking everything but this is a toy."
 	
 	picoEnvironment := Dictionary new
+]
+
+{ #category : #bootstrap }
+PicoBlop class >> manuallySetClassStructure [
+	| class |
+	class := self new: 5.
+	class picoClassId: #PicoClass.
+	class picoClassName: #PicoClass.
+	class picoIVs: self classInstanceVariables.
+	class picoSuperclassId: #ObjObject.
+	class picoMethodDict: (IdentityDictionary new: 3).
+	^ class
 ]
 
 { #category : #'global class repository management' }
