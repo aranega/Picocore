@@ -258,7 +258,7 @@ PicoInterpreterTest >> testStackPushNewScope [
 
 	| int |
 	int := PicoInterpreter new.
-	int pushNewScope.
+	int pushNewFrame.
 	"the parent of the top scope is the previous one."
 	self deny: int stack top parent isNil.
 ]

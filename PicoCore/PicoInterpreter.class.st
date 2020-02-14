@@ -45,11 +45,11 @@ PicoInterpreter >> initialize [
 	stack := Stack new.
 	"We create the first empty environment and push it on top of the 
 	stack of enviroment corresponding to message send." 
-	stack push: self newScope.
+	stack push: self newFrame.
 ]
 
 { #category : #'stack management' }
-PicoInterpreter >> newScope [
+PicoInterpreter >> newFrame [
 	"a new scope is an environment, i.e., a dictionary which support lookup in its parent.
 	This is important to manage variable shadowing. A local temp can hide another temp of a parent
 	scope in a local scope."
@@ -57,12 +57,12 @@ PicoInterpreter >> newScope [
 ]
 
 { #category : #'stack management' }
-PicoInterpreter >> pushNewScope [
+PicoInterpreter >> pushNewFrame [
 	"Pushing a new scope consists in creating a new dictionary whose parent is the top of the stack
 	and pushing it as a new top. This way variable not found in current scope will be looked up in previous scope."
 
 	| newTop |
-	newTop := self newScope.
+	newTop := self newFrame.
 	newTop parent: stack top.
 	stack push: newTop 
 	
@@ -139,7 +139,7 @@ PicoInterpreter >> visitMessageNode: aMessageNode [
 	^ ((aMessageNode selector = #send:) or: [ aMessageNode selector = #send:withArguments:  ])
 		ifTrue: [ 
 			| rec |
-			self pushNewScope.
+			self pushNewFrame.
 			rec := (self visitMessageReceiver: aMessageNode receiver).
 			self setValueOfTempVariable: #self to: rec. 
 			arguments := aMessageNode arguments allButFirst flatCollect: [ :each | self visitNode: each ].
@@ -159,6 +159,7 @@ PicoInterpreter >> visitMessageNode: aMessageNode [
 
 { #category : #'visiting variable' }
 PicoInterpreter >> visitParameterNode: aNode [
+	"We visit a method definition and its parameters i.e., foo: arg"
 	
 	self setValueOfTempVariable: aNode name to: (arguments at: argumentIndex).
 	argumentIndex := argumentIndex + 1. 
