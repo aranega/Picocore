@@ -70,11 +70,18 @@ PicoBlop class >> manualClassStructure [
 ]
 
 { #category : #bootstrap }
+PicoBlop class >> manuallyDefineClass [
+	| picoClass |
+	picoClass := self manuallyDefineClassStructure.
+	picoClass initializeMethodDictionaryFrom: PicoFakedClassCode
+]
+
+{ #category : #bootstrap }
 PicoBlop class >> manuallyDefineClassStructure [
 	| picoClass |
 	picoClass := self manualClassStructure.
 	self declareClass: picoClass.
-	picoClass initializeMethodDictionaryFrom: PicoFakedClassCode
+	^ picoClass
 ]
 
 { #category : #'global class repository management' }

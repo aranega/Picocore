@@ -94,6 +94,16 @@ PicoInterpreterTest >> testGetterExecution [
 ]
 
 { #category : #'interpreter tests' }
+PicoInterpreterTest >> testGlobalAccess [
+
+	| inst value |
+	inst := pointClass allocateAnInstance.
+	value := inst send: #accessGlobal.
+	self assert: value equals: PicoBlop.
+	
+]
+
+{ #category : #'interpreter tests' }
 PicoInterpreterTest >> testHalfDotProduct [
 
 	| inst inst2 value |

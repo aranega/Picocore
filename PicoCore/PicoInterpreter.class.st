@@ -116,6 +116,12 @@ PicoInterpreter >> visitAssignmentNode: anAssignmentNode [
 ]
 
 { #category : #visiting }
+PicoInterpreter >> visitGlobalNode: aGlobalNode [
+
+	^ Smalltalk globals at: aGlobalNode name ifAbsent: [ nil ]
+]
+
+{ #category : #visiting }
 PicoInterpreter >> visitInstanceVariableNode: aVariableNode [
 
 	^ self receiver valueOfInstanceVariable: aVariableNode name
@@ -136,7 +142,7 @@ PicoInterpreter >> visitMessageArgumentNodes: aCol [
 { #category : #visiting }
 PicoInterpreter >> visitMessageNode: aMessageNode [
 	
-	^ ((aMessageNode selector = #send:) or: [ aMessageNode selector = #send:withArguments:  ])
+	^ ((aMessageNode selector = #send:) or: [ aMessageNode selector = #send:withArguments: ])
 		ifTrue: [ 
 			| rec |
 			self pushNewFrame.

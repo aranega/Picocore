@@ -11,6 +11,12 @@ Class {
 	#category : #'PicoCore-CodeRepository'
 }
 
+{ #category : #'internal messages' }
+PicoPointCode >> accessGlobal [
+
+	^ PicoBlop
+]
+
 { #category : #messages }
 PicoPointCode >> directAccessToX [
 
