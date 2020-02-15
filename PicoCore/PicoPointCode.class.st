@@ -52,6 +52,12 @@ PicoPointCode >> halfDotProduct: aPicoPoint [
 	^ x * (aPicoPoint send: #x) 
 ]
 
+{ #category : #'internal messages' }
+PicoPointCode >> messageSendToGlobal [
+
+	^ PicoBlop giveClassNamed: #PicoPoint ifAbsent: [nil].
+]
+
 { #category : #'for lookup tests' }
 PicoPointCode >> notOverridenFoo [ 
 	

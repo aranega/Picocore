@@ -1,12 +1,16 @@
 "
 I'm an hybrid interpreter for the pico language. 
 Pico language is nearly the same as Pharo except that it does not return in block, not blocks.
+
 Pico only supports: 
 	- message sends using send: and send:withArgument:
 	- primitive compution using any pharo messages`
 	- assignemt
 	- direct access to variables stored in picoBlop objects.
-	
+
+It does not support global access.
+
+
 For example in the following method x refers to x stored in an instance (an instance of the class PicoBlop) of the picoClass (an instance of the picoBlop class PicoColoredPoint).
 
 dotProduct: aPicoPoint 

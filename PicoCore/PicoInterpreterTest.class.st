@@ -99,7 +99,7 @@ PicoInterpreterTest >> testGlobalAccess [
 	| inst value |
 	inst := pointClass allocateAnInstance.
 	value := inst send: #accessGlobal.
-	self assert: value equals: PicoBlop.
+	self assert: value equals: PicoBlop
 	
 ]
 
@@ -119,6 +119,17 @@ PicoInterpreterTest >> testHalfDotProduct [
 
 	value := inst send: #halfDotProduct: withArguments: {inst2}.
 	self assert: value equals: 4000.
+	
+]
+
+{ #category : #'interpreter tests' }
+PicoInterpreterTest >> testMessageSendToGlobalAccess [
+
+	| inst value |
+	inst := pointClass allocateAnInstance.
+	PicoBlop declareClass: pointClass.
+	value := inst send: #messageSendToGlobal.
+	self assert: value equals: pointClass.
 	
 ]
 
