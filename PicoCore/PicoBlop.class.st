@@ -136,6 +136,18 @@ PicoBlop >> initializeMethodDictionaryFrom: aPharoClass [
 	
 ]
 
+{ #category : #methods }
+PicoBlop >> initializeMethodDictionaryFromCodeRepositoryFor: aSymbol [
+	
+	| codeClass |
+	codeClass := ('Pico', aSymbol, 'Code') asSymbol. 
+	self initializeMethodDictionaryFrom: (self class environment 
+			at: codeClass 
+			ifAbsent: [ self error: codeClass, ' does not seem to exist.' ] ).
+
+	
+]
+
 { #category : #lookup }
 PicoBlop >> lookup: selector [
 	"look for the method named <selector> starting in the receiver. 
@@ -253,7 +265,8 @@ PicoBlop >> picoIVs [
 { #category : #'class structure' }
 PicoBlop >> picoIVs: anOrderedCollection [ 
 	"Receiver should be: anObjClass. Set the list of instance variable names of the receiver (anObjClass)"
-
+	anOrderedCollection class = PicoInterpreter 
+		ifTrue: [ self halt ].
 	self at: self offsetForIVs put: anOrderedCollection
 ]
 

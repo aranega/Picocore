@@ -15,17 +15,27 @@ PicoFakedClassCode >> allocate [
 ]
 
 { #category : #'class behavior' }
+PicoFakedClassCode >> createClassNamed: aSymbol inheritsFrom: aSuperclassSymbol instVars: instVars [ 
+
+	| newClass |
+	newClass := self send: #new.
+	"the following could be done also why message sends."
+	newClass picoClassName: aSymbol.
+	newClass picoSuperclassId: aSuperclassSymbol.
+	newClass picoIVs: instVars.
+	newClass initializeMethod initializeMethodDictionaryFromCodeRepositoryFor: aSymbol.
+	^ newClass
+	
+	
+]
+
+{ #category : #'class behavior' }
 PicoFakedClassCode >> initialize [ 
 	
-	| picoSuperclass |
-	"self initializeUsing: initArray. missing"
-	picoSuperclass := PicoBlop giveClassNamed: self picoSuperclassId ifAbsent: [nil].
-	picoSuperclass isNil
-		ifFalse: [ self picoIVs: (self computeNewIVFrom: picoSuperclass picoIVs with: self picoIVs)]
-		ifTrue: [self picoIVs: (self computeNewIVFrom: #(#class) with: self picoIVs)].
-	
+	self picoClassName: #YouShouldNameMe.
+	self picoSuperclassId: #YouShouldNameMeToo.
+	self picoIVs: #().
 	self picoMethodDict: (IdentityDictionary new: 3).
-	PicoBlop declareClass: self.
 	^ self
 ]
 

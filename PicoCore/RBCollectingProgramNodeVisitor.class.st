@@ -32,6 +32,12 @@ RBCollectingProgramNodeVisitor >> visitLastStatementNode: aNode [
 ]
 
 { #category : #visiting }
+RBCollectingProgramNodeVisitor >> visitLiteralArrayNode: aNode [
+		
+	^ aNode contents collect: [ :each | self visitNode: each ]
+]
+
+{ #category : #visiting }
 RBCollectingProgramNodeVisitor >> visitMessageArgumentNode: aNode [
 	^ self visitNode: aNode
 ]

@@ -45,8 +45,8 @@ BootstrapPicoTest >> testManuallyCreateClassAllocate [
 ]
 
 { #category : #tests }
-BootstrapPicoTest >> testManuallyCreateClassNew [
-	"(self selector: #testManuallyCreateClassAllocate) run"
+BootstrapPicoTest >> testManuallyCreateClassCreateClass [
+	"(self selector: #testManuallyCreateClassCreateClass) run"
 
 	| picoClass emptyClass |
 
@@ -61,4 +61,23 @@ BootstrapPicoTest >> testManuallyCreateClassNew [
 	self assert:  emptyClass picoIVs isNil.
 	self assert:  emptyClass picoMethodDict isNil.
 	self assert:  emptyClass picoClassName isNil
+]
+
+{ #category : #tests }
+BootstrapPicoTest >> testManuallyCreateClassNew [
+	"(self selector: #testManuallyCreateClassNew) run"
+
+	| picoClass emptyClass |
+
+	PicoBlop 
+		initialize;
+		manuallyDefineClass.
+		
+	picoClass := PicoBlop giveClassNamed: #PicoClass.
+	emptyClass := picoClass send: #new.
+	self assert: emptyClass picoClassId equals: #PicoClass.
+	self assert: emptyClass picoSuperclassId equals: #YouShouldNameMeToo.
+	self assert: emptyClass picoIVs equals: #().
+	self assert: emptyClass picoMethodDict class equals: IdentityDictionary.
+
 ]
