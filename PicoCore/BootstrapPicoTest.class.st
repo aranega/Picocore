@@ -48,19 +48,21 @@ BootstrapPicoTest >> testManuallyCreateClassAllocate [
 BootstrapPicoTest >> testManuallyCreateClassCreateClass [
 	"(self selector: #testManuallyCreateClassCreateClass) run"
 
-	| picoClass emptyClass |
+	| picoClass pointClass |
 
 	PicoBlop 
 		initialize;
 		manuallyDefineClass.
 		
 	picoClass := PicoBlop giveClassNamed: #PicoClass.
-	emptyClass := picoClass send: #new.
-	self assert: emptyClass picoClassId equals: #PicoClass.
-	self assert:  emptyClass picoSuperclassId isNil.
-	self assert:  emptyClass picoIVs isNil.
-	self assert:  emptyClass picoMethodDict isNil.
-	self assert:  emptyClass picoClassName isNil
+	pointClass := picoClass 
+			send: #createClassNamed:inheritsFrom:instVars:
+			withArguments: { #Point . #PicoObject . #(class x y)}.
+	self assert: pointClass picoClassId equals: #PicoClass.
+	self assert: pointClass picoSuperclassId equals: #PicoObject.
+	self assert: pointClass picoIVs equals: #(class x y).
+	self assert: pointClass picoMethodDict keys size equals: PicoPointCode selectors size.
+	self assert: pointClass picoClassName equals: #Point
 ]
 
 { #category : #tests }
