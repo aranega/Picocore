@@ -265,8 +265,7 @@ PicoBlop >> picoIVs [
 { #category : #'class structure' }
 PicoBlop >> picoIVs: anOrderedCollection [ 
 	"Receiver should be: anObjClass. Set the list of instance variable names of the receiver (anObjClass)"
-	anOrderedCollection class = PicoInterpreter 
-		ifTrue: [ self halt ].
+
 	self at: self offsetForIVs put: anOrderedCollection
 ]
 

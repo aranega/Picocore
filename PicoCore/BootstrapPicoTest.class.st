@@ -79,6 +79,7 @@ BootstrapPicoTest >> testManuallyCreateClassInstanceOfClass [
 	pointClass := picoClass 
 			send: #createClassNamed:inheritsFrom:instVars:
 			withArguments: { #PicoPoint . #PicoObject . #(class x y)}.
+	self halt.
 	aPoint := pointClass send: #new.
 	self assert: (aPoint send: #x) equals: 1000
 	
