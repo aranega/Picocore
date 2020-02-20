@@ -42,6 +42,9 @@ PicoFakedClassCode >> initialize [
 
 { #category : #'class behavior' }
 PicoFakedClassCode >> new [ 
-
-	^ (self send: #allocate) send: #initialize
+	
+	| inst |
+	inst := (self send: #allocate).
+	inst send: #initialize.
+	^ inst
 ]
