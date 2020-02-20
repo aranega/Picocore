@@ -52,6 +52,12 @@ PicoPointCode >> halfDotProduct: aPicoPoint [
 	^ x * (aPicoPoint send: #x) 
 ]
 
+{ #category : #'return and access' }
+PicoPointCode >> initialize [ 
+	x := 1000.
+	y := 2000.
+]
+
 { #category : #'internal messages' }
 PicoPointCode >> messageSendToGlobal [
 

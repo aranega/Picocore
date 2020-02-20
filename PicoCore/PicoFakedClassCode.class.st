@@ -24,6 +24,7 @@ PicoFakedClassCode >> createClassNamed: aSymbol inheritsFrom: aSuperclassSymbol 
 	newClass picoSuperclassId: aSuperclassSymbol.
 	newClass picoIVs: instVars.
 	newClass initializeMethodDictionaryFromCodeRepositoryFor: aSymbol.
+	PicoBlop declareClass: newClass.
 	^ newClass
 	
 	

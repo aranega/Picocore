@@ -57,12 +57,47 @@ BootstrapPicoTest >> testManuallyCreateClassCreateClass [
 	picoClass := PicoBlop giveClassNamed: #PicoClass.
 	pointClass := picoClass 
 			send: #createClassNamed:inheritsFrom:instVars:
-			withArguments: { #Point . #PicoObject . #(class x y)}.
+			withArguments: { #PicoPoint . #PicoObject . #(class x y)}.
 	self assert: pointClass picoClassId equals: #PicoClass.
 	self assert: pointClass picoSuperclassId equals: #PicoObject.
 	self assert: pointClass picoIVs equals: #(class x y).
 	self assert: pointClass picoMethodDict keys size equals: PicoPointCode selectors size.
-	self assert: pointClass picoClassName equals: #Point
+	self assert: pointClass picoClassName equals: #PicoPoint
+]
+
+{ #category : #tests }
+BootstrapPicoTest >> testManuallyCreateClassInstanceOfClass [
+	"(self selector: #testManuallyCreateClassInstanceOfClass) run"
+
+	| picoClass pointClass aPoint |
+
+	PicoBlop 
+		initialize;
+		manuallyDefineClass.
+		
+	picoClass := PicoBlop giveClassNamed: #PicoClass.
+	pointClass := picoClass 
+			send: #createClassNamed:inheritsFrom:instVars:
+			withArguments: { #PicoPoint . #PicoObject . #(class x y)}.
+	aPoint := pointClass send: #new.
+	self assert: (aPoint send: #x) equals: 1000
+	
+]
+
+{ #category : #tests }
+BootstrapPicoTest >> testManuallyCreateClassIsDeclared [
+	"(self selector: #testManuallyCreateClassInstanceOfClass) run"
+	
+	| picoClass pointClass |
+	PicoBlop 
+		initialize;
+		manuallyDefineClass.
+		
+	picoClass := PicoBlop giveClassNamed: #PicoClass.
+	pointClass := picoClass 
+			send: #createClassNamed:inheritsFrom:instVars:
+			withArguments: { #PicoPoint . #PicoObject . #(class x y)}.
+	self assert: (PicoBlop picoEnvironment keys includes: #PicoPoint).
 ]
 
 { #category : #tests }

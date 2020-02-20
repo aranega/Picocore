@@ -140,7 +140,7 @@ PicoBlop >> initializeMethodDictionaryFrom: aPharoClass [
 PicoBlop >> initializeMethodDictionaryFromCodeRepositoryFor: aSymbol [
 	
 	| codeClass |
-	codeClass := ('Pico', aSymbol, 'Code') asSymbol. 
+	codeClass := (aSymbol, 'Code') asSymbol. 
 	self initializeMethodDictionaryFrom: (self class environment 
 			at: codeClass 
 			ifAbsent: [ self error: codeClass, ' does not seem to exist.' ] ).
