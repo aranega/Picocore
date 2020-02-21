@@ -28,6 +28,22 @@ PicoBlop class >> declareClass: aPicoClass [
 			
 ]
 
+{ #category : #bootstrap }
+PicoBlop class >> defineObject [
+
+	| picoClass objectClass |
+	"not sure that this is needed"
+	PicoBlop 
+		initialize;
+		manuallyDefineClass.
+		
+	picoClass := PicoBlop giveClassNamed: #PicoClass.
+	objectClass := picoClass 
+			send: #createClassNamed:inheritsFrom:instVars:
+			withArguments: { #PicoObject . nil . #(class)}.
+	
+]
+
 { #category : #'global class repository management' }
 PicoBlop class >> giveClassNamed: aSymbol [ 
 	"Return the class defined in the class repository with the name aSymbol"

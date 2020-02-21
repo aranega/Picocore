@@ -7,7 +7,46 @@ Class {
 	#category : #'PicoCore-Tests'
 }
 
-{ #category : #tests }
+{ #category : #'tests - Object class' }
+BootstrapPicoTest >> testCreateObject [
+	"(self selector: #testCreateObject) run"
+
+	| objectClass |
+
+	PicoBlop 
+		initialize;
+		manuallyDefineClass.
+		
+	PicoBlop defineObject.
+	objectClass := PicoBlop giveClassNamed: #PicoObject.
+	self assert: objectClass picoClassId equals: #PicoClass.
+	self assert: objectClass picoSuperclassId isNil.
+	self assert: objectClass picoIVs equals: #(class).
+	self assert: objectClass picoMethodDict keys size equals: PicoObjectCode selectors size.
+	self assert: objectClass picoClassName equals: #PicoObject
+]
+
+{ #category : #'tests - Object class' }
+BootstrapPicoTest >> testCreateObjectMethods [
+	"(self selector: #testCreateObjectMethods) run"
+
+	| objectClass instanceOfObject |
+
+	PicoBlop 
+		initialize;
+		manuallyDefineClass.
+		
+	PicoBlop defineObject.
+	self assert: (PicoBlop picoEnvironment keys includesAll: #(PicoObject PicoClass)).
+	objectClass := PicoBlop giveClassNamed: #PicoObject.
+	self halt.
+	instanceOfObject := objectClass send: #new.
+	"the new should be found in the fakedclass."
+	self assert: (instanceOfObject send: #isClass) not.
+	self assert: (instanceOfObject send: #isMetaclass) not.
+]
+
+{ #category : #'tests - manually class creation' }
 BootstrapPicoTest >> testManualClassStructureCreation [
 	| picoClass |
 	PicoBlop 
@@ -25,7 +64,7 @@ BootstrapPicoTest >> testManualClassStructureCreation [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - manually class creation' }
 BootstrapPicoTest >> testManuallyCreateClassAllocate [
 	"(self selector: #testManuallyCreateClassAllocate) run"
 
@@ -44,7 +83,7 @@ BootstrapPicoTest >> testManuallyCreateClassAllocate [
 	self assert:  emptyClass picoClassName isNil
 ]
 
-{ #category : #tests }
+{ #category : #'tests - manually class creation' }
 BootstrapPicoTest >> testManuallyCreateClassCreateClass [
 	"(self selector: #testManuallyCreateClassCreateClass) run"
 
@@ -65,7 +104,7 @@ BootstrapPicoTest >> testManuallyCreateClassCreateClass [
 	self assert: pointClass picoClassName equals: #PicoPoint
 ]
 
-{ #category : #tests }
+{ #category : #'tests - manually class creation' }
 BootstrapPicoTest >> testManuallyCreateClassInstanceOfClass [
 	"(self selector: #testManuallyCreateClassInstanceOfClass) run"
 
@@ -80,11 +119,12 @@ BootstrapPicoTest >> testManuallyCreateClassInstanceOfClass [
 			send: #createClassNamed:inheritsFrom:instVars:
 			withArguments: { #PicoPoint . #PicoObject . #(class x y)}.
 	aPoint := pointClass send: #new.
-	self assert: (aPoint send: #x) equals: 1000
+	self assert: (aPoint send: #x) equals: 1000.
+	self assert: (aPoint send: #y) equals: 2000
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - manually class creation' }
 BootstrapPicoTest >> testManuallyCreateClassIsDeclared [
 	"(self selector: #testManuallyCreateClassInstanceOfClass) run"
 	
@@ -100,7 +140,7 @@ BootstrapPicoTest >> testManuallyCreateClassIsDeclared [
 	self assert: (PicoBlop picoEnvironment keys includes: #PicoPoint).
 ]
 
-{ #category : #tests }
+{ #category : #'tests - manually class creation' }
 BootstrapPicoTest >> testManuallyCreateClassNew [
 	"(self selector: #testManuallyCreateClassNew) run"
 

@@ -18,6 +18,12 @@ PicoObjectCode >> error: arrayOfArguments [
 	^ 'Error ', arrayOfArguments first
 ]
 
+{ #category : #testing }
+PicoObjectCode >> initialize [ 
+
+	^ self
+]
+
 { #category : #'error handling' }
 PicoObjectCode >> introspectReadVariable: aSymbol [
 
