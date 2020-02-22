@@ -54,3 +54,9 @@ PicoObjectCode >> klass [
 
 	^ self picoClass 
 ]
+
+{ #category : #testing }
+PicoObjectCode >> picoClass [
+
+	^ self picoClass 
+]

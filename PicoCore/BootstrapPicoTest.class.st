@@ -31,6 +31,23 @@ BootstrapPicoTest >> testCreateObjectMethods [
 	"(self selector: #testCreateObjectMethods) run"
 
 	| objectClass instanceOfObject |
+	PicoBlop 
+		initialize;
+		manuallyDefineClass.
+		
+	PicoBlop defineObject.
+	self assert: (PicoBlop picoEnvironment keys includesAll: #(PicoObject PicoClass)).
+	objectClass := PicoBlop giveClassNamed: #PicoObject.
+	instanceOfObject := objectClass send: #new.
+	self assert: (instanceOfObject send: #isClass) not.
+	self assert: (instanceOfObject send: #isMetaclass) not.
+]
+
+{ #category : #'tests - Object class' }
+BootstrapPicoTest >> testMakeSureThatInitializeOnObjectIsInvoked [
+	"(self selector: #testMakeSureThatInitializeOnObjectIsInvoked) run"
+
+	| objectClass instanceOfObject |
 
 	PicoBlop 
 		initialize;
@@ -39,11 +56,8 @@ BootstrapPicoTest >> testCreateObjectMethods [
 	PicoBlop defineObject.
 	self assert: (PicoBlop picoEnvironment keys includesAll: #(PicoObject PicoClass)).
 	objectClass := PicoBlop giveClassNamed: #PicoObject.
-	self halt.
 	instanceOfObject := objectClass send: #new.
-	"the new should be found in the fakedclass."
-	self assert: (instanceOfObject send: #isClass) not.
-	self assert: (instanceOfObject send: #isMetaclass) not.
+	self assert: (instanceOfObject send: #picoClass) equals: objectClass.
 ]
 
 { #category : #'tests - manually class creation' }
