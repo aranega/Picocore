@@ -12,7 +12,8 @@ Class {
 PicoBlop class >> bootstrap [
 
 	self initializePicoClassEnvironment.
-	self declareClass: self manuallyDefineClassStructure.
+	self manuallyDefineClass.
+	self defineObject.
 ]
 
 { #category : #bootstrap }
@@ -101,16 +102,11 @@ PicoBlop class >> manualClassStructure [
 { #category : #'bootstrap - faked class definition' }
 PicoBlop class >> manuallyDefineClass [
 	| picoClass |
-	picoClass := self manuallyDefineClassStructure.
-	picoClass initializeMethodDictionaryFrom: PicoFakedClassCode
-]
-
-{ #category : #'bootstrap - faked class definition' }
-PicoBlop class >> manuallyDefineClassStructure [
-	| picoClass |
 	picoClass := self manualClassStructure.
+	picoClass initializeMethodDictionaryFrom: PicoFakedClassCode.
 	self declareClass: picoClass.
 	^ picoClass
+	
 ]
 
 { #category : #bootstrap }
