@@ -16,13 +16,16 @@ PicoFakedClassCode >> allocate [
 
 { #category : #'class behavior' }
 PicoFakedClassCode >> createClassNamed: aSymbol inheritsFrom: aSuperclassSymbol instVars: instVars [ 
-
+	"At this stage Object does not exist, yet."
 	| newClass |
 	newClass := self send: #new.
 	"the following could be done also why message sends."
 	newClass picoClassName: aSymbol.
 	newClass picoSuperclassId: aSuperclassSymbol.
-	newClass picoIVs: instVars.
+	newClass computeIVForBootstrapOfSuperclassSymbol: aSuperclassSymbol iv: instVars.
+	"this class is only used to create Class and Object so let us 
+	hardcode it. And we do not have support for loops and conditional in Pico..."
+		
 	newClass initializeMethodDictionaryFromCodeRepositoryFor: aSymbol.
 	PicoBlop declareClass: newClass.
 	^ newClass

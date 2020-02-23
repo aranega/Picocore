@@ -29,6 +29,18 @@ PicoBlop class >> declareClass: aPicoClass [
 ]
 
 { #category : #bootstrap }
+PicoBlop class >> defineClass [
+
+	| picoClass objectClass |
+
+	picoClass := PicoBlop giveClassNamed: #PicoClass.
+	objectClass := picoClass 
+			send: #createClassNamed:inheritsFrom:instVars:
+			withArguments: { #PicoClass . #PicoObject . self classInstanceVariableNames }.
+	
+]
+
+{ #category : #bootstrap }
 PicoBlop class >> defineObject [
 
 	| picoClass objectClass |
@@ -73,31 +85,37 @@ PicoBlop class >> initializePicoClassEnvironment [
 	picoEnvironment := Dictionary new
 ]
 
-{ #category : #bootstrap }
+{ #category : #'bootstrap - faked class definition' }
 PicoBlop class >> manualClassStructure [
 	| class |
 	class := self new: 5.
 	class picoClassId: #PicoClass.
 	class picoClassName: #PicoClass.
-	class picoIVs: self classInstanceVariables.
+	class picoIVs: #(#class #name #superclass #iv #methodDict).
+	"we hardcod the Class structure and the fact that class is inherited from Object."
 	class picoSuperclassId: #PicoObject.
 	class picoMethodDict: (IdentityDictionary new: 3).
 	^ class
 ]
 
-{ #category : #bootstrap }
+{ #category : #'bootstrap - faked class definition' }
 PicoBlop class >> manuallyDefineClass [
 	| picoClass |
 	picoClass := self manuallyDefineClassStructure.
 	picoClass initializeMethodDictionaryFrom: PicoFakedClassCode
 ]
 
-{ #category : #bootstrap }
+{ #category : #'bootstrap - faked class definition' }
 PicoBlop class >> manuallyDefineClassStructure [
 	| picoClass |
 	picoClass := self manualClassStructure.
 	self declareClass: picoClass.
 	^ picoClass
+]
+
+{ #category : #bootstrap }
+PicoBlop class >> onlyClassInstanceVariables [
+	^ #(#name #superclass #iv #methodDict)
 ]
 
 { #category : #'global class repository management' }
@@ -122,6 +140,20 @@ PicoBlop >> bodyOfMethod: aSelector [
 	Return nil if the selector is not defined.  self is an objClass"
 
 	^ self picoMethodDict at: aSelector ifAbsent: [nil]
+]
+
+{ #category : #'variable inheritance' }
+PicoBlop >> computeIVForBootstrapOfSuperclassSymbol: aSuperclassSymbol iv: instVars [
+
+	aSuperclassSymbol isNil
+		ifTrue: 
+			[ "we are on Object since only Object does not have a superclass."
+			self picoIVs: #(#class) ]
+		ifFalse: 
+			[ 
+			| picoSuperclass | 
+			picoSuperclass := PicoBlop giveClassNamed: aSuperclassSymbol.
+			self picoIVs: (self computeNewIVFrom: picoSuperclass picoIVs with: instVars)].
 ]
 
 { #category : #'variable inheritance' }

@@ -11,10 +11,24 @@ Class {
 	#category : #'PicoCore-CodeRepository'
 }
 
+{ #category : #'for lookup tests' }
+PicoPointCode >> aBlock [
+	
+	^ [ self send: #x ]
+]
+
 { #category : #'internal messages' }
 PicoPointCode >> accessGlobal [
 
 	^ PicoBlop
+]
+
+{ #category : #'for lookup tests' }
+PicoPointCode >> condition [
+	
+	^ true
+		ifTrue: [ 3 ]
+		ifFalse: [ 5 ] 
 ]
 
 { #category : #messages }

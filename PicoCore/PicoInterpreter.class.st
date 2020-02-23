@@ -8,7 +8,7 @@ Pico only supports:
 	- assignemt
 	- direct access to variables stored in picoBlop objects.
 
-It does not support global access.
+It does not support global access, block, conditionals and loops.
 
 
 For example in the following method x refers to x stored in an instance (an instance of the class PicoBlop) of the picoClass (an instance of the picoBlop class PicoColoredPoint).
@@ -23,6 +23,30 @@ dotProduct: aPicoPoint
 Implementation
 	arguments is an array to be able to pass arguments from a picoBlop expression to the interpreter.
 	Internally the arguments are pushed in the current scope via this variable.	
+	
+
+
+Possible extensions:
+Adding support for condition.
+
+>> visitMessageNode: aMessageNode [
+
+  (aMessageNode selector = #ifTrue:) ifTrue: [
+      ^ self evaluateIfTrue: aMessageNode ].
+
+  “Do the normal case”
+]
+
+>> evaluateIfTrue: aMessageNode [
+  condition := aMessageNode receiver accept: self.
+  condition = true “are pico booleans pharo booleans?”
+    ifTrue: [ | blockNode |
+      blockNode := aMessageNode arguments first.
+      blockNode body acceptVisitor: self ]
+]
+
+
+
 "
 Class {
 	#name : #PicoInterpreter,
