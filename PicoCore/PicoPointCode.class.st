@@ -8,7 +8,7 @@ Class {
 	#name : #PicoPointCode,
 	#superclass : #PicoCodeRepository,
 	#type : #variable,
-	#category : #'PicoCore-CodeRepository'
+	#category : #'PicoCore-ExampleCodeRepository'
 }
 
 { #category : #'for lookup tests' }

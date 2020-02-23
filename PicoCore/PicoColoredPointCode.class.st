@@ -8,8 +8,14 @@ Class {
 	#name : #PicoColoredPointCode,
 	#superclass : #PicoCodeRepository,
 	#type : #variable,
-	#category : #'PicoCore-CodeRepository'
+	#category : #'PicoCore-ExampleCodeRepository'
 }
+
+{ #category : #'for lookup tests' }
+PicoColoredPointCode >> error: args [
+	
+	^ 'Error on coloredPoint for message: ', args first
+]
 
 { #category : #'for lookup tests' }
 PicoColoredPointCode >> foo [ 

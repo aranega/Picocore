@@ -13,9 +13,10 @@ Class {
 
 { #category : #'error handling' }
 PicoObjectCode >> error: arrayOfArguments [
-
-	('Error ', arrayOfArguments first) trace.
-	^ 'Error ', arrayOfArguments first
+	| msg |
+	msg := ('Error: message ', arrayOfArguments first, ' not found in class ', self picoClassId).
+	msg trace.
+	^ msg
 ]
 
 { #category : #testing }

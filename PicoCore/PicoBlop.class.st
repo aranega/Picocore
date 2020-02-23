@@ -374,7 +374,7 @@ PicoBlop >> send: aSelector withArguments: anArray [
 								receiver: self;
 								arguments: anArray; 
 								visitNode: method ]
-			ifNil: [  self sendError: aSelector withArgs: anArray  ]
+			ifNil: [  self sendError: aSelector withArguments: anArray  ]
 ]
 
 { #category : #'message passing' }

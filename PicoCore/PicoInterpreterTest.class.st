@@ -8,7 +8,7 @@ Class {
 	#category : #'PicoCore-Tests'
 }
 
-{ #category : #running }
+{ #category : #setup }
 PicoInterpreterTest >> setUp [
 
 	pointClass := PicoBlop new: 5.

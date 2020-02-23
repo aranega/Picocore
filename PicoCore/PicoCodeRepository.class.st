@@ -11,7 +11,7 @@ Class {
 		'x',
 		'y'
 	],
-	#category : #'PicoCore-CodeRepository'
+	#category : #'PicoCore-CoreCodeRepository'
 }
 
 { #category : #'environment access' }

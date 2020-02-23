@@ -15,7 +15,7 @@ Class {
 	#category : #'PicoCore-Tests'
 }
 
-{ #category : #running }
+{ #category : #setup }
 ManualCreationPicoTest >> assembleColoredPointClass [
 	
 	"This is not the way to create classes. Here we are testing primitives before the bootstrap of the kernel so we do everything by hand. In future tests we will retest these functionalities using a full kernel version."
@@ -31,7 +31,7 @@ ManualCreationPicoTest >> assembleColoredPointClass [
 
 ]
 
-{ #category : #running }
+{ #category : #setup }
 ManualCreationPicoTest >> assembleColoredPointInstance [
 	aColoredPoint := PicoBlop new: 4.
 	aColoredPoint at: 1 put: #PicoColoredPoint.
@@ -40,7 +40,7 @@ ManualCreationPicoTest >> assembleColoredPointInstance [
 	aColoredPoint at: 4 put: Color red
 ]
 
-{ #category : #running }
+{ #category : #setup }
 ManualCreationPicoTest >> assembleObjectClass [
 	
 	"This is not the way to create classes. Here we are testing primitives before the bootstrap of the kernel so we do everything by hand. In future tests we will retest these functionalities using a full kernel version."
@@ -56,7 +56,7 @@ ManualCreationPicoTest >> assembleObjectClass [
 
 ]
 
-{ #category : #running }
+{ #category : #setup }
 ManualCreationPicoTest >> assemblePointClass [
 	
 	"This is not the way to create classes. Here we are testing primitives before the bootstrap of the kernel so we do everything by hand. In future tests we will retest these functionalities using a full kernel version."
@@ -72,7 +72,7 @@ ManualCreationPicoTest >> assemblePointClass [
 
 ]
 
-{ #category : #running }
+{ #category : #setup }
 ManualCreationPicoTest >> assemblePointInstance [
 	aPoint := PicoBlop new: 3.
 	aPoint at: 1 put: #PicoPoint.
@@ -80,7 +80,7 @@ ManualCreationPicoTest >> assemblePointInstance [
 	aPoint at: 3 put: 15
 ]
 
-{ #category : #running }
+{ #category : #setup }
 ManualCreationPicoTest >> setUp [ 
 	self assemblePointClass.
 	self assemblePointInstance. 
