@@ -11,12 +11,6 @@ Class {
 	#category : #'PicoCore-ExampleCodeRepository'
 }
 
-{ #category : #'for lookup tests' }
-PicoPointCode >> aBlock [
-	
-	^ [ self send: #x ]
-]
-
 { #category : #'internal messages' }
 PicoPointCode >> accessGlobal [
 
