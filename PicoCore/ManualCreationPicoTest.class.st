@@ -175,13 +175,13 @@ ManualCreationPicoTest >> testInstanceVariableInheritance [
 
 	"a better choice would be to throw an exception if there are duplicates"
 	self assert: 
-			(PicoBlop new computeNewIVFrom: #(#a #b #c #d) asOrderedCollection
-				with: #(#a #z #b #t) asOrderedCollection)
-					equals: #(#a #b #c #d #z #t) asOrderedCollection.
+			(PicoBlop new computeNewIVFrom: #(#a #b #c #d) 
+				with: #(#a #z #b #t) )
+					equals: #(#a #b #c #d #z #t) .
 	self assert: 
-			(PicoBlop new computeNewIVFrom: #() asOrderedCollection
-				with: #(#a #z #b #t) asOrderedCollection)
-					equals: #(#a #z #b #t) asOrderedCollection
+			(PicoBlop new computeNewIVFrom: #() 
+				with: #(#a #z #b #t) )
+					equals: #(#a #z #b #t) 
 ]
 
 { #category : #'step7-tests-instanceVariableInheritance' }

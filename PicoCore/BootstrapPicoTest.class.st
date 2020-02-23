@@ -20,6 +20,50 @@ BootstrapPicoTest >> objectDefinition [
 	PicoBlop defineObject
 ]
 
+{ #category : #'tests - Class definition' }
+BootstrapPicoTest >> testClassStructureCreation [
+	| picoClass |
+	PicoBlop bootstrap.
+	picoClass := PicoBlop giveClassNamed: #PicoClass.
+	self assert: picoClass picoClassName equals: #PicoClass.
+	self assert: picoClass picoClassId equals: #PicoClass.
+	self assert: picoClass picoClass equals: picoClass.
+	self assert: picoClass picoSuperclassId equals: #PicoObject.
+	"the fact that the created first class inherits form ObjObject is not necessary
+	because there is no super calls"
+	self
+		assert: picoClass picoIVs
+		equals: #(#class #name #superclass #iv #methodDict)
+]
+
+{ #category : #'tests - Class definition' }
+BootstrapPicoTest >> testClassTesting [
+	| picoClass |
+	PicoBlop bootstrap.
+	picoClass := PicoBlop giveClassNamed: #PicoClass.
+	self assert: (picoClass send: #isMetaclass)
+]
+
+{ #category : #'tests - Class definition' }
+BootstrapPicoTest >> testCreateClassPoint [
+	"(self selector: #testManuallyCreateClassCreateClass) run"
+
+	| picoClass picoPointClass |
+	PicoBlop bootstrap.
+	picoClass := PicoBlop giveClassNamed: #PicoClass.
+	picoPointClass := picoClass
+		send: #createClassNamed:inheritsFrom:instVars:
+		withArguments:
+			{#PicoPoint . #PicoObject . #(x y)}.
+	self assert: picoPointClass picoClassId equals: #PicoClass.
+	self assert: picoPointClass picoSuperclassId equals: #PicoObject.
+	self assert: picoPointClass picoIVs equals: #(class x y).
+	self
+		assert: picoPointClass picoMethodDict keys size
+		equals: PicoPointCode selectors size.
+	self assert: picoPointClass picoClassName equals: #PicoPoint
+]
+
 { #category : #'tests - Object definition' }
 BootstrapPicoTest >> testCreateObject [
 	"(self selector: #testCreateObject) run"
@@ -67,7 +111,6 @@ BootstrapPicoTest >> testMakeSureThatInitializeOnObjectIsInvoked [
 { #category : #'tests - manually Class definition' }
 BootstrapPicoTest >> testManualClassStructureCreation [
 	| picoClass |
-	self manualClassDefinition.
 	picoClass := PicoBlop giveClassNamed: #PicoClass.
 	self assert: picoClass picoClassName equals: #PicoClass.
 	self assert: picoClass picoClassId equals: #PicoClass.

@@ -18,8 +18,8 @@ BootstrappedPicoTest >> setUp [
 ]
 
 { #category : #tests }
-BootstrappedPicoTest >> testManuallyCreateClassCreateClass [
-	"(self selector: #testManuallyCreateClassCreateClass) run"
+BootstrappedPicoTest >> testCreateClassPoint [
+	"(self selector: #testCreateClassPoint) run"
 
 	| pointClass |
 	pointClass := picoClass
@@ -38,7 +38,7 @@ BootstrappedPicoTest >> testManuallyCreateClassCreateClass [
 ]
 
 { #category : #tests }
-BootstrappedPicoTest >> testManuallyCreateClassInstanceOfClass [
+BootstrappedPicoTest >> testCreateInstance [
 	"(self selector: #testManuallyCreateClassInstanceOfClass) run"
 
 	| pointClass aPoint |
@@ -54,8 +54,8 @@ BootstrappedPicoTest >> testManuallyCreateClassInstanceOfClass [
 ]
 
 { #category : #tests }
-BootstrappedPicoTest >> testManuallyCreateClassIsDeclared [
-	"(self selector: #testManuallyCreateClassInstanceOfClass) run"
+BootstrappedPicoTest >> testCreatingPointClassDeclaresIt [
+	"(self selector: #testCreatingPointClassDeclaresIt) run"
 
 	| pointClass |
 	pointClass := picoClass
@@ -65,15 +65,4 @@ BootstrappedPicoTest >> testManuallyCreateClassIsDeclared [
 			#PicoObject.
 			#(class x y)}.
 	self assert: (PicoBlop picoEnvironment keys includes: #PicoPoint)
-]
-
-{ #category : #tests }
-BootstrappedPicoTest >> testObjectMethods [
-	"(self selector: #testObjectMethods) run"
-
-	| objectClass instanceOfObject |
-	objectClass := PicoBlop giveClassNamed: #PicoObject.
-	instanceOfObject := objectClass send: #new.
-	self assert: (instanceOfObject send: #isClass) not.
-	self assert: (instanceOfObject send: #isMetaclass) not.
 ]

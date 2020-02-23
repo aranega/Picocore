@@ -14,6 +14,7 @@ PicoBlop class >> bootstrap [
 	self initializePicoClassEnvironment.
 	self manuallyDefineClass.
 	self defineObject.
+	self defineClass
 ]
 
 { #category : #bootstrap }
@@ -32,12 +33,11 @@ PicoBlop class >> declareClass: aPicoClass [
 { #category : #bootstrap }
 PicoBlop class >> defineClass [
 
-	| picoClass objectClass |
-
+	| picoClass |
 	picoClass := PicoBlop giveClassNamed: #PicoClass.
-	objectClass := picoClass 
+	picoClass 
 			send: #createClassNamed:inheritsFrom:instVars:
-			withArguments: { #PicoClass . #PicoObject . self classInstanceVariableNames }.
+			withArguments: { #PicoClass . #PicoObject . self onlyClassInstanceVariables  }.
 	
 ]
 
@@ -158,12 +158,12 @@ PicoBlop >> computeNewIVFrom: superIVOrdCol with: localIVOrdCol [
 	Important the order of the instance variable is conserved"
 
 	| ivs |
-	^superIVOrdCol isNil 
+	^ ( superIVOrdCol isNil 
 		ifTrue: [localIVOrdCol]
 		ifFalse: 
 			[ivs := superIVOrdCol asOrderedCollection copy.
 			localIVOrdCol do: [:e | (ivs includes: e) ifFalse: [ivs add: e]].
-			ivs]
+			ivs]) asArray
 ]
 
 { #category : #lookup }
