@@ -72,6 +72,22 @@ PicoPointCode >> messageSendToGlobal [
 	^ PicoBlop giveClassNamed: #PicoPoint ifAbsent: [nil].
 ]
 
+{ #category : #messages }
+PicoPointCode >> methodAccessingTemp [
+
+	| temp |
+	^ temp
+]
+
+{ #category : #messages }
+PicoPointCode >> methodWithTemp [
+
+	| temp |
+	
+	temp := 7.
+	^ self send: #methodAccessingTemp
+]
+
 { #category : #'for lookup tests' }
 PicoPointCode >> notOverridenFoo [ 
 	
