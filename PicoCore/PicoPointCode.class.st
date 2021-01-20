@@ -68,7 +68,8 @@ PicoPointCode >> initialize [
 
 { #category : #'internal messages' }
 PicoPointCode >> messageSendToGlobal [
-
+	self flag: #thisISWrong. 
+	"I would expect more PicoPoint allocate for example but here this definition is stupid"
 	^ PicoBlop giveClassNamed: #PicoPoint ifAbsent: [nil].
 ]
 

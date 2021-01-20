@@ -26,7 +26,7 @@ PicoBlop class >> classInstanceVariables [
 PicoBlop class >> declareClass: aPicoClass [ 
 	"Return the class defined in the class repository with the name aSymbol"
 
-	^ self picoEnvironment at: aPicoClass picoClassName put: aPicoClass 
+	self picoEnvironment at: aPicoClass picoClassName put: aPicoClass 
 			
 ]
 

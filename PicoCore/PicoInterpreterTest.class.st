@@ -98,8 +98,10 @@ PicoInterpreterTest >> testGlobalAccess [
 
 	| inst value |
 	inst := pointClass allocateAnInstance.
+	PicoBlop declareClass: pointClass.
+	self halt.
 	value := inst send: #accessGlobal.
-	self assert: value equals: PicoBlop
+	self assert: value equals: (PicoBlop giveClassNamed: #PicoPoint)
 	
 ]
 
@@ -204,7 +206,7 @@ PicoInterpreterTest >> testSendingMessageToArgumentwithDifferentArgument [
 	"sendingMessageToArgument: aPicoPoint withDifferentArgument: anArg
 	
 	aPicoPoint send: #x: withArguments: {33}.
-	^ aPicoPoint send: #x"
+		^ aPicoPoint send: #x"
 
 	value := inst send: #sendingMessageToArgument:withDifferentArgument: withArguments: {inst2 . 72}.
 	self assert: value equals: 33.
