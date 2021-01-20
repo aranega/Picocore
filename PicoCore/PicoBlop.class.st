@@ -370,10 +370,10 @@ PicoBlop >> send: aSelector withArguments: anArray [
 		ifFalse: [ self error: aSelector, ' does not expect ', anArray printString  ].
 	^ (self picoClass lookup: aSelector)
 			ifNotNil: [ :method |  
-						PicoInterpreter new 
-								receiver: self;
-								arguments: anArray; 
-								visitNode: method ]
+						PicoInterpreter2 new 
+								execute: method
+								withReceiver: self 
+								andArguments: anArray ]
 			ifNil: [  self sendError: aSelector withArguments: anArray  ]
 ]
 
