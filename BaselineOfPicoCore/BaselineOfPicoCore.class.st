@@ -11,8 +11,11 @@ BaselineOfPicoCore >> baseline: spec [
 		baseline: 'ContainersPropertyEnvironment'
 		with: [ spec repository: 'github://Ducasse/Containers-PropertyEnvironment' ].
 	spec
+		baseline: 'Champollion'
+		with: [ spec repository: 'github://Ducasse/Champollion' ].	
+	spec
 		for: #pharo
 		do: [ 
 			spec
-				package: 'PicoCore' with: [ spec requires: #('ContainersPropertyEnvironment') ] ]
+				package: 'PicoCore' with: [ spec requires: #('ContainersPropertyEnvironment' 'Champollion') ] ]
 ]
