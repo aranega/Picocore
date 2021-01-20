@@ -323,6 +323,14 @@ PicoInterpreterTest >> testSwappingArgArg2 [
 	
 ]
 
+{ #category : #'interpreter tests' }
+PicoInterpreterTest >> testTempsShouldNotEscapeMethods [
+
+	| inst |
+	inst := pointClass allocateAnInstance.
+	self assert: (inst send: #methodWithTemp) isNil
+]
+
 { #category : #'primitive message tests' }
 PicoInterpreterTest >> testUsingTempValue [
 	|  inst val |
