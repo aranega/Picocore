@@ -215,7 +215,9 @@ PicoBlop >> methodDictionaryFrom: aPharoClass [
 	dict := IdentityDictionary new. 
 	aPharoClass selectors do: [ :each | 
 		| ast |
-		ast := (aPharoClass compiledMethodAt: each) ast.
+		ast := (RBParser parseMethod: (aPharoClass compiledMethodAt: each) sourceCode)
+			propertyAt: #definingClass put: self;
+			yourself.
 		dict at: each put: ast.
 		].
 	^ dict
@@ -371,6 +373,8 @@ PicoBlop >> send: aSelector withArguments: anArray [
 	^ (self picoClass lookup: aSelector)
 			ifNotNil: [ :method |  
 						PicoInterpreter2 new 
+								globalEnvironmentAt: #IdentityDictionary put: IdentityDictionary;
+								globalEnvironmentAt: #PicoBlop put: PicoBlop;
 								execute: method
 								withReceiver: self 
 								andArguments: anArray ]

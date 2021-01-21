@@ -99,7 +99,6 @@ PicoInterpreterTest >> testGlobalAccess [
 	| inst value |
 	inst := pointClass allocateAnInstance.
 	PicoBlop declareClass: pointClass.
-	self halt.
 	value := inst send: #accessGlobal.
 	self assert: value equals: (PicoBlop giveClassNamed: #PicoPoint)
 	
@@ -272,7 +271,7 @@ PicoInterpreterTest >> testSimpleMessage [
 PicoInterpreterTest >> testStackIsWellInitialized [
 
 	| int |
-	int := PicoInterpreter new.
+	int := PicoInterpreter2 new.
 	self assert: int stack top parent isNil.
 ]
 
@@ -280,7 +279,7 @@ PicoInterpreterTest >> testStackIsWellInitialized [
 PicoInterpreterTest >> testStackPushNewScope [
 
 	| int |
-	int := PicoInterpreter new.
+	int := PicoInterpreter2 new.
 	int pushNewFrame.
 	"the parent of the top scope is the previous one."
 	self deny: int stack top parent isNil.

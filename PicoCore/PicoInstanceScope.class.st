@@ -11,6 +11,12 @@ PicoInstanceScope >> definedVariables [
 ]
 
 { #category : #accessing }
+PicoInstanceScope >> read: aString [
+	
+	^ self receiver valueOfInstanceVariable: aString
+]
+
+{ #category : #accessing }
 PicoInstanceScope >> write: aString withValue: anInteger [ 
 	
 	self receiver setValueOfInstanceVariable: aString to: anInteger
