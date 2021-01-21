@@ -62,7 +62,7 @@ PicoInterpreter2 >> visitMessageNode: aMessageNode [
 	((sel = #send:) or: [ self = #send:withArguments: ])
 		ifTrue: [ ^ super visitMessageNode: aMessageNode ].
 
-	"Here is the primitive case. The message send is to a Pharo object.
+	"Here is the primitive case. The message send is to a Pharo object and not a Pico object.
 	Receiver is not a pico thing, and could/should be resolved using some other mechanism (Smalltalk at:?).
 	This would help to not mix Pico and not Pico things.
 	Arguments should still be visited as they could be pico expressions."
