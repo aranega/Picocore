@@ -89,6 +89,8 @@ PicoBlop class >> initializePicoClassEnvironment [
 { #category : #'bootstrap - faked class definition' }
 PicoBlop class >> manualClassStructure [
 	| class |
+	"we cannot use the primitive allocate because the class does not exist.
+	we create really by hand the object that represent the class."
 	class := self new: 5.
 	class picoClassId: #PicoClass.
 	class picoClassName: #PicoClass.
@@ -170,6 +172,16 @@ PicoBlop >> computeNewIVFrom: superIVOrdCol with: localIVOrdCol [
 PicoBlop >> doesUnderstand: aSelector [
 
 	^ self picoMethodDict keys includes: aSelector
+]
+
+{ #category : #prepare }
+PicoBlop >> fillUpGlobalEnvironmentOf: aPicoInterpreter [
+	"fill up the global scope of the interpreter.
+	We could also redefine vistiGlobalNode to get the same."
+	
+	self class picoEnvironment keysAndValuesDo: 
+		[ :k :v | 
+			aPicoInterpreter globalEnvironmentAt: k put: v] 
 ]
 
 { #category : #methods }
@@ -372,7 +384,10 @@ PicoBlop >> send: aSelector withArguments: anArray [
 		ifFalse: [ self error: aSelector, ' does not expect ', anArray printString  ].
 	^ (self picoClass lookup: aSelector)
 			ifNotNil: [ :method |  
-						PicoInterpreter2 new 
+						| interpreter |
+						interpreter := PicoInterpreter2 new.
+						self fillUpGlobalEnvironmentOf: interpreter. 
+						interpreter
 								globalEnvironmentAt: #IdentityDictionary put: IdentityDictionary;
 								globalEnvironmentAt: #PicoBlop put: PicoBlop;
 								execute: method

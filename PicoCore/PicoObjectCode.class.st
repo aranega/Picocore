@@ -28,7 +28,6 @@ PicoObjectCode >> initialize [
 { #category : #'error handling' }
 PicoObjectCode >> introspectReadVariable: aSymbol [
 
-	"^ self send: #valueOfInstanceVariable: withArguments: {aSymbol}"
 	^ self valueOfInstanceVariable: aSymbol
 ]
 

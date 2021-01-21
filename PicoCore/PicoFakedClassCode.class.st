@@ -26,6 +26,8 @@ PicoFakedClassCode >> createClassNamed: aSymbol inheritsFrom: aSuperclassSymbol 
 	hardcode it. And we do not have support for loops and conditional in Pico..."
 		
 	newClass initializeMethodDictionaryFromCodeRepositoryFor: aSymbol.
+	"PicoBlop is a kind of world for us so it always exist.
+	We can access it and the interpreter knows it."
 	PicoBlop declareClass: newClass.
 	^ newClass
 	

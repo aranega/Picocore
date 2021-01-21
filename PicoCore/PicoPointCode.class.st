@@ -14,7 +14,7 @@ Class {
 { #category : #'internal messages' }
 PicoPointCode >> accessGlobal [
 
-	^ PicoBlop
+	^ PicoPoint
 ]
 
 { #category : #'for lookup tests' }
@@ -68,7 +68,7 @@ PicoPointCode >> initialize [
 
 { #category : #'internal messages' }
 PicoPointCode >> messageSendToGlobal [
-	self flag: #thisISWrong. 
+
 	"I would expect more PicoPoint allocate for example but here this definition is stupid"
 	^ PicoBlop giveClassNamed: #PicoPoint ifAbsent: [nil].
 ]
