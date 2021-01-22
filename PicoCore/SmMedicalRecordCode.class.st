@@ -42,6 +42,12 @@ SmMedicalRecordCode >> notes: anObject [
 ]
 
 { #category : #accessing }
+SmMedicalRecordCode >> owner [ 
+	
+	^ self picoOwner
+]
+
+{ #category : #accessing }
 SmMedicalRecordCode >> patient [
 	^ patient
 ]

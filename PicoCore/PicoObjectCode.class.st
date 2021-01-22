@@ -56,6 +56,12 @@ PicoObjectCode >> klass [
 ]
 
 { #category : #testing }
+PicoObjectCode >> owner [
+
+	^ self picoOwner 
+]
+
+{ #category : #testing }
 PicoObjectCode >> picoClass [
 
 	^ self picoClass 

@@ -2,6 +2,9 @@ Class {
 	#name : #PicoBlop,
 	#superclass : #Array,
 	#type : #variable,
+	#instVars : [
+		'owner'
+	],
 	#classInstVars : [
 		'picoEnvironment'
 	],
@@ -166,6 +169,19 @@ PicoBlop >> computeNewIVFrom: superIVOrdCol with: localIVOrdCol [
 			[ivs := superIVOrdCol asOrderedCollection copy.
 			localIVOrdCol do: [:e | (ivs includes: e) ifFalse: [ivs add: e]].
 			ivs]) asArray
+]
+
+{ #category : #'sm data' }
+PicoBlop >> create: aClassName with: aDictionary [
+
+	| class inst |
+	class := PicoBlop giveClassNamed: aClassName.
+  inst := class send: #new.
+	aDictionary keysAndValuesDo: [ :k :v | 
+			inst setValueOfInstanceVariable: k to: v 
+			].
+	inst privateOwnedBySetter: self.
+	^ inst
 ]
 
 { #category : #lookup }
@@ -345,6 +361,14 @@ PicoBlop >> picoNumberOfIVs [
 	^ self picoIVs size
 ]
 
+{ #category : #'sm data' }
+PicoBlop >> picoOwner [
+
+	^ owner
+
+	
+]
+
 { #category : #'basic access' }
 PicoBlop >> picoSuperclass [
 
@@ -369,6 +393,14 @@ PicoBlop >> picoSuperclassId: anObjClassId [
 PicoBlop >> primitiveLookup: aSelector [
 
 	^ self picoMethodDict at: aSelector
+]
+
+{ #category : #'sm data' }
+PicoBlop >> privateOwnedBySetter: anOwner [
+
+	owner := anOwner
+
+	
 ]
 
 { #category : #'message passing' }
