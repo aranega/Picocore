@@ -388,6 +388,7 @@ PicoBlop >> send: aSelector withArguments: anArray [
 						interpreter := PicoInterpreter2 new.
 						self fillUpGlobalEnvironmentOf: interpreter. 
 						interpreter
+								globalEnvironmentAt: #OrderedCollection put: OrderedCollection;
 								globalEnvironmentAt: #IdentityDictionary put: IdentityDictionary;
 								globalEnvironmentAt: #PicoBlop put: PicoBlop;
 								execute: method

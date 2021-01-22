@@ -1,5 +1,5 @@
 Class {
-	#name : #PicoAbstractMetaclass,
+	#name : #PicoAbstractMetaclassTest,
 	#superclass : #PicoTest,
 	#instVars : [
 		'picoClass',
@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : #setup }
-PicoAbstractMetaclass >> defineAbstractClass [
+PicoAbstractMetaclassTest >> defineAbstractClass [
 
 	picoAbstractMetaclass := picoClass
 		send: #createClassNamed:inheritsFrom:instVars:
@@ -26,7 +26,7 @@ PicoAbstractMetaclass >> defineAbstractClass [
 ]
 
 { #category : #setup }
-PicoAbstractMetaclass >> defineAbstractPoint [ 
+PicoAbstractMetaclassTest >> defineAbstractPoint [ 
 
 	picoAbstractPointClass := picoAbstractMetaclass
 		send: #createClassNamed:inheritsFrom:instVars:
@@ -38,7 +38,7 @@ PicoAbstractMetaclass >> defineAbstractPoint [
 ]
 
 { #category : #setup }
-PicoAbstractMetaclass >> defineConcretePoint [ 
+PicoAbstractMetaclassTest >> defineConcretePoint [ 
 	
 	"now we pay attention to really use the non abstract metaclass"
 	picoConcretePointClass := picoClass
@@ -50,7 +50,7 @@ PicoAbstractMetaclass >> defineConcretePoint [
 ]
 
 { #category : #setup }
-PicoAbstractMetaclass >> setUp [ 
+PicoAbstractMetaclassTest >> setUp [ 
 	super setUp.
 	PicoBlop bootstrap.
 	picoClass := PicoBlop giveClassNamed: #PicoClass.
@@ -61,7 +61,7 @@ PicoAbstractMetaclass >> setUp [
 ]
 
 { #category : #setup }
-PicoAbstractMetaclass >> testAbstractClass [
+PicoAbstractMetaclassTest >> testAbstractClass [
 
 	self assert: picoAbstractPointClass picoClassName equals: #PicoAbstractPoint.
 	self assert: picoAbstractPointClass picoSuperclassId equals: #PicoObject.
@@ -71,7 +71,7 @@ PicoAbstractMetaclass >> testAbstractClass [
 ]
 
 { #category : #setup }
-PicoAbstractMetaclass >> testAbstractMetaClass [
+PicoAbstractMetaclassTest >> testAbstractMetaClass [
 
 	self assert: picoAbstractMetaclass picoClassName equals: #PicoAbstractClass.
 	self assert: picoAbstractMetaclass picoSuperclass equals: picoClass.
@@ -79,7 +79,7 @@ PicoAbstractMetaclass >> testAbstractMetaClass [
 ]
 
 { #category : #setup }
-PicoAbstractMetaclass >> testConcreteClass [
+PicoAbstractMetaclassTest >> testConcreteClass [
 
 	| aPoint |
 	self assert: picoConcretePointClass picoClassName equals: #PicoConcretePoint.
@@ -91,7 +91,7 @@ PicoAbstractMetaclass >> testConcreteClass [
 ]
 
 { #category : #setup }
-PicoAbstractMetaclass >> testPointInstanceExecuteMethodOfAbstractSuperclass [
+PicoAbstractMetaclassTest >> testPointInstanceExecuteMethodOfAbstractSuperclass [
 
 	| aPoint |
 	aPoint := picoConcretePointClass send: #new.
