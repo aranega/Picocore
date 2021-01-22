@@ -7,6 +7,9 @@ Class {
 		'picoAbstractMetaclass',
 		'picoConcretePointClass'
 	],
+	#classInstVars : [
+		'picoClass'
+	],
 	#category : #'PicoCore-Metaclass Example'
 }
 
@@ -19,6 +22,7 @@ PicoAbstractMetaclass >> defineAbstractClass [
 			{#PicoAbstractClass.
 			#PicoClass.
 			#()}.
+	PicoBlop declareClass: picoAbstractMetaclass
 ]
 
 { #category : #setup }
@@ -30,6 +34,7 @@ PicoAbstractMetaclass >> defineAbstractPoint [
 			{#PicoAbstractPoint.
 			#PicoObject.
 			#()}.
+	PicoBlop declareClass: picoAbstractPointClass
 ]
 
 { #category : #setup }
