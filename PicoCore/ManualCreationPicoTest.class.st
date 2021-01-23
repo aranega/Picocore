@@ -10,10 +10,27 @@ Class {
 		'aPoint',
 		'coloredPointClass',
 		'aColoredPoint',
-		'objectClass'
+		'picoClass',
+		'picoObjectClass'
 	],
 	#category : #'PicoCore-Tests'
 }
+
+{ #category : #setup }
+ManualCreationPicoTest >> assembleClassClass [
+	
+	"This is not the way to create classes. Here we are testing primitives before the bootstrap of the kernel so we do everything by hand. In future tests we will retest these functionalities using a full kernel version."
+	
+	picoClass := PicoBlop new: 5.
+	picoClass at: picoClass offsetForName put: #PicoClass.
+	picoClass at: picoClass offsetForClass put: #PicoClass.
+	picoClass at: picoClass offsetForIVs put: #(#class #name #superclass #iv #methodDict).
+	picoClass at: picoClass offsetForSuperclass put: #PicoObject.
+	picoClass at: picoClass offsetForMethodDict put: IdentityDictionary new.
+	picoClass initializeMethodDictionaryFrom: PicoClassCode.
+	PicoBlop declareClass: picoClass.
+
+]
 
 { #category : #setup }
 ManualCreationPicoTest >> assembleColoredPointClass [
@@ -45,14 +62,14 @@ ManualCreationPicoTest >> assembleObjectClass [
 	
 	"This is not the way to create classes. Here we are testing primitives before the bootstrap of the kernel so we do everything by hand. In future tests we will retest these functionalities using a full kernel version."
 	
-	objectClass := PicoBlop new: 5.
-	objectClass at: objectClass offsetForName put: #PicoObject.
-	objectClass at: objectClass offsetForClass put: #PicoClass.
-	objectClass at: objectClass offsetForIVs put: #(#class).
-	objectClass at: objectClass offsetForSuperclass put: nil.
-	objectClass at: objectClass offsetForMethodDict put: IdentityDictionary new.
-	objectClass initializeMethodDictionaryFrom: PicoObjectCode.
-	PicoBlop declareClass: objectClass.
+	picoObjectClass := PicoBlop new: 5.
+	picoObjectClass at: picoObjectClass offsetForName put: #PicoObject.
+	picoObjectClass at: picoObjectClass offsetForClass put: #PicoClass.
+	picoObjectClass at: picoObjectClass offsetForIVs put: #(#class).
+	picoObjectClass at: picoObjectClass offsetForSuperclass put: nil.
+	picoObjectClass at: picoObjectClass offsetForMethodDict put: IdentityDictionary new.
+	picoObjectClass initializeMethodDictionaryFrom: PicoObjectCode.
+	PicoBlop declareClass: picoObjectClass.
 
 ]
 
@@ -81,17 +98,21 @@ ManualCreationPicoTest >> assemblePointInstance [
 ]
 
 { #category : #setup }
-ManualCreationPicoTest >> setUp [ 
+ManualCreationPicoTest >> setUp [
+	PicoBlop initializePicoClassEnvironment.
+	
 	self assemblePointClass.
 	self assemblePointInstance. 
 	self assembleColoredPointClass.
 	self assembleColoredPointInstance.
-	self assembleObjectClass
+	self assembleObjectClass.
+	self assembleClassClass.
 ]
 
 { #category : #'step5-tests-allocate' }
 ManualCreationPicoTest >> testAllocate [
-  "(self  selector: #testAllocate) run"
+  "self  run: #testAllocate"
+
   | newInstance |
   newInstance := pointClass allocateAnInstance.
   self assert: (newInstance at: 1) equals: #PicoPoint.
@@ -105,7 +126,24 @@ ManualCreationPicoTest >> testAllocate [
 ManualCreationPicoTest >> testClassAccess [
 	"(self  selector: #testClassAccess) run"
 	
-	self assert: aPoint picoClass equals: pointClass
+	self assert: aPoint picoClass equals: pointClass.
+	self assert: aColoredPoint picoClass equals: coloredPointClass.
+	self assert: picoClass picoClass equals: picoClass.
+	self assert: picoObjectClass picoClass equals: picoClass.
+]
+
+{ #category : #'step5-tests-allocate' }
+ManualCreationPicoTest >> testColoredPointAllocate [
+  "self run: #testColoredPointAllocate"
+
+  | newInstance |
+  newInstance := coloredPointClass allocateAnInstance.
+  self assert: (newInstance at: 1) equals: #PicoColoredPoint.
+  self assert: newInstance size equals: 4.
+  self assert: (newInstance at: 2) isNil.
+  self assert: (newInstance at: 3) isNil.
+  self assert: (newInstance at: 4) isNil.
+  self assert: newInstance picoClass equals: coloredPointClass
 ]
 
 { #category : #'step5-tests-allocate' }
@@ -116,7 +154,9 @@ ManualCreationPicoTest >> testEmpty [
 ManualCreationPicoTest >> testErrorRaisedSendWhenErrorInLookup [
 	"(self  selector: #testErrorRaisedSendWhenErrorInLookup) run"
 	
-	self should: [ pointClass sendError: #zork withArgs: { aPoint } ] raise: Error.
+	self should: [ pointClass 
+									sendError: #zork 
+									withArgs: { aPoint } ] raise: Error.
 	"Open a Transcript to see the message trace"
 ]
 
@@ -157,7 +197,8 @@ ManualCreationPicoTest >> testIVOffsetAskingTheInstance [
 ManualCreationPicoTest >> testIVValue [
 	"(self  selector: #testIVOffsetAndValue) run"
 
-	self assert: (aPoint valueOfInstanceVariable: #x) equals: 10
+	self assert: (aPoint valueOfInstanceVariable: #x) equals: 10.
+	self assert: (picoClass valueOfInstanceVariable: #iv) equals: #(#class #name #superclass #iv #methodDict)
 ]
 
 { #category : #'step2-tests-structure of classes' }
@@ -166,6 +207,7 @@ ManualCreationPicoTest >> testIVsSize [
 
 	self assert: pointClass picoNumberOfIVs equals: 3.
 	self assert: coloredPointClass picoNumberOfIVs equals: 4.
+	self assert: picoClass picoNumberOfIVs equals: 5.
 
 ]
 
@@ -225,7 +267,9 @@ ManualCreationPicoTest >> testIntrospectiveReadVariable [
 	self assert: (aPoint send: #x) equals: 10.
 
 	"method found in ObjClass"
-	self assert: (aPoint send: #introspectReadVariable: withArguments: #(#x)) equals: 10.
+	self 
+		assert: (aPoint send: #introspectReadVariable: withArguments: #(#x)) 
+		equals: 10.
 ]
 
 { #category : #'step9-tests-message' }
@@ -233,15 +277,20 @@ ManualCreationPicoTest >> testIntrospectiveWriteVariable [
 	"(self  selector: #testIntrospectiveMethod) run"
 
 	"method found in ObjClass"
-	aPoint send: #introspectWriteVariable:value: withArguments: #(y 22).
-	self assert: (aPoint send: #introspectReadVariable: withArguments: #(#y)) equals: 22
+	aPoint 
+		send: #introspectWriteVariable:value: 
+		withArguments: #(y 22).
+	self assert: (aPoint send: #introspectReadVariable: 
+										withArguments: #(#y)) 
+			equals: 22
 ]
 
 { #category : #'step8-tests-lookup' }
 ManualCreationPicoTest >> testLookupMethodInSuperclass [
+
 	| method |
 	method := coloredPointClass lookup: #x.
-	self assert: method equals: (pointClass bodyOfMethod: #x)
+	self assert: method == (pointClass bodyOfMethod: #x)
 ]
 
 { #category : #'step8-tests-lookup' }
@@ -273,7 +322,7 @@ ManualCreationPicoTest >> testMethodLookupStop [
 ManualCreationPicoTest >> testMethodManagmentBodyOfMethod [
 	"(self  selector: #testMethodManagmentBodyOfMethod) run"
 	
-	self assert: ((pointClass bodyOfMethod: #x) isKindOf: RBProgramNode )
+	self assert: ((pointClass bodyOfMethod: #x) isKindOf: RBProgramNode)
 
 ]
 
@@ -281,7 +330,8 @@ ManualCreationPicoTest >> testMethodManagmentBodyOfMethod [
 ManualCreationPicoTest >> testMethodManagmentNotUnderstandBadMethod [
 	"(self  selector: #testMethodManagmentNotUnderstandBadMethod) run"
 
-	self assert: (pointClass doesUnderstand: #xx) not
+	self assert: (pointClass doesUnderstand: #xx) not.
+
 	
 ]
 
@@ -304,6 +354,14 @@ ManualCreationPicoTest >> testMethodSuperCall [
 	self assert: (aColoredPoint send: #foo) equals: 10
 ]
 
+{ #category : #'step1-tests-structure of objects' }
+ManualCreationPicoTest >> testPrimitiveStructureClassIdForSimpleObject [
+	"self run: #testPrimitiveStructureObjClassIdForSimpleObject"
+
+	self assert: aPoint picoClassId equals: #PicoPoint
+
+]
+
 { #category : #'step2-tests-structure of classes' }
 ManualCreationPicoTest >> testPrimitiveStructureIVs [
 	"(self selector: #testPrimitiveStructureIVs) run"
@@ -312,12 +370,20 @@ ManualCreationPicoTest >> testPrimitiveStructureIVs [
 
 ]
 
-{ #category : #'step1-tests-structure of objects' }
-ManualCreationPicoTest >> testPrimitiveStructureObjClassIdForSimpleObject [
-	"self run: #testPrimitiveStructureObjClassIdForSimpleObject"
+{ #category : #'step2-tests-structure of classes' }
+ManualCreationPicoTest >> testPrimitiveStructureMethodDict [
+	"(self selector: #testPrimitiveStructureObjMethodDict) run"
 
-	self assert: aPoint picoClassId equals: #PicoPoint
+	self assert: pointClass picoMethodDict isNotNil
+]
 
+{ #category : #'step2-tests-structure of classes' }
+ManualCreationPicoTest >> testPrimitiveStructureName [
+	"(self selector: #testPrimitiveStructureObjName) run"
+
+	self assert: pointClass picoClassName equals: #PicoPoint.
+	self assert: picoObjectClass picoClassName equals: #PicoObject
+	
 ]
 
 { #category : #'step1-tests-structure of objects' }
@@ -328,13 +394,12 @@ ManualCreationPicoTest >> testPrimitiveStructurePicoClassId [
 
 ]
 
-{ #category : #'step2-tests-structure of classes' }
-ManualCreationPicoTest >> testPrimitiveStructurePicoName [
-	"(self selector: #testPrimitiveStructureObjName) run"
+{ #category : #'step1-tests-structure of objects' }
+ManualCreationPicoTest >> testPrimitiveStructurePicoClassIdForMetaclass [
+	"(self selector: #testPrimitiveStructureObjClassId) run"
 
-	self assert: pointClass picoClassName equals: #PicoPoint.
-	self assert: objectClass picoClassName equals: #PicoObject
-	
+	self assert: picoClass picoClassId equals: #PicoClass
+
 ]
 
 { #category : #'step2-tests-structure of classes' }
@@ -342,6 +407,7 @@ ManualCreationPicoTest >> testPrimitiveStructureSuperclassId [
 	"(self selector: #testPrimitiveStructureSuperclassId) run"
 
 	self assert: pointClass picoSuperclassId equals: #PicoObject.
+	self assert: coloredPointClass picoSuperclassId equals: #PicoPoint.
 
 ]
 
@@ -349,5 +415,5 @@ ManualCreationPicoTest >> testPrimitiveStructureSuperclassId [
 ManualCreationPicoTest >> testSimpleLookup [
 	| method |
 	method := pointClass lookup: #x:.
-	self assert: method equals: (pointClass bodyOfMethod: #x:)
+	self assert: method == (pointClass bodyOfMethod: #x:)
 ]

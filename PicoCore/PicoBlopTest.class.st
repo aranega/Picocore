@@ -44,7 +44,7 @@ PicoBlopTest >> testPoinInstantiation [
 PicoBlopTest >> testPoinInstantiationClass [
 	| inst |
 	inst := pointClass allocateAnInstance.
-	self assert: (inst at: 1) equals: 'PicoPoint'.
+	self assert: (inst at: 1) equals: pointClass picoClassName.
 	self assert: inst picoClass equals: pointClass.
 
 ]
