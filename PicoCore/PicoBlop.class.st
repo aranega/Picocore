@@ -2,9 +2,6 @@ Class {
 	#name : #PicoBlop,
 	#superclass : #Array,
 	#type : #variable,
-	#instVars : [
-		'owner'
-	],
 	#classInstVars : [
 		'picoEnvironment'
 	],
@@ -86,7 +83,9 @@ PicoBlop class >> initialize [
 PicoBlop class >> initializePicoClassEnvironment [
 	"could be better to have it as instance level so that we can test without breaking everything but this is a toy."
 	
-	picoEnvironment := Dictionary new
+	picoEnvironment := Dictionary new.
+	picoEnvironment at: #PicoObject put: nil.
+	picoEnvironment at: #PicoClass put: nil.
 ]
 
 { #category : #'bootstrap - faked class definition' }
@@ -158,17 +157,16 @@ PicoBlop >> computeIVForBootstrapOfSuperclassSymbol: aSuperclassSymbol iv: instV
 ]
 
 { #category : #'variable inheritance' }
-PicoBlop >> computeNewIVFrom: superIVOrdCol with: localIVOrdCol [
-	"Returns an ordered collection that is the union without duplicate of ivOfSuper and ivOrderedCollection.
-	Important the order of the instance variable is conserved"
+PicoBlop >> computeNewIVFrom: superIVsOrderedCol with: localIVOrdCol [
+	"Returns an ordered collection that is the union without duplicate of ivOfSuper and ivOrderedCollection. Important the order of the instance variable is conserved"
 
 	| ivs |
-	^ ( superIVOrdCol isNil 
-		ifTrue: [localIVOrdCol]
+	^ ( superIVsOrderedCol isNil 
+		ifTrue: [ localIVOrdCol ]
 		ifFalse: 
-			[ivs := superIVOrdCol asOrderedCollection copy.
-			localIVOrdCol do: [:e | (ivs includes: e) ifFalse: [ivs add: e]].
-			ivs]) asArray
+			[ ivs := superIVsOrderedCol asOrderedCollection copy.
+			localIVOrdCol do: [:e | (ivs includes: e) ifFalse: [ ivs add: e ]].
+			ivs ]) asArray
 ]
 
 { #category : #'sm data' }
