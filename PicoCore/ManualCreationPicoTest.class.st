@@ -21,12 +21,13 @@ ManualCreationPicoTest >> assembleClassClass [
 	
 	"This is not the way to create classes. Here we are testing primitives before the bootstrap of the kernel so we do everything by hand. In future tests we will retest these functionalities using a full kernel version."
 	
-	picoClass := PicoBlop new: 5.
+	picoClass := PicoBlop new: 6.
 	picoClass at: picoClass offsetForName put: #PicoClass.
 	picoClass at: picoClass offsetForClass put: #PicoClass.
 	picoClass at: picoClass offsetForIVs put: #(#class #name #superclass #iv #methodDict).
 	picoClass at: picoClass offsetForSuperclass put: #PicoObject.
 	picoClass at: picoClass offsetForMethodDict put: IdentityDictionary new.
+	picoClass at: picoClass offsetForSlots put: IdentityDictionary new.
 	picoClass initializeMethodDictionaryFrom: PicoClassCode.
 	PicoBlop declareClass: picoClass.
 
@@ -37,12 +38,13 @@ ManualCreationPicoTest >> assembleColoredPointClass [
 	
 	"This is not the way to create classes. Here we are testing primitives before the bootstrap of the kernel so we do everything by hand. In future tests we will retest these functionalities using a full kernel version."
 	
-	coloredPointClass := PicoBlop new: 5.
+	coloredPointClass := PicoBlop new: 6.
 	coloredPointClass at: coloredPointClass offsetForName put: #PicoColoredPoint.
 	coloredPointClass at: coloredPointClass offsetForClass put: #PicoClass.
 	coloredPointClass at: coloredPointClass offsetForIVs put: #(#class #x #y #color).
 	coloredPointClass at: coloredPointClass offsetForSuperclass put: #PicoPoint.
 	coloredPointClass at: coloredPointClass offsetForMethodDict put: IdentityDictionary new.
+	coloredPointClass at: coloredPointClass offsetForSlots put: IdentityDictionary new.
 	coloredPointClass initializeMethodDictionaryFrom: PicoColoredPointCode.
 	PicoBlop declareClass: coloredPointClass.
 
@@ -62,12 +64,13 @@ ManualCreationPicoTest >> assembleObjectClass [
 	
 	"This is not the way to create classes. Here we are testing primitives before the bootstrap of the kernel so we do everything by hand. In future tests we will retest these functionalities using a full kernel version."
 	
-	picoObjectClass := PicoBlop new: 5.
+	picoObjectClass := PicoBlop new: 6.
 	picoObjectClass at: picoObjectClass offsetForName put: #PicoObject.
 	picoObjectClass at: picoObjectClass offsetForClass put: #PicoClass.
 	picoObjectClass at: picoObjectClass offsetForIVs put: #(#class).
 	picoObjectClass at: picoObjectClass offsetForSuperclass put: nil.
 	picoObjectClass at: picoObjectClass offsetForMethodDict put: IdentityDictionary new.
+	picoObjectClass at: picoObjectClass offsetForSlots put: IdentityDictionary new.
 	picoObjectClass initializeMethodDictionaryFrom: PicoObjectCode.
 	PicoBlop declareClass: picoObjectClass.
 
@@ -78,12 +81,13 @@ ManualCreationPicoTest >> assemblePointClass [
 	
 	"This is not the way to create classes. Here we are testing primitives before the bootstrap of the kernel so we do everything by hand. In future tests we will retest these functionalities using a full kernel version."
 	
-	pointClass := PicoBlop new: 5.
+	pointClass := PicoBlop new: 6.
 	pointClass at: pointClass offsetForName put: #PicoPoint.
 	pointClass at: pointClass offsetForClass put: #PicoClass.
 	pointClass at: pointClass offsetForIVs put: #(#class #x #y).
 	pointClass at: pointClass offsetForSuperclass put: #PicoObject.
 	pointClass at: pointClass offsetForMethodDict put: IdentityDictionary new.
+	pointClass at: pointClass offsetForSlots put: IdentityDictionary new.
 	pointClass initializeMethodDictionaryFrom: PicoPointCode.
 	PicoBlop declareClass: pointClass.
 

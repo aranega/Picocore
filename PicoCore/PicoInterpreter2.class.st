@@ -59,7 +59,7 @@ PicoInterpreter2 >> superclassOf: aPicoObject [
 PicoInterpreter2 >> visitMessageNode: aMessageNode [
 	| sel |
 	sel := aMessageNode selector.
-	((sel = #send:) or: [ self = #send:withArguments: ])
+	((sel = #send:) or: [ sel = #send:withArguments: or: [ sel = #send:withArguments:inSubinterpreter:]])
 		ifTrue: [ ^ super visitMessageNode: aMessageNode ].
 
 	"Here is the primitive case. The message send is to a Pharo object and not a Pico object.

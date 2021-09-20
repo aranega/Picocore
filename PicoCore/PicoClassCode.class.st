@@ -33,12 +33,32 @@ PicoClassCode >> createClassNamed: aSymbol inheritsFrom: aSuperclassSymbol instV
 ]
 
 { #category : #instantiation }
+PicoClassCode >> createClassNamed: aSymbol inheritsFrom: aSuperclassSymbol instVars: instVars slots: slots [
+	
+	| newClass picoSuperclass |
+	newClass := self send: #new.
+	newClass picoClassName: aSymbol.
+	newClass picoSuperclassId: aSuperclassSymbol.
+	picoSuperclass := PicoBlop giveClassNamed: aSuperclassSymbol.
+	newClass picoIVs: (newClass computeNewIVFrom: picoSuperclass picoIVs with: instVars).
+	newClass picoSlots: slots.
+	"this class is only used to create Class and Object so let us 
+	hardcode it. And we do not have support for loops and conditional in Pico..."
+	newClass initializeMethodDictionaryFromCodeRepositoryFor: aSymbol.
+	PicoBlop declareClass: newClass.
+	^ newClass
+	
+	
+]
+
+{ #category : #instantiation }
 PicoClassCode >> initialize [ 
 	
 	self picoClassName: #YouShouldNameMe.
 	self picoSuperclassId: #YouShouldNameMeToo.
 	self picoIVs: #().
 	self picoMethodDict: (IdentityDictionary new: 3).
+	self picoSlots: (IdentityDictionary new: 3).
 	^ self
 ]
 

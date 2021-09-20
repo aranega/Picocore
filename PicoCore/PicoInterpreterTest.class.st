@@ -11,15 +11,15 @@ Class {
 { #category : #setup }
 PicoInterpreterTest >> setUp [
 
-	pointClass := PicoBlop new: 5.
-	{ #PicoClass . #PicoPoint . #PicoObject . { #class . #x . #y } . 5 }
+	pointClass := PicoBlop new: 6.
+	{ #PicoClass . #PicoPoint . #PicoObject . { #class . #x . #y } . 5. {  } asDictionary }
 		withIndexDo: [ :each :i | pointClass at: i put: each ].
 	pointClass initializeMethodDictionaryFrom: PicoPointCode.
 	PicoBlop initializePicoClassEnvironment.
 	PicoBlop declareClass: pointClass.
 	
-	coloredPointClass := PicoBlop new: 5.
-	{ #PicoClass . #PicoColoredPoint . #PicoPoint . { #class . #x . #y . #color} . 5 }
+	coloredPointClass := PicoBlop new: 6.
+	{ #PicoClass . #PicoColoredPoint . #PicoPoint . { #class . #x . #y . #color} . 5. {  } asDictionary }
 		withIndexDo: [ :each :i | coloredPointClass at: i put: each ].
 	coloredPointClass initializeMethodDictionaryFrom: PicoColoredPointCode.
 	PicoBlop declareClass: coloredPointClass.

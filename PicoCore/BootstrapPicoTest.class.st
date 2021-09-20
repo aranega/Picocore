@@ -33,7 +33,7 @@ BootstrapPicoTest >> testClassStructureCreation [
 	because there is no super calls"
 	self
 		assert: picoClass picoIVs
-		equals: #(#class #name #superclass #iv #methodDict)
+		equals: #(#class #name #superclass #iv #methodDict #slots)
 ]
 
 { #category : #'tests - Class definition' }
@@ -120,7 +120,7 @@ BootstrapPicoTest >> testManualClassStructureCreation [
 	because there is no super calls"
 	self
 		assert: picoClass picoIVs
-		equals: #(#class #name #superclass #iv #methodDict)
+		equals: #(#class #name #superclass #iv #methodDict #slots)
 ]
 
 { #category : #'tests - manually Class definition' }
@@ -208,6 +208,7 @@ BootstrapPicoTest >> testManuallyCreateClassNew [
 	self assert: emptyClass picoClassId equals: #PicoClass.
 	self assert: emptyClass picoSuperclassId equals: #YouShouldNameMeToo.
 	self assert: emptyClass picoIVs equals: #().
+	self assert: emptyClass picoSlots class equals: IdentityDictionary. 
 	self
 		assert: emptyClass picoMethodDict class
 		equals: IdentityDictionary

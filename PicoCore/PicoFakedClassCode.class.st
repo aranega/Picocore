@@ -35,12 +35,33 @@ PicoFakedClassCode >> createClassNamed: aSymbol inheritsFrom: aSuperclassSymbol 
 ]
 
 { #category : #'class behavior' }
+PicoFakedClassCode >> createClassNamed: aSymbol inheritsFrom: aSuperclassSymbol instVars: instVars slots: slots [
+	"At this stage Object does not exist, yet."
+	| newClass |
+	newClass := self send: #new.
+	newClass picoClassName: aSymbol.
+	newClass picoSuperclassId: aSuperclassSymbol.
+	newClass computeIVForBootstrapOfSuperclassSymbol: aSuperclassSymbol iv: instVars.
+	"this class is only used to create Class and Object so let us 
+	hardcode it. And we do not have support for loops and conditional in Pico..."
+		
+	newClass initializeMethodDictionaryFromCodeRepositoryFor: aSymbol.
+	"PicoBlop is a kind of world for us so it always exist.
+	We can access it and the interpreter knows it."
+	PicoBlop declareClass: newClass.
+	^ newClass
+	
+	
+]
+
+{ #category : #'class behavior' }
 PicoFakedClassCode >> initialize [ 
 	
 	self picoClassName: #YouShouldNameMe.
 	self picoSuperclassId: #YouShouldNameMeToo.
 	self picoIVs: #().
 	self picoMethodDict: (IdentityDictionary new: 3).
+	self picoSlots: (IdentityDictionary new: 3).
 	^ self
 ]
 

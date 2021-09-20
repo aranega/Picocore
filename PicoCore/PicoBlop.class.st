@@ -19,7 +19,7 @@ PicoBlop class >> bootstrap [
 
 { #category : #bootstrap }
 PicoBlop class >> classInstanceVariables [
-	^ #(#class #name #superclass #iv #methodDict)
+	^ #(#class #name #superclass #iv #methodDict #slots)
 ]
 
 { #category : #'global class repository management' }
@@ -35,10 +35,13 @@ PicoBlop class >> defineClass [
 
 	| picoClass |
 	picoClass := PicoBlop giveClassNamed: #PicoClass.
-	picoClass 
-			send: #createClassNamed:inheritsFrom:instVars:
-			withArguments: { #PicoClass . #PicoObject . self onlyClassInstanceVariables  }.
-	
+	picoClass
+		send: #createClassNamed:inheritsFrom:instVars:slots:
+		withArguments: { 
+				#PicoClass.
+				#PicoObject.
+				self onlyClassInstanceVariables.
+				{  } }
 ]
 
 { #category : #bootstrap }
@@ -46,15 +49,18 @@ PicoBlop class >> defineObject [
 
 	| picoClass objectClass |
 	"not sure that this is needed"
-	PicoBlop 
+	PicoBlop
 		initialize;
 		manuallyDefineClass.
-		
+
 	picoClass := PicoBlop giveClassNamed: #PicoClass.
-	objectClass := picoClass 
-			send: #createClassNamed:inheritsFrom:instVars:
-			withArguments: { #PicoObject . nil . #(class)}.
-	
+	objectClass := picoClass
+		               send: #createClassNamed:inheritsFrom:instVars:slots:
+		               withArguments: { 
+				               #PicoObject.
+				               nil.
+				               #( class ).
+				               (IdentityDictionary new: 3) }
 ]
 
 { #category : #'global class repository management' }
@@ -93,13 +99,14 @@ PicoBlop class >> manualClassStructure [
 	| class |
 	"we cannot use the primitive allocate because the class does not exist.
 	we create really by hand the object that represent the class."
-	class := self new: 5.
+	class := self new: 6.
 	class picoClassId: #PicoClass.
 	class picoClassName: #PicoClass.
-	class picoIVs: #(#class #name #superclass #iv #methodDict).
+	class picoIVs: #(#class #name #superclass #iv #methodDict #slots).
 	"we hardcod the Class structure and the fact that class is inherited from Object."
 	class picoSuperclassId: #PicoObject.
 	class picoMethodDict: (IdentityDictionary new: 3).
+	class picoSlots: (IdentityDictionary new: 3).
 	^ class
 ]
 
@@ -115,7 +122,7 @@ PicoBlop class >> manuallyDefineClass [
 
 { #category : #bootstrap }
 PicoBlop class >> onlyClassInstanceVariables [
-	^ #(#name #superclass #iv #methodDict)
+	^ #(#name #superclass #iv #methodDict #slots)
 ]
 
 { #category : #'global class repository management' }
@@ -126,12 +133,13 @@ PicoBlop class >> picoEnvironment [
 
 { #category : #allocate }
 PicoBlop >> allocateAnInstance [
+
 	"Returns a newly created instance of self, an ObjClass. In this implementation the identifier of the object class is the name of the class. "
 
 	| a |
-	a := self class new: self picoNumberOfIVs.
+	a := self class new: self picoNumberOfVariables.
 	a picoClassId: self picoClassName.
-	^a
+	^ a
 ]
 
 { #category : #methods }
@@ -148,12 +156,14 @@ PicoBlop >> computeIVForBootstrapOfSuperclassSymbol: aSuperclassSymbol iv: instV
 	aSuperclassSymbol isNil
 		ifTrue: 
 			[ "we are on Object since only Object does not have a superclass."
-			self picoIVs: #(#class) ]
+			self picoIVs: #(#class).
+			self picoSlots: (IdentityDictionary new) ]
 		ifFalse: 
 			[ 
 			| picoSuperclass | 
 			picoSuperclass := PicoBlop giveClassNamed: aSuperclassSymbol.
-			self picoIVs: (self computeNewIVFrom: picoSuperclass picoIVs with: instVars)].
+			self picoIVs: (self computeNewIVFrom: picoSuperclass picoIVs with: instVars).
+			self picoSlots: (IdentityDictionary new)].
 ]
 
 { #category : #'variable inheritance' }
@@ -271,6 +281,12 @@ PicoBlop >> offsetForName [
 ]
 
 { #category : #offsets }
+PicoBlop >> offsetForSlots [
+
+	^ 6
+]
+
+{ #category : #offsets }
 PicoBlop >> offsetForSuperclass [
 
 	^3
@@ -359,12 +375,36 @@ PicoBlop >> picoNumberOfIVs [
 	^ self picoIVs size
 ]
 
+{ #category : #'basic access' }
+PicoBlop >> picoNumberOfSlots [
+
+	^ self picoSlots size
+]
+
+{ #category : #'basic access' }
+PicoBlop >> picoNumberOfVariables [
+	"for now class x y"
+	^ self picoNumberOfIVs + self picoNumberOfSlots
+]
+
 { #category : #'sm data' }
 PicoBlop >> picoOwner [
 
 	^ owner
 
 	
+]
+
+{ #category : #'class structure' }
+PicoBlop >> picoSlots [
+
+	^ self at: self offsetForSlots
+]
+
+{ #category : #'class structure' }
+PicoBlop >> picoSlots: aDictionnary [
+
+	self at: self offsetForSlots put: aDictionnary
 ]
 
 { #category : #'basic access' }
@@ -410,17 +450,27 @@ PicoBlop >> send: aSelector [
 { #category : #'message passing' }
 PicoBlop >> send: aSelector withArguments: anArray [
 
+	| interpreter |
+	interpreter := PicoInterpreter3 new.
+	self fillUpGlobalEnvironmentOf: interpreter.
+	interpreter
+		globalEnvironmentAt: #OrderedCollection put: OrderedCollection;
+		globalEnvironmentAt: #IdentityDictionary put: IdentityDictionary;
+		globalEnvironmentAt: #PicoBlop put: PicoBlop.
+	^ self
+		  send: aSelector
+		  withArguments: anArray
+		  inSubinterpreter: interpreter
+]
+
+{ #category : #'message passing' }
+PicoBlop >> send: aSelector withArguments: anArray inSubinterpreter: interpreter [
+
 	aSelector numArgs = anArray size 
 		ifFalse: [ self error: aSelector, ' does not expect ', anArray printString  ].
 	^ (self picoClass lookup: aSelector)
 			ifNotNil: [ :method |  
-						| interpreter |
-						interpreter := PicoInterpreter2 new.
-						self fillUpGlobalEnvironmentOf: interpreter. 
 						interpreter
-								globalEnvironmentAt: #OrderedCollection put: OrderedCollection;
-								globalEnvironmentAt: #IdentityDictionary put: IdentityDictionary;
-								globalEnvironmentAt: #PicoBlop put: PicoBlop;
 								execute: method
 								withReceiver: self 
 								andArguments: anArray ]
@@ -429,9 +479,28 @@ PicoBlop >> send: aSelector withArguments: anArray [
 
 { #category : #'message passing' }
 PicoBlop >> sendError: selector withArguments: arguments [
+
+	"send error wrapping arguments into an array with the selector as first argument. Instead of an array we should create a message object."
+
+	| interpreter |
+	interpreter := PicoInterpreter3 new.
+	self fillUpGlobalEnvironmentOf: interpreter.
+	interpreter
+		globalEnvironmentAt: #OrderedCollection put: OrderedCollection;
+		globalEnvironmentAt: #IdentityDictionary put: IdentityDictionary;
+		globalEnvironmentAt: #PicoBlop put: PicoBlop.
+
+	^ self
+		  sendError: selector
+		  withArguments: arguments
+		  inSubinterpreter: interpreter
+]
+
+{ #category : #'message passing' }
+PicoBlop >> sendError: selector withArguments: arguments inSubinterpreter: interpreter [
 	"send error wrapping arguments into an array with the selector as first argument. Instead of an array we should create a message object."
 	
-	^ self send: #error: withArguments:  {(arguments copyWithFirst: selector)}
+	^ self send: #error: withArguments:  {(arguments copyWithFirst: selector)} inSubinterpreter: interpreter
 	
 
 ]
@@ -447,6 +516,6 @@ PicoBlop >> setValueOfInstanceVariable: aSymbol to: value [
 PicoBlop >> valueOfInstanceVariable: aSymbol [ 
 	"Return the value of the instance variable, aSymbol, of the receiver."
 	
-	^self at: (self offsetFromObjectOfInstanceVariable: aSymbol)
+	^self at: (self offsetFromObjectOfInstanceVariable: aSymbol) 
 	
 ]

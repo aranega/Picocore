@@ -10,8 +10,8 @@ Class {
 { #category : #running }
 PicoBlopTest >> setUp [
 
-	pointClass := PicoBlop new: 5.
-	{ #PicoClass . #PicoPoint . #PicoObject . { #class . #x . #y } . 5 }
+	pointClass := PicoBlop new: 6.
+	{ #PicoClass . #PicoPoint . #PicoObject . { #class . #x . #y } . 5. {  } asDictionary  }
 		withIndexDo: [ :each :i | pointClass at: i put: each ].
 	
 	pointClass initializeMethodDictionaryFrom: PicoPointCode.

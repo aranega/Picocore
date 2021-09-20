@@ -19,24 +19,24 @@ BootstrappedPicoTest >> setUp [
 
 { #category : #tests }
 BootstrappedPicoTest >> testCreateClassPoint [
+
 	"(self selector: #testCreateClassPoint) run"
 
 	| pointClass |
 	pointClass := picoClass
-		send: #createClassNamed:inheritsFrom:instVars:
-		withArguments:
-			{#PicoPoint.
-			#PicoObject.
-			#(x y)}.
+		              send: #createClassNamed:inheritsFrom:instVars:slots:
+		              withArguments: { 
+				              #PicoPoint.
+				              #PicoObject.
+				              #( x y ).
+				              (IdentityDictionary new: 3) }.
 	self assert: pointClass picoClassId equals: #PicoClass.
 	self assert: pointClass picoSuperclassId equals: #PicoObject.
-	self assert: pointClass picoIVs equals: #(class x y).
+	self assert: pointClass picoIVs equals: #( class x y ).
 	self
 		assert: pointClass picoMethodDict keys size
 		equals: PicoPointCode selectors size.
-	self 
-		assert: pointClass picoClassName 
-		equals: #PicoPoint
+	self assert: pointClass picoClassName equals: #PicoPoint
 ]
 
 { #category : #tests }

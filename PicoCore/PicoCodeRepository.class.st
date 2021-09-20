@@ -6,11 +6,6 @@ Class {
 	#name : #PicoCodeRepository,
 	#superclass : #Object,
 	#type : #variable,
-	#instVars : [
-		'color',
-		'x',
-		'y'
-	],
 	#category : #'PicoCore-CoreCodeRepository'
 }
 
